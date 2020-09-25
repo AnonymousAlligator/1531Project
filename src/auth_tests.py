@@ -5,12 +5,19 @@ def test_auth_login():
 
 # Initial function calls before testing
     
-    auth_dictionary = auth_register("registeredemail@valid.com", "password1", "Nathan", "Drake")
-    user_token = auth_dictionary["token"]
-    auth_logout(user_token) #logout after registering
+    reg_dictionary = auth_register("registeredemail@valid.com", "password1", "Nathan", "Drake")
+    reg_token = reg_dictionary['token']
+    reg_uid = reg_dictionary['u_id']
     
-    # When the email is registered already with valid syntax
-    auth_login("registeredemail@valid.com", "password1") == {"token" : user_token}
+    auth_logout(reg_token) #logout after registering
+    
+    login = auth_login("registeredemail@valid.com", "password1")
+    login_token = login['token']
+    login_uid = login['u_id']
+
+    assert reg_uid == login_uid
+    assert auth_logout(login_token) == {'is_success': True}
+    assert auth_logout(login_token) == {'is_success': False}
 
     # When the email is already logged in
     with pytest.raises(InputError):
@@ -21,10 +28,9 @@ def test_auth_login():
     with pytest.raises(InputError):
         auth_login("registeredemail@valid.com", "invalidpassword1")
     
-
     # When the email has valid syntax but is not registered (doesn't belong to a user)
     with pytest.raises(InputError):
-        auth_login("unregisteredemail@valid.com", "password3")
+        auth_login("unregisteredemail@valid.com", "3password3")
     
     # When the input parameters are of invalid type or length
     with pytest.raises(InputError):
@@ -50,6 +56,7 @@ def test_auth_logout():
     #When token is already logged out
     assert auth_logout(user_token) == {'is_success': False}
 
+########################################################
 
 def test_auth_register():
 
@@ -83,7 +90,7 @@ def test_auth_register():
 
     # When the password isn't valid
     with pytest.raises(InputError):
-        auth_register("sample@email.com", "smol", "firstName", "lastName")
+        auth_register("sample@email.com", "smol", "Doom", "Slayer")
     
 
 
