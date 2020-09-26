@@ -1,0 +1,4 @@
+Assumed that functions I am calling are fully and correctly implemented
+Assume that once the channel is createdm the creator must still manually join the channel/be invited
+Assume that channel_details returns the members full name as a string
+Assume that messages in channel_messages are returned as a list
