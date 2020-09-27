@@ -35,5 +35,3 @@ def user_profile_setname_test():
     # Invalid last name input - input is 1 character
     with pytest.raises(InputError):
         user_profile_setname(test_user0_token, "valid_new_fname", "A" )
-
-     user_profile_setname(test_user0_token, "Jayden", "Haycob")
