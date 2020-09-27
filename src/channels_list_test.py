@@ -1,8 +1,9 @@
 from channels import channels_list
 import error
 
+
 def test_channels_list_exists():
-    pass
+    assert channels_list('token') == {channels}
 
 """
 def channels_list(token):
