@@ -6,6 +6,7 @@ from channel import channel_invite, channel_addowner
 from channels import channels_create
 from auth import auth_register
 from message import message_send, message_remove
+from other import search
 import error
 import pytest
 
