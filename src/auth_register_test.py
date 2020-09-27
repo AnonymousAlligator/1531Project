@@ -9,7 +9,7 @@ def test_auth_register():
     
     # When an email has a valid format but not registered yet
     # Register new user
-    valid_user = auth_register("registered@valid.com", "potato321", "Elena", "Fisher") == 
+    valid_user = auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user['u_id'] == 1
 
     # When the email has a valid format but is already registered
