@@ -9,7 +9,7 @@ from other import clear
 import pytest
 
 
-def user_profile_test():
+def test_user_profile():
 		
 		clear()
 

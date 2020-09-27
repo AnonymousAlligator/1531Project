@@ -10,7 +10,7 @@ from other import clear
 import pytest
 import auth
 
-def user_profile_sethandle_test():
+def test_user_profile_sethandle():
 
     clear()
 

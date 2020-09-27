@@ -3,7 +3,7 @@ from other import clear
 from auth import auth_register, auth_logout, auth_login 
 import pytest
 
-def auth_login_test():
+def test_auth_login():
 
 # Initial function calls before testing
     

@@ -11,7 +11,7 @@ import auth
 from other import clear
 import pytest
 
-def user_profile_setname_test():
+def test_profile_setname():
     
     clear()
 

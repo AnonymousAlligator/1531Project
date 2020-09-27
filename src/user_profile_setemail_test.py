@@ -10,7 +10,7 @@ import auth
 import pytest
 import re
 
-def user_profile_setemail_test():
+def test_user_profile_setemail():
 	
 		clear()
 
