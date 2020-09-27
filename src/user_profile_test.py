@@ -9,28 +9,28 @@ import pytest
 
 
 def user_profile_test():
-    
-    #TODO: clear data
+		
+		#TODO: clear data
 
-    # Register new user
-    test_user_0 = auth.auth_register("cs1531@cse.unsw.edu.au", "valid_pw", "Hayden", "Jacobs")      
-    test_user0_token = test_user_0['token']
-    test_user0_id = test_user_0['u_id']
+		# Register new user
+		test_user_0 = auth.auth_register("cs1531@cse.unsw.edu.au", "valid_pw", "Hayden", "Jacobs")      
+		test_user0_token = test_user_0['token']
+		test_user0_id = test_user_0['u_id']
 
-    # Invalid u_id with a valid token
-    with pytest.raises(InputError):
-        user_profile(test_user0_token, 100)
+		# Invalid u_id with a valid token
+		with pytest.raises(InputError):
+				user_profile(test_user0_token, 100)
 
-    # Invalid token with a valid u_id
-    with pytest.raises(InputError):
-        user_profile('invalid_token', 1)
+		# Invalid token with a valid u_id
+		with pytest.raises(InputError):
+				user_profile('invalid_token', 1)
 
-    # Assert that a valid token and valid u_id returns the correct profile data
-    assert(user_profile(test_user0_token, test_user0_id) == {
-        'u_id': test_user0_id,
-        'email': 'cs1531@cse.unsw.edu.au',
-        'name_first': 'Hayden',
-        'name_last': 'Jacobs',
-        'handle_str': 'hjacobs',
-        })
+		# Assert that a valid token and valid u_id returns the correct profile data
+		assert(user_profile(test_user0_token, test_user0_id) == {
+				'u_id': test_user0_id,
+				'email': 'cs1531@cse.unsw.edu.au',
+				'name_first': 'Hayden',
+				'name_last': 'Jacobs',
+				'handle_str': 'hjacobs',
+				})
 
