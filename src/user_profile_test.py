@@ -12,7 +12,7 @@ def user_profile_test():
 		
 		#TODO: clear data
 
-		# Register new user
+		# Register 1 test user
 		test_user_0 = auth.auth_register("cs1531@cse.unsw.edu.au", "valid_pw", "Hayden", "Jacobs")      
 		test_user0_token = test_user_0['token']
 		test_user0_id = test_user_0['u_id']

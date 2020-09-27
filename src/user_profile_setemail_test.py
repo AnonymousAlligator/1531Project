@@ -12,7 +12,7 @@ def user_profile_setemail_test():
   
     #TODO: clear data
 
-	# Create test users
+	# Register 2 test users
 	test_user_0 = auth.auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")      
 	test_user_1 = auth.auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")      
 	
