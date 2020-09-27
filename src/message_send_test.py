@@ -14,8 +14,8 @@ Dylan = auth_register("Jeffo@email.com", "a1b2c3", "Dylan", "Jeff")
 Smith = auth_register("smith@email.com", "a1b2c3", "Smith", "Smith")
 channel_name1 = "Main Channel"
 
-channels_create(Dylan['token'], "Main Channel", True)
-channel_invite(Dylan['token'], 0, 0)
+channels_create(Jeffo['token'], "Main Channel", True)
+channel_invite(Jeffo['token'], 0, 0)
 
 message1 = "hi"
 message2 = ""
@@ -30,17 +30,17 @@ for i in range(chars):
     msg_char = "hello"
     message3 += msg_char
 def test_message_send_lessthan1000chars_existinguser():
-    assert message_send(Dylan['token'], 0, message1) == 0
+    assert message_send(Jeffo['token'], 0, message1) == 0
 
 def test_message_send_exactly1000chars():
-    assert message_send(Dylan['token'], 0, message2) == 0
+    assert message_send(Jeffo['token'], 0, message2) == 0
 
 def test_message_send_morethan1000chars():
     with pytest.raises(error.InputError):
-        assert message_send(Dylan['token'], 0, message3)
+        assert message_send(Jeffo['token'], 0, message3)
 
 def test_message_send_usernotinchannel():
     with pytest.raises(error.InputError):
-        assert message_send(Dylan2['token'], 0, message1)
+        assert message_send(Smith['token'], 0, message1)
 
 #assume that message is a string, assume that channel given is valid, assume user is authorised
