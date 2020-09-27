@@ -8,11 +8,12 @@ name_last is not between 1 and 50 characters inclusively in length
 from user import user_profile_setname, user_profile
 from error import InputError
 import auth
+from other import clear
 import pytest
 
-def user_profile_setname_test():
+def test_profile_setname():
     
-    #TODO: clear data
+    clear()
 
     # Register 1 test user
     test_user_0 = auth.auth_register("valid_email@email.com", "valid_pw", "valid_fname", "valid_lname")  

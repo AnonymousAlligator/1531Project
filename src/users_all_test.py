@@ -5,10 +5,11 @@ Returns a list of all users and their associated details
 from other import users_all
 import pytest
 import auth
+from other import clear
 
-def users_all_test():
+def test_users_all():
 		
-		#TODO: clear data
+		clear()
 
 		# Register 3 test users
 		test_user_0 = auth.auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")      

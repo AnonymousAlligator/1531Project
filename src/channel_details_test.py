@@ -1,6 +1,7 @@
 from channel import channel_details, channel_invite, channel_addowner
 from channels import channels_create
 from auth import auth_register
+from other import clear
 import error
 import pytest
 
@@ -25,18 +26,21 @@ channel_addowner(Ross['token'], 1, 1)
 ##################################################################################################
 
 def test_channel_details_public():
+    clear()
     details = channel_details(Benjamin['token'], 0)
     assert details['name'] == 'Channel0'
     assert details['owner_members'] == 'Benjamin Long'
     assert details['all_members'] == ['Benjamin Long', 'Ross Short', 'Alex Smith']
 
 def test_channel_details_private():
+    clear()
     details = channel_details(Ross['token'], 1)
     assert details['name'] == 'Channel1'
     assert details['owner_members'] == 'Ross Short'
     assert details['all_members'] == ['Ross Short', 'Alex Smith']
 
 def test_channel_details_invalid_channel():
+    clear()
     #The channel doesn't exist
     #This should throw InputError
     token = Benjamin['token']
@@ -45,6 +49,7 @@ def test_channel_details_invalid_channel():
         assert channel_details(token, channel_id)
 
 def test_channel_details_not_a_member():
+    clear()
     #User not a member of the channel
     #This should throw AccessError
     token = Benjamin['token']
