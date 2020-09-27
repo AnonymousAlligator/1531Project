@@ -12,6 +12,8 @@ import pytest
 
 def user_profile_setname_test():
     
+    #TODO: clear data
+
     # Register new user
     test_user_0 = auth.auth_register("valid_email@email.com", "valid_pw", "valid_fname", "valid_lname")  
     test_user0_token = test_user_0['token']
