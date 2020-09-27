@@ -7,9 +7,9 @@ from channels import channels_create
 
 #Setting up data files:
 
-User_0 = auth_register("apples@email.com", "applepass", "apple", "red") gives { u_id, token }
-User_1 = auth_register("banana@email.com", "bananapass", "banana", "yellow") gives { u_id, token }
-User_2 auth_register("carrot@email.com", "carrotpass", "carrot", "orange") gives { u_id, token }
+User_0 = auth_register("apples@email.com", "applepass", "apple", "red") #returns { u_id, token }
+User_1 = auth_register("banana@email.com", "bananapass", "banana", "yellow") #returns { u_id, token }
+User_2 auth_register("carrot@email.com", "carrotpass", "carrot", "orange") #returns { u_id, token }
 
 #create channel to join 
 channel_0 = channels_create(user_0['token'], channel_0, true) #returns channel ID_0
