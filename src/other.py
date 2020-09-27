@@ -1,5 +1,18 @@
+data = {
+'users': [],
+'channels': [],
+'messages':[],
+}
+
 def clear():
-    pass
+    global data
+    data = {
+    'users': [],
+    'channels': [],
+    'messages':[],
+    }
+    return data
+
 
 def users_all(token):
     return {
