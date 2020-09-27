@@ -1,7 +1,7 @@
 import datetime 
 import pytest 
 
-def test_auth_login():
+def auth_login_test():
 
 # Initial function calls before testing
     
