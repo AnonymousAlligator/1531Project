@@ -5,12 +5,13 @@ For a valid user, returns information about their email, first name, last name, 
 from user import user_profile
 from error import InputError
 import auth
+from other import clear
 import pytest
 
 
 def user_profile_test():
 		
-		#TODO: clear data
+		clear()
 
 		# Register 1 test user
 		test_user_0 = auth.auth_register("cs1531@cse.unsw.edu.au", "valid_pw", "Hayden", "Jacobs")      

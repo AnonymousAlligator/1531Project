@@ -5,13 +5,14 @@ Email address is already being used by another user
 '''
 from user import user_profile, user_profile_setemail
 from error import InputError
+from other import clear
 import auth
 import pytest
 import re
 
 def user_profile_setemail_test():
 	
-		#TODO: clear data
+		clear()
 
 		# Register 2 test users
 		test_user_0 = auth.auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")      
