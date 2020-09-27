@@ -16,6 +16,8 @@ channel_leave:
 channel_join:
 -Creating a channel will automatically add the user as a member of the channel.
 
+- 
+
 channel_list:
 -If a user isn't a part of any channels, the channel list is empty.
 
@@ -40,23 +42,21 @@ message_edit:
 User Functions
 
 user_profile_setname:
--Special Characters will be allowed in first name and last name fields.
 
--Both the first name and last name fields can't be left empty.
+-Any character string as long as between 3 and 50 will be accepted.
+
+-Special Characters will be allowed in first name and last name fields.
 
 -Both name fields accepts uppercase and lowercase letters.
 
 user_profile_sethandle:
 -Handle can't contain spaces,newlines or tabs.
 
--Handle can contan special characters
+-Handle can contain special characters
 
 -Handle can accept both uppercase and lowercase characters.
 
--Handle can't be left empty
 
-users_all:
--If a Flockr server only contains the user, only the owner is returned (no other users in the server)
 
 ######################################################
 search:
