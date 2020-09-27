@@ -2,8 +2,7 @@
 Returns a list of all users and their associated details
 
 '''
-from user import user_profile, users_all
-from error import InputError
+from other import users_all
 import pytest
 import auth
 
