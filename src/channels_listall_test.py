@@ -1,8 +1,9 @@
-from channels import channels_list
-import error
+from channels import channels_listall
+
+#Provide a list of all channels (and their associated details) that the authorised user is part of
 
 def test_channels_list_exists():
-    pass    
+    assert channels_list(token) == print({channels})
 
 """
 def channels_listall(token):
