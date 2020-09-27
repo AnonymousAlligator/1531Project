@@ -10,7 +10,7 @@ from message import message_send
 import error
 import pytest
 
-Jeffo = auth_register("Jeffo@email.com", "a1b2c3", "Dylan", "Jeff")
+Jeffo = auth_register("Jeffo@email.com", "a1b2c3", "Jeffo", "Jeff")
 Smith = auth_register("smith@email.com", "a1b2c3", "Smith", "Smith")
 channel_name1 = "Main Channel"
 
