@@ -35,14 +35,12 @@ def test_channel_details_private():
     assert details['all_members'] == ['Ross Short', 'Alex Smith']
 
 def test_channel_details_invalid_channel():
-    clear()
     #The channel doesn't exist
     #This should throw InputError
     with pytest.raises(error.InputError):
         assert channel_details(Benjamin['token'], 2)
 
 def test_channel_details_not_a_member():
-    clear()
     #User not a member of the channel
     #This should throw AccessError
     with pytest.raises(error.AccessError):
