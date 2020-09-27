@@ -5,7 +5,7 @@ name_first is not between 1 and 50 characters inclusively in length
 name_last is not between 1 and 50 characters inclusively in length
 
 '''
-from user import user_profile_setname
+from user import user_profile_setname, user_profile
 from error import InputError
 import auth
 import pytest
@@ -37,3 +37,9 @@ def user_profile_setname_test():
     # Invalid last name input - input is 1 character
     with pytest.raises(InputError):
         user_profile_setname(test_user0_token, "valid_new_fname", "A" )
+
+    # Check for a correct update    
+    user_profile_setname(test_user0_token, "Jayden", "Haycob")    
+    updated_test_user_0 = user_profile(test_user0_token, test_user_0['u_id'])    
+    assert updated_test_user_0['name_first'] == "Jayden"
+    assert updated_test_user_0['name_last'] == "Haycob"
