@@ -8,7 +8,7 @@ from auth import auth_register
 import error
 import pytest
 
-Dylan = auth_register("Jeffo@email.com", "a1b2c3", "Dylan", "Jeff")
+Jeffo = auth_register("Jeffo@email.com", "a1b2c3", "Dylan", "Jeff")
 
 channel_name1 = "Main Channel"
 channel_name2 = "abcdefhijklmnopqrst"

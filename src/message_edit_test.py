@@ -9,7 +9,7 @@ from message import message_send, message_edit
 import error
 import pytest
 
-Dylan = auth_register("dylan@email.com", "a1b2c3", "Dylan", "Jeff")
+Jeffo = auth_register("dylan@email.com", "a1b2c3", "Dylan", "Jeff")
 Smith = auth_register("smith@email.com", "a1b2c3", "Smith", "Smith")
 Tom = auth_register("tom@email.com", "a1b2c3", "Tom", "Tommery")
 
