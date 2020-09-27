@@ -2,6 +2,7 @@ from channel import channel_leave, channel_invite
 from channels import channels_create
 import error
 import pytest
+from other import clear
 from auth import auth_register
 
 # Setting up all the variables needed for test to run ############################################
@@ -23,12 +24,14 @@ channel_invite(Alex['token'], 1, 2)
 ##################################################################################################
 
 def test_channel_leave_success():
+    clear()
     #Successful leave
     token = Benjamin['token']
     channel_id = 0
     assert channel_leave(token, channel_id) == {}
 
 def test_channel_leave_invalid_channel():
+    clear()
     #The channel doesn't exist
     #This should throw InputError
     token = Benjamin['token']
@@ -37,6 +40,7 @@ def test_channel_leave_invalid_channel():
         assert channel_leave(token, channel_id)
 
 def test_channel_leave_not_a_member():
+    clear()
     #User is not part of this channel
     #This should throw AccessError
     token = Benjamin['token']

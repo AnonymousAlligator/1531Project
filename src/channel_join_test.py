@@ -1,5 +1,6 @@
 from channel import channel_join, channel_invite
 from channels import channels_create
+from other import clear
 import error
 import pytest
 from auth import auth_register
@@ -19,11 +20,13 @@ channel_invite(Alex['token'], 1, 2)
 ##################################################################################################
 
 def test_channel_join_success():
+    clear()
     token = Benjamin['token']
     channel_id = 0
     assert channel_join(token, channel_id) == {}
 
 def test_channel_join_invalid_channel():
+    clear()
     #The channel doesn't exist
     #This should throw InputError
     token = Benjamin['token']
@@ -32,6 +35,7 @@ def test_channel_join_invalid_channel():
         assert channel_join(token, channel_id)
 
 def test_channel_join_not_a_member():
+    clear()
     #Channel is private i.e. user is not admin
     #This should throw AccessError
     token = Benjamin['token']
