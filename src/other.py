@@ -1,6 +1,12 @@
 data = {
 'users': [],
-'channels': [],
+'channels': [{
+    #id: 'channel_id'
+    #name: 'channel_name'
+    #is_public: True or False
+    #owner_members: [{u_id, name_first, name_last}]
+    #all_members: [{u_id, name_first, name_last}]
+}],
 'messages':[],
 }
 
@@ -11,7 +17,6 @@ def clear():
     'channels': [],
     'messages':[],
     }
-    return data
 
 
 def users_all(token):
