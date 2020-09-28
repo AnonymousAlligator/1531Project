@@ -40,6 +40,7 @@ def channel_leave(token, channel_id):
     }
 
 def channel_join(token, channel_id):
+    
     return {
     }
 
