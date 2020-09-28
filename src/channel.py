@@ -51,11 +51,11 @@ def channel_join(token, channel_id):
             if channels['is_public'] == False:
                 raise error.AccessError('The channel you are trying to join is private')
             else:
-                # It's public so we search for the user's details..
+                # Channel is public so we search for the user's details..
                 for users in data['users']:
                     # And add their details into the channel list
                     if token == users['token']:
-                        channels.append({'u_id': users['u_id'], 'name_first': users['name_first'], 'name_last': users['name_last']})
+                        channels['all_members'].append({'u_id': users['u_id'], 'name_first': users['name_first'], 'name_last': users['name_last']})
                         return {}
         else:
             raise error.InputError('The channel you are trying to join does not exist')
