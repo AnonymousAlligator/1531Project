@@ -44,6 +44,14 @@ def auth_register(email, password, name_first, name_last):
         if registered_user['email'] == email:
             raise InputError('Email already taken by another registered user')
 
+    uID = len(database['users']) # checks the number of people in the users database to establish the uID
+
+    pID = 2 # member ID by default
+    if uID == 0:
+        pID = 1 # first user in the server so changed to owner       
+
+
+
 
     
 
@@ -51,6 +59,6 @@ def auth_register(email, password, name_first, name_last):
 
     return user_dictionary
     '''return {
-        'u_id': 1,
-        'token': '12345',
+        'u_id': uID,
+        'token': token,
     }'''
