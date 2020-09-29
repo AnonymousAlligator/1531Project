@@ -4,8 +4,8 @@ data = {
     #id: 'channel_id'
     #name: 'channel_name'
     #is_public: True or False
-    #owner_members: [{u_id, name_first, name_last}]
-    #all_members: [{u_id, name_first, name_last}]
+    #owner_members: [{u_id, token]
+    #all_members: [{u_id, token}]
 }],
 'messages':[],
 }
