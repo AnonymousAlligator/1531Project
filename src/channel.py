@@ -88,22 +88,25 @@ def channel_addowner(token, channel_id, u_id):
     #check if channel exists
     for channels in data['channels']:
         if channel_id == channels['id']:
-            #checks that they are not already an owner
-            for member in channels['owner_members']
-                if u_id == owner_members['u_id']
-                    raise error.AccessError('You are already an owner of this channel.')
+            #checks that the caller is an owner
+            for owner in channels['owner_members']:
+
+
+                
+                if token == owner_members['token']:
+                   #then we check the user is member of the channel
+                    for member in channels['all members']:
+                        if u_id == all_members['token']:
+                        channels['owner_members'].append({'u_id' : u_id, 'token': token}),
+                        return {}
+            raise error.AccessError('You are not an owner of the flockr and cannot add owners')
+
+
+            
+             raise error.InputError('You are already an owner of this channel.')
                     return {}
-            for member in channels['all members']
-                if u_id == all_members['u_id']
-                    channels['owner_members'].append({'u_id' : })
-
-
             #checks that the user is a member of the channel
-            elif u_id == all_members['u_id']
-                channels['owner_members: [
 
-
-                if token == user
 
 
             if channels['is_public'] == False:
