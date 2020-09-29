@@ -45,20 +45,25 @@ def channel_leave(token, channel_id):
 def channel_join(token, channel_id):
     # Check for if the channel_id is valid
     for channels in data['channels']:
-        # If we find the channel check if it is private
+        # If we find the channel..
         if channel_id == channels['id']:
-            # Access error if the channel is private
-            if channels['is_public'] == False:
-                raise error.AccessError('The channel you are trying to join is private')
-            else:
-                # Channel is public so we search for the user's details..
-                for users in data['users']:
-                    # And add their details into the channel list
-                    if token == users['token']:
-                        channels['all_members'].append({'u_id': users['u_id'], 'name_first': users['name_first'], 'name_last': users['name_last']})
+            # ..we now check if the user is the flockr owner (u_id == 0)
+            for users in data['users']:
+                if token == users['token']:
+                    # If they are the flockr owner then add them to the channel and make them an owner
+                    if users['u_id'] == 0:
+                        channels['all_members'].append({'u_id': users['u_id'], 'token': users['token']})
+                        channel_addowner(token, channel_id, users['u_id'])
                         return {}
-        else:
-            raise error.InputError('The channel you are trying to join does not exist')
+                    # Otherwise, check to see if the channel they are joining is private
+                    elif channels['is_public'] == False:
+                        raise error.AccessError('The channel you are trying to join is private')
+                    else:
+                        # Channel is public so we add their details into the channel list
+                        channels['all_members'].append({'u_id': users['u_id'], 'token': users['token']})
+                        return {}
+    # If we're here then we didn't find the channel so input error
+    raise error.InputError('The channel you are trying to join does not exist')
     return {
     }
 
