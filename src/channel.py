@@ -64,8 +64,6 @@ def channel_join(token, channel_id):
                         return {}
     # If we're here then we didn't find the channel so input error
     raise error.InputError('The channel you are trying to join does not exist')
-    return {
-    }
 
 def channel_addowner(token, channel_id, u_id):
     #Checks if channel exists
