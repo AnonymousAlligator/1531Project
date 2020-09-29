@@ -39,30 +39,44 @@ def channel_messages(token, channel_id, start):
     }
 
 def channel_leave(token, channel_id):
+    # Check for if the channel_id is valid
+    for channel in data['channels']:
+        # If we find the channel..
+        if channel_id == channel['id']:
+            # ..we now check if the user is a member of the channel
+            for user in channel['all_members']:
+                if token == user['token']:
+                    # If they are a member of the channel, remove them
+                    channel['all_members'].remove(user)
+                    return {}
+            # If we are here then the person is not a member of the channel
+                raise error.AccessError('You are not a member of the channel you are trying to leave')
+    # If we're here then we didn't find the channel so input error
+    raise error.InputError('The channel you are trying to leave does not exist')
     return {
     }
 
 def channel_join(token, channel_id):
     # Check for if the channel_id is valid
-    for channels in data['channels']:
+    for channel in data['channels']:
         # If we find the channel..
-        if channel_id == channels['id']:
+        if channel_id == channel['id']:
             # ..we now check if the user is the flockr owner (u_id == 0)
-            for users in data['users']:
-                if token == users['token']:
+            for user in data['users']:
+                if token == user['token']:
                     # If they are the flockr owner then add them to the channel and make them an owner
-                    if users['u_id'] == 0:
-                        channels['all_members'].append({'u_id': users['u_id'], 'token': users['token']})
-                        channel_addowner(token, channel_id, users['u_id'])
+                    if user['u_id'] == 0:
+                        channel['all_members'].append({'u_id': user['u_id'], 'token': user['token']})
+                        channel_addowner(token, channel_id, user['u_id'])
                         return {}
                     # Otherwise, check to see if the channel they are joining is private
-                    elif channels['is_public'] == False:
+                    elif channel['is_public'] == False:
                         raise error.AccessError('The channel you are trying to join is private')
                     else:
                         # Channel is public so we add their details into the channel list
-                        channels['all_members'].append({
-                                                        'u_id': users['u_id'], 
-                                                        'token': users['token'],
+                        channel['all_members'].append({
+                                                        'u_id': user['u_id'], 
+                                                        'token': user['token'],
                                                         })
                         return {}
     # If we're here then we didn't find the channel so input error
