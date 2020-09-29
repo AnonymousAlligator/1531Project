@@ -11,6 +11,8 @@ def channels_list(token):
             if valid_token == token:
                 user = u
 
+    if user is None: 
+        print'test' #TODO: update once channels tests are in
     
     # list of channels the authorised user is part of
     channels_list = []                
