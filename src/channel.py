@@ -50,7 +50,7 @@ def channel_leave(token, channel_id):
                     channel['all_members'].remove(user)
                     return {}
             # If we are here then the person is not a member of the channel
-                raise error.AccessError('You are not a member of the channel you are trying to leave')
+            raise error.AccessError('You are not a member of the channel you are trying to leave')
     # If we're here then we didn't find the channel so input error
     raise error.InputError('The channel you are trying to leave does not exist')
 
