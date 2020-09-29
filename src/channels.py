@@ -1,3 +1,6 @@
+from other import data
+import error
+
 def channels_list(token):
     return {
         'channels': [
@@ -19,15 +22,19 @@ def channels_listall(token):
     }
 
 def channels_create(token, name, is_public):
-    if len(string) > 20:
+    if len(name) > 20:
         raise error.InputError('Channel name is more than 20 characters')
     else:
-        for channels in data['channels']:
-            if token == users['token']:
-                for users in data['users']:
-                    if token == users['token']:
-                        channel_id = len(backend_data['channels'])
-                        data['channels'].append({'channel_id': channel_id, 'name': name, 'is_public': is_public, 'owner_members':{users[u_id], user[token]} 'all_members': {users[u_id], user[token]}})
-                        return {channel_id}
-    return {
-    }
+        # Find user details in the user field of data
+        for user in data['users']:
+            # Found the user, now making the channel
+            if token == user['token']:
+                # Channel id is equivalent to the size of channels field before making the channel
+                channel_id = len(data['channels'])
+                data['channels'].append({'channel_id': channel_id,
+                                         'name': name,
+                                         'is_public': is_public,
+                                         'owner_members': [{user['u_id'], user['token']},],
+                                         'all_members': [{user['u_id'], user['token']},],
+                                        })
+                return {channel_id}
