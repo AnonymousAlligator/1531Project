@@ -85,40 +85,31 @@ def channel_join(token, channel_id):
     }
 
 def channel_addowner(token, channel_id, u_id):
-    #check if channel exists
+    #Checks if channel exists
     for channels in data['channels']:
         if channel_id == channels['id']:
             #checks that the caller is an owner
             for owner in channels['owner_members']:
-
-
-                
-                if token == owner_members['token']:
+                #If the caller is trying to add themselves as owner we raise error
+                if token == owner_members['token'] and u_id == owner_members['token']:
+                    raise error.InputError('You are already an owner of this channel.')
+                #If the 
+                elif token == owner_members['token']:
                    #then we check the user is member of the channel
                     for member in channels['all members']:
-                        if u_id == all_members['token']:
-                        channels['owner_members'].append({'u_id' : u_id, 'token': token}),
-                        return {}
-            raise error.AccessError('You are not an owner of the flockr and cannot add owners')
-
-
-            
-             raise error.InputError('You are already an owner of this channel.')
+                        if u_id == all_members['u_id']:
+                            for users in data['users']:
+                                if u_id == users['u_id']:
+                                    channels['owner_members'].append({'u_id' : u_id, 'token': users[token]}),
+                                    return {}
+                    raise error.InputError('The member you are trying to add is not part of the channel')
                     return {}
-            #checks that the user is a member of the channel
-
-
-
-            if channels['is_public'] == False:
-                #check if user is member
-                #raise error.AccessError('The authorised user is not in the channel')
+            raise error.AccessError('You are not an owner of the flockr and cannot add owners')
+            return {}
         else:
             raise error.InputError('The channel you are trying to join does not exists')
-    return {
-    }    
-    
-    return {
-    }
+    return {}    
+
 
 def channel_removeowner(token, channel_id, u_id):
     return {
