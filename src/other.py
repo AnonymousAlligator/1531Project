@@ -6,7 +6,7 @@ data = {
     #is_public: True or False
     #owner_members: [{u_id, token}]
     #all_members: [{u_id, token}]
-}],
+    }],
 'messages':[],
 }
 
