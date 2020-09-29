@@ -75,7 +75,7 @@ def channel_join(token, channel_id):
                         channel['all_members'].append({
                                                         'u_id': user['u_id'], 
                                                         'token': user['token'],
-                                                        })
+                                                        },)
                         return {}
     # If we're here then we didn't find the channel so input error
     raise error.InputError('The channel you are trying to join does not exist')
