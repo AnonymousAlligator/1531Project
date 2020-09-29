@@ -1,9 +1,19 @@
 import re 
 
 def auth_login(email, password):
+    
+    for user in backend_database['users']:
+        if user['email'] == email:
+            found_user = user
+
+    if not found_user:
+        raise InputError('Email has not been registered previously')
+    
+    if password != found_user['password']:
+        raise InputError('Password entered is not correct')
+    
     return {
-        'u_id': 1,
-        'token': '12345',
+        'u_id': int(found_user[uID], 'token': token,
     }
 
 def auth_logout(token):
@@ -44,21 +54,17 @@ def auth_register(email, password, name_first, name_last):
         if registered_user['email'] == email:
             raise InputError('Email already taken by another registered user')
 
-    uID = len(database['users']) # checks the number of people in the users database to establish the uID
+    uID = len(backend_database['users']) # checks the number of people in the users database to establish the uID
 
     pID = 2 # member ID by default
     if uID == 0:
         pID = 1 # first user in the server so changed to owner       
 
+    backend_database['users'].append({
+        'u_id': str(uID), 'p_id': pID, 'email': email, 'name_first':name_first, 'name_last': name_last, 'password': password, 'handle': handle, 'token': email,
+    })
 
-
-
-    
-
-
-
-    return user_dictionary
-    '''return {
+    return {
         'u_id': uID,
-        'token': token,
-    }'''
+        'token': email,
+    }
