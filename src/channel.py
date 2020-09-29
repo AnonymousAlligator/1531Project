@@ -60,7 +60,10 @@ def channel_join(token, channel_id):
                         raise error.AccessError('The channel you are trying to join is private')
                     else:
                         # Channel is public so we add their details into the channel list
-                        channels['all_members'].append({'u_id': users['u_id'], 'token': users['token']})
+                        channels['all_members'].append({
+                                                        'u_id': users['u_id'], 
+                                                        'token': users['token'],
+                                                        })
                         return {}
     # If we're here then we didn't find the channel so input error
     raise error.InputError('The channel you are trying to join does not exist')
