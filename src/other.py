@@ -4,18 +4,18 @@ data = {
     #id: 'channel_id'
     #name: 'channel_name'
     #is_public: True or False
-    #owner_members: [{u_id, token}]
-    #all_members: [{u_id, token}]
+    #owner_members: [{u_id, token},]
+    #all_members: [{u_id, token},]
+    #messages:[{message_id, message},]
     }],
-'messages':[],
 }
+
+
 
 def clear():
     global data
-    data = {
-    'users': [],
-    'channels': [],
-    'messages':[],
+    data = {'users': [],
+            'channels': [],
     }
 
 
