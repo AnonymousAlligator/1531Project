@@ -118,7 +118,7 @@ def channel_removeowner(token, channel_id, u_id):
             if len(channels['all_members']) == 1:
             #TD: weird edge case
             #Checks to see if the member is an owner of the channel
-            else token in channel['owner_members']:
+            elif token in channel['owner_members']:
                 #Checks if the person is removing themselves as an owner. 
                 if token == u_id:
                 #if they are the last person in the owner list,     
