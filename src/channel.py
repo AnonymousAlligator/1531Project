@@ -132,13 +132,14 @@ def channel_removeowner(token, channel_id, u_id):
                         return {}
                 else: 
                     #TD: Call removeowner helper.
-
+'''
                     if u_id in channel['owner_members']:
                         for owner in channels['owner_members']:
                             if u_id == owner['uid']:
                                 channels['owner_members'].remove(owner)
-                                #if there are no more owners remaining, loops trhough all memebers and sees if the removed owner 
-                                #finds next person in all memebers and makes them 
+'''
+                                #if there are no more owners remaining, loops through all memebers and sees if the removed owner 
+                                #finds next person in all memebers and makes them owner
                                 return{}
                 else:
                     raise  error.InputError('The member you are trying to remove is not an owner of the channel')
