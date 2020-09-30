@@ -84,10 +84,6 @@ def channel_addowner(token, channel_id, u_id):
     #check if channel exists
     for channels in data['channels']:
         if channel_id == channels['id']:
-            #If a new channel with no owners, make token owner.
-            if len(channels['owner_members']) == 0:
-                 channels['owner_members'].append({'u_id' : u_id, 'token': token}),
-                 return {}
             #Checks that the caller is an owner
             for owner in channels['owner_members']:
                 #If the caller is trying to add themselves as owner we raise error
