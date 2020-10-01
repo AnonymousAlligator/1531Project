@@ -8,6 +8,7 @@ from channels import channels_create
 #Setting up data files:
 #user_0 is flockowner
 #Users 1, 2, 3 are part of a public channel
+#User 4 is not part of any channel
 #User 5 is owner of a private channel
 #User 6 is a member of a private channel
 user_0 = auth_register("apples@email.com", "applepass", "apple", "red") #returns { u_id, token }
@@ -23,9 +24,9 @@ channel_0 = channels_create(user_0['token'], "name", True) #returns channel ID_0
 channel_1 = channels_create(user_5['token'], "name", False) #returns channel ID_1
 
 #Users 1, 2 ,3 are part of a public channel
-channel_invite(user1['token', channel_0])
-channel_invite(user2['token', channel_0])
-channel_invite(user3['token', channel_0])
+channel_invite(user1['token'], channel_0, user1['u_id'])
+channel_invite(user2['token'], channel_0, user2['u_id'])
+channel_invite(user3['token'], channel_0, user3['u_id'])
 
 #User 6 is a member of a private channel
 channel_join(user_6['token'], channel_1)
