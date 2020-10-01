@@ -2,7 +2,7 @@ from channel import channel_invite, channel_messages
 from channels import channels_create
 from auth import auth_register
 from message import message_send
-from other import clear
+from other import clear, data
 import error
 import pytest
 
@@ -17,11 +17,12 @@ channel_id0 = channels_create(Benjamin['token'], "Channel0", True)     # ID = 0
 i = 0
 expected_messages0 = []
 while i < 50:
-    message_send(Benjamin['token'], channel_id0, "hi")
+    data['channels'][0]['messages'].insert(0, {'message_id': i,'u_id': Benjamin['u_id'],'message': "hi",'time_created': i + 200})
     i += 1
 while i < 100:
-    message_send(Benjamin['token'], channel_id0, "bye")
-    expected_messages0.append('bye')
+    message = {'message_id': i,'u_id': Benjamin['u_id'],'message': "bye",'time_created': i + 200}
+    data['channels'][0]['messages'].insert(0, message)
+    expected_messages0.insert(0, message)
     i += 1
 
 # Create and populate channel 1
@@ -29,8 +30,9 @@ channel_id1 = channels_create(Benjamin['token'], "Channel1", True)     # ID = 1
 i = 0
 expected_messages1 = []
 while i < 50:
-    message_send(Benjamin['token'], channel_id1, "hello")
-    expected_messages1.append('hello')
+    message = {'message_id': i,'u_id': 0,'message': "hello",'time_created': i + 200}
+    data['channels'][1]['messages'].insert(0, message)
+    expected_messages1.insert(0, message)
     i += 1
 
 # Create and populate channel 2
@@ -38,15 +40,18 @@ channel_id2 = channels_create(Benjamin['token'], "Channel2", True)     # ID = 2
 i = 0
 expected_messages2 = []
 while i < 10:
-    message_send(Benjamin['token'], channel_id2, "why")
-    expected_messages2.append('why')
+    message = {'message_id': i,'u_id': 0,'message': "why",'time_created': i + 200}
+    data['channels'][2]['messages'].insert(0, message)
+    expected_messages2.insert(0, message)
     i += 1
+expected_messages3 = [expected_messages2[9]]
 
 # Create and populate channel 3
 channel_id3 = channels_create(Ross['token'], "Channel3", True)        # ID = 3
 i = 0
 while i < 50:
-    message_send(Benjamin['token'], channel_id3, "me")
+    message = {'message_id': i,'u_id': 1,'message': "why",'time_created': i + 200}
+    data['channels'][3]['messages'].insert(0, message)
     i += 1
 
 # Channel 0 will have 100 messages
@@ -84,7 +89,7 @@ def test_channel_messages_10():
     assert messages['end'] == 10
 
 def test_channel_messages_no_more():
-    messages = channel_messages(Benjamin['token'], channel_id2, 10)
+    messages = channel_messages(Benjamin['token'], channel_id2, 9)
     assert messages['messages'] == 'why'
     assert messages['start'] == 10
     assert messages['end'] == -1
@@ -105,4 +110,10 @@ def test_channel_messages_not_a_member():
     #User not a member of the channel
     #This should throw AccessError
     with pytest.raises(error.AccessError):
-        assert channel_messages(Benjamin['token'], channel_id2, 3)
+        assert channel_messages(Benjamin['token'], channel_id3, 3)
+
+def test_invalid_token():
+    #Token parsed in is invalid
+    #This should throw AccessError
+    with pytest.raises(error.AccessError):
+        assert channel_messages("Booooop", channel_id1, 1)
