@@ -11,3 +11,19 @@ test_user1 = auth_register("test_1@email.com", "1password1", "Jayden", "Haycobs"
 
 test_user0_token = test_user0['token']
 test_user0_token = test_user1['token']
+
+# tests for listing one public channels
+def test_channels_listall_public():
+    # clear()
+    
+# tests for listing one private channels
+def test_channels_listsall_private():
+    # clear()
+
+# tests for listing one of each public and private channels
+def test_channels_listsall_both():
+    # clear()
+
+# tests for listing many of each public and private channels
+def test_channels_listsall_many():
+    # clear()
