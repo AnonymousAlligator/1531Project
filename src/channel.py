@@ -190,9 +190,6 @@ def channel_addowner(token, channel_id, u_id):
                     raise error.InputError('The member you are trying to add is not part of the channel')
             raise error.AccessError('You are not an owner of the flockr and cannot add owners')
     raise error.InputError('The channel you are trying to join does not exists')
-   
-
-
 
 def channel_removeowner(token, channel_id, u_id):
 #Check if channel exists
