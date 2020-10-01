@@ -1,4 +1,5 @@
 from other import data
+from remove_owner_helper import remove_helper_func
 import error
 
 def channel_invite(token, channel_id, u_id):
@@ -184,43 +185,35 @@ def channel_addowner(token, channel_id, u_id):
                                     channels['owner_members'].append({'u_id' : u_id, 'token': users[token]}),
                                     return {}
                     raise error.InputError('The member you are trying to add is not part of the channel')
-                raise error.AccessError('You are not an owner of the flockr and cannot add owners')
-        else:
-            raise error.InputError('The channel you are trying to join does not exists')
-    return {
-    }    
+            raise error.AccessError('You are not an owner of the flockr and cannot add owners')
+    raise error.InputError('The channel you are trying to join does not exists')
+   
 
 
 
 def channel_removeowner(token, channel_id, u_id):
-    #Check if channel exists
+#Check if channel exists
     for channel in data['channels']:
         if channel_id == channel['id']:
-            if len(channels['all_members']) == 1:
-            #TD: weird edge case
             #Checks to see if the member is an owner of the channel
-            elif token in channel['owner_members']:
-                #Checks if the person is removing themselves as an owner. 
-                if token == u_id:
-                #if they are the last person in the owner list,     
-                    if len(channels['owner_members']) == 1:
-                        #TD: Call removeowner helper. 
-                        #TD: check where they are on the members list, if they are at the front then choose
-                            #next person to be owner, otherwise go to the front of owner_members and choose person. 
-                        #TD: Call addowner to the first person in all members
-                    else:
-                        #TD: Call removeowner helper.
-                        return {}
-                else: 
-                    #TD: Call removeowner helper.
-                                #if there are no more owners remaining, loops through all memebers and sees if the removed owner 
-                                #finds next person in all memebers and makes them owner
-                     return{}
-                else:
-                    raise  error.InputError('The member you are trying to remove is not an owner of the channel')
-            else:
+                for owner in channel['owner_members']:
+                    if token == owner['token']:
+                        #Checks if the person is removing themselves as an owner. 
+                        if owner['u_id'] == u_id:
+                            #if they are the last person in the owner list,     
+                            if len(channel['all_members']) == 1:
+                                raise error.InputError('You are the only person in the channel, you cannot remove yourself as owner')
+                            elif len(channel['owner_members']) == 1:
+                                raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
+                            else:    
+                                #Call removeowner helper. 
+                                remove_helper_func(channel_id, u_id)
+                                return {}
+                        for owner in channel['owner_members']:
+                            if u_id == owner['u_id']:
+                                remove_helper_func(channel_id, u_id)
+                                return{}
+                        raise error.InputError('The member you are trying to remove is not an owner of the channel')
                 raise error.AccessError('You are not an owner of the channel and cannot remove owners')
-        else:
-            raise error.InputError('The channel you are trying to access does not exists')
-    return {
-    }    
+    raise error.InputError('The channel you are trying to access does not exists')
+

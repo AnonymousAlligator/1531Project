@@ -73,7 +73,7 @@ def test_channel_addowner_invited():
     assert channel_addowner(token, channel_id, u_id) == {}
 
 #user 1 is NOT part of private channel(channel_1)
-def test_channel_addowner_not_invited
+def test_channel_addowner_not_invited:
     token = user_1['token']
     u_id = user_1['u_id']
     channel_id = channel_1
