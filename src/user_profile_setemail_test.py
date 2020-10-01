@@ -25,6 +25,13 @@ test_user1_id = test_user_1['u_id']
 # Get test_user1's profile
 test_user1_profile = user_profile(test_user1_token, test_user1_id)
 
+# assert that email set works
+def test_user_profile_setemail_works():
+		
+    user_profile_setemail(test_user0_token, "cs1531@cse.unsw.edu.au")
+    test_user0_updated = user_profile(test_user0_token, test_user0_id)
+    assert test_user0_updated['email'] == "cs1531@cse.unsw.edu.au"
+
 # check for invalid email - setting an existing user's email
 def test_user_profile_setemail_existing():
     
@@ -41,14 +48,7 @@ def test_user_profile_setemail_invalid_check():
 def test_user_profile_setemail_invalid_check_helper():
             
     assert emailCheck('test_email_0@email.com') == True
-    assert emailCheck('invalid.com') == False
-		
-# assert that email set works
-def test_user_profile_setemail_works():
-		
-    user_profile_setemail(test_user0_token, "cs1531@cse.unsw.edu.au")
-    test_user0_updated = user_profile(test_user0_token, test_user0_id)
-    assert test_user0_updated['email'] == "cs1531@cse.unsw.edu.au"
+    assert emailCheck('invalid.com') == False		
 
 
 # Modified email validity checker from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/

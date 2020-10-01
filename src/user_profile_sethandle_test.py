@@ -22,6 +22,16 @@ test_user1_token = test_user_1['token']
 test_user0_id = test_user_0['u_id']
 test_user1_id = test_user_1['u_id']
 
+# assert handle updates correctly
+def test_user_profile_sethandle_works():    
+    
+    # update the test_user0's handle
+    user_profile_sethandle(test_user0_token, '1531_admin')    
+    # get test_user0's profile
+    test_user0_updated = user_profile(test_user0_token, test_user0_id)
+
+    assert test_user0_updated['handle_str'] == "1531_admin"
+
 # check for invalid handle string - str > 20 char in length
 def test_user_profile_sethandle_short():
     with pytest.raises(InputError):
@@ -46,15 +56,5 @@ def test_user_profile_sethandle_exists():
 
     with pytest.raises(InputError):
         user_profile_sethandle(test_user0_token, test_user1_profile['handle_str'])
-
-# assert handle updates correctly
-def test_user_profile_sethandle_works():    
-    
-    # update the test_user0's handle
-    user_profile_sethandle(test_user0_token, '1531_admin')    
-    # get test_user0's profile
-    test_user0_updated = user_profile(test_user0_token, test_user0_id)
-
-    assert test_user0_updated['handle_str'] == "1531_admin"
 
 
