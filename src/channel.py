@@ -6,23 +6,47 @@ def channel_invite(token, channel_id, u_id):
     }
 
 def channel_details(token, channel_id):
-    return {
-        'name': 'Hayden',
-        'owner_members': [
-            {
-                'u_id': 1,
-                'name_first': 'Hayden',
-                'name_last': 'Jacobs',
-            }
-        ],
-        'all_members': [
-            {
-                'u_id': 1,
-                'name_first': 'Hayden',
-                'name_last': 'Jacobs',
-            }
-        ],
-    }
+    # Check that the token is valid
+    for user in data['users']:
+        # Token is valid
+        if token == user['token']:
+            # Find the channel
+            for channel in data['channels']:
+                # If we find the channel..
+                if channel_id == channel['id']:
+                    # Check to see if the user is part of that channel
+                    for member in channel['all_members']:
+                        if member['u_id'] == user['u_id']:
+                            # Store the name of the channel
+                            channel_name = channel['name']
+                            # Look for each owner's details in the user data field by referenceing the u_id
+                            channel_owners = []
+                            for owner in channel['owner_members']:
+                                for owner_details in data['users']:
+                                    if owner['u_id'] == owner_details['u_id']:
+                                        channel_owners.append({'u_id': owner_details['u_id'],
+                                                                'name_first': owner_details['name_first'],
+                                                                'name_last': owner_details['name_last'],
+                                },)
+                            # Look for each members details in the user data field by referenceing the u_id
+                            channel_members = []
+                            for member in channel['all_members']:
+                                for member_details in data['users']:
+                                    if member['u_id'] == member_details['u_id']:
+                                        channel_members.append({'u_id': member_details['u_id'],
+                                                                'name_first': member_details['name_first'],
+                                                                'name_last': member_details['name_last'],
+                                },)
+                            return {'name': channel_name,
+                                    'owner_members': channel_owners,
+                                    'all_members': channel_members,
+                                    }
+                    # If we are here then the user isnt in the channel
+                    raise error.AccessError('You are not part of the channel you want details about')
+            # If we are here then that means the channel id couldnt be found
+            raise error.InputError('The channel you have entered does not exist')
+    # If we are here then the token was invalid
+    raise error.AccessError('Invalid token recieved')
 
 def channel_messages(token, channel_id, start):
     # Check that the token is valid
@@ -114,8 +138,7 @@ def channel_join(token, channel_id):
                         raise error.AccessError('The channel you are trying to join is private')
                     else:
                         # Channel is public so we add their details into the channel list
-                        channel['all_members'].append({
-                                                        'u_id': user['u_id'], 
+                        channel['all_members'].append({'u_id': user['u_id'], 
                                                         'token': user['token'],
                                                         },)
                         return {}
