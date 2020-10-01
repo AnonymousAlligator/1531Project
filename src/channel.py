@@ -4,9 +4,9 @@ import error
 
 def channel_invite(token, channel_id, u_id):
     #Check if user exists within database
-    for user in data['users']
+    for user in data['users']:
         #If the user is valid
-        if u_id == user['u_id']
+        if u_id == user['u_id']:
             # Check if the channel_id is valid
             for channel in data['channels']:
                 # if channel is valid
@@ -16,13 +16,16 @@ def channel_invite(token, channel_id, u_id):
                         if token == user['token']:
                             #if the invitee is apart of channel add invited person to channel
                             channel['all_members'].append({'u_id': user['u_id'], 'token': user['token']})
+                            # Also if u_id is 0, then make them an owner
+                            if u_id == 0:
+                                channel['owner_members'].append({'u_id': user['u_id'], 'token': user['token']})
                             return {}
                     #Access Error if the person inviting is not within the server
                     raise error.AccessError('You can only invite people to channels you are apart of')    
             #Input Error if the channel doesn't exist
             raise error.InputError('Channel does not exist')
     #Input Error if the user doesn't exist
-    raise error.InputError('User you are trying to invite does not exist')    
+    raise error.InputError('User you are trying to invite does not exist')
 
 def channel_details(token, channel_id):
     # Check that the token is valid
