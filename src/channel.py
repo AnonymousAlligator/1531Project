@@ -25,47 +25,89 @@ def channel_details(token, channel_id):
     }
 
 def channel_messages(token, channel_id, start):
-    return {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
-        'start': 0,
-        'end': 50,
-    }
+    # Check that the token is valid
+    for user in data['users']:
+        # Token is valid
+        if token == user['token']:
+            # Find the channel
+            for channel in data['channels']:
+                # If we find the channel..
+                if channel_id == channel['id']:
+                     # Check to see if the user is part of that channel
+                    for member in channel['all_members']:
+                        if member['u_id'] == user['u_id']:
+                            # Looping through the message data of the channel
+                            message_data = []
+                            number_of_messages = len(channel['messages'])
+                            message_number = start
+                            end = 0
+                            # Check if start is beyond range of messages
+                            if start >= number_of_messages:
+                                raise error.InputError('The start value entered is older than all messages')
+                            # Check to see if start is the least recent message
+                            elif start == (number_of_messages - 1):
+                                message = channel['messages'][start]
+                                message_data.append(message)
+                                return {'messages': message_data, 
+                                        'start': start, 
+                                        'end': -1,}
+                            # We can iterate from start until either end or start + 50
+                            else:
+                                while (message_number < number_of_messages) and (end <= start + 49):
+                                    message = channel['messages'][message_number]
+                                    message_data.append(message)
+                                    message_number += 1
+                                    end += 1
+                                return {'messages': message_data,
+                                        'start': start,
+                                        'end': end,}
+                    # If we are here then the user isnt in the channel
+                    raise error.AccessError('You are not part of the channel you want details about')
+            # If we are here then that means the channel id couldnt be found
+            raise error.InputError('The channel you have entered does not exist')
+    # If we are here then the token was invalid
+    raise error.AccessError('Invalid token recieved')
 
 def channel_leave(token, channel_id):
-    # Check for if the channel_id is valid
-    for channel in data['channels']:
-        # If we find the channel..
-        if channel_id == channel['id']:
-            # ..we now check if the user is a member of the channel
-            for user in channel['all_members']:
-                if token == user['token']:
-                    # If they are a member of the channel, remove them
-                    channel['all_members'].remove(user)
-                    return {}
-            # If we are here then the person is not a member of the channel
-            raise error.AccessError('You are not a member of the channel you are trying to leave')
-    # If we're here then we didn't find the channel so input error
-    raise error.InputError('The channel you are trying to leave does not exist')
+    # Check that the token is valid
+    for user in data['users']:
+        # Token is valid
+        if token == user['token']:
+            # Check for if the channel_id is valid
+            for channel in data['channels']:
+                # If we find the channel..
+                if channel_id == channel['id']:
+                    # ..we now check if the user is a member of the channel
+                    for member in channel['all_members']:
+                        if token == member['token']:
+                            # If they are a member of the channel, remove them
+                            channel['all_members'].remove(member)
+                            channel['owner_members'].remove(member)
+                                # If there is now no one in the channel, delete the channel
+                            if len(channel['all_members']) == 0:
+                                data['channels'].remove(channel)
+                            return {}
+                    # If we are here then the person is not a member of the channel
+                    raise error.AccessError('You are not a member of the channel you are trying to leave')
+            # If we're here then we didn't find the channel so input error
+            raise error.InputError('The channel you are trying to leave does not exist')
+    # If we are here then the token was invalid
+    raise error.AccessError('Invalid token recieved')
 
 def channel_join(token, channel_id):
-    # Check for if the channel_id is valid
-    for channel in data['channels']:
-        # If we find the channel..
-        if channel_id == channel['id']:
-            # ..we now check if the user is the flockr owner (u_id == 0)
-            for user in data['users']:
-                if token == user['token']:
+    # Check that the token is valid
+    for user in data['users']:
+        # Token is valid
+        if token == user['token']:
+            # Check for if the channel_id is valid
+            for channel in data['channels']:
+                # If we find the channel..
+                if channel_id == channel['id']:
+                    # ..we now check if the user is the flockr owner (u_id == 0)
                     # If they are the flockr owner then add them to the channel and make them an owner
                     if user['u_id'] == 0:
-                        channel['all_members'].append({'u_id': user['u_id'], 'token': user['token']})
-                        channel_addowner(token, channel_id, user['u_id'])
+                        channel['all_members'].append({'u_id': user['u_id'], 'token': user['token']},)
+                        channel['owner_members'].append({'u_id': user['u_id'], 'token': user['token']},)
                         return {}
                     # Otherwise, check to see if the channel they are joining is private
                     elif channel['is_public'] == False:
@@ -77,8 +119,10 @@ def channel_join(token, channel_id):
                                                         'token': user['token'],
                                                         },)
                         return {}
-    # If we're here then we didn't find the channel so input error
-    raise error.InputError('The channel you are trying to join does not exist')
+            # If we're here then we didn't find the channel so input error
+            raise error.InputError('The channel you are trying to join does not exist')
+    # If we are here then the token was invalid
+    raise error.AccessError('Invalid token recieved')
 
 def channel_addowner(token, channel_id, u_id):
     #check if channel exists
