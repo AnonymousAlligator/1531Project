@@ -1,5 +1,5 @@
 import re 
-from other import data
+from other import data, check_token
 from error import InputError, AccessError
 
 def auth_login(email, password):
@@ -89,14 +89,3 @@ def auth_register(email, password, name_first, name_last):
         'u_id': u_id,
         'token': email,
     }
-
-def check_token(token):
-
-    # Searches for a logged in user through a token
-
-    for user in data['users']:
-        if user['token'] == token: # get() returns a value for the given key (token)
-            return user
-
-    # If the token doesn't exist/user isn't logged in
-    raise AccessError("Token is not valid")
