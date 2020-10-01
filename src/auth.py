@@ -12,10 +12,10 @@ def auth_login(email, password):
     if password != found_user['password']:
         raise InputError('Password entered is not correct')
     
-    token = email
+    token = email # not sure what else to do with token here
     
     return {
-        'u_id': int(found_user[u_id], 'token': token,
+        'u_id': found_user[u_id], 'token': token,
     }
 
 def auth_logout(token):
@@ -27,6 +27,10 @@ def auth_logout(token):
     flag = False
        
     if user['token'][token]:
+        for info in data[users]:
+            if info == user:
+                info['token'][token] = flag    # # Invalidates the user token
+                break
         flag = True
 
     return {'is_success': flag}
@@ -66,13 +70,13 @@ def auth_register(email, password, name_first, name_last):
 
     u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
 
-    pID = 2 # member ID by default
-    if u_id == 0:
-        pID = 1 # first user in the server so changed to owner       
+    #pID = 2 # member ID by default
+    #if u_id == 0:
+    #    pID = 1 # first user in the server so changed to owner       
 
     data['users'].append({
-        'u_id': str(u_id), 
-        'p_id': pID, 
+        'u_id': u_id, 
+        #'p_id': pID, 
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 
@@ -95,5 +99,5 @@ def check_token(token):
         if user['token'].get(token, None): # get() returns a value for the given key (token)
             return user
 
-    # If the token doesn't exist/user is not logged in
+    # If the token doesn't exist/user isn't logged in
     raise AccessError("Token is not valid")
