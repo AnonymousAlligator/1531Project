@@ -22,6 +22,7 @@ test_user1_token = test_user_1['token']
 test_user0_id = test_user_0['u_id']
 test_user1_id = test_user_1['u_id']
 
+# Get test_user1's profile
 test_user1_profile = user_profile(test_user1_token, test_user1_id)
 
 # check for invalid email - setting an existing user's email
