@@ -2,7 +2,7 @@ import re
 
 def auth_login(email, password):
     
-    for user in backend_database['users']:
+    for user in data['users']:
         if user['email'] == email:
             found_user = user
 
@@ -12,14 +12,24 @@ def auth_login(email, password):
     if password != found_user['password']:
         raise InputError('Password entered is not correct')
     
+    token = email
+    
     return {
-        'u_id': int(found_user[uID], 'token': token,
+        'u_id': int(found_user[u_id], 'token': token,
     }
 
 def auth_logout(token):
-    return {
-        'is_success': True,
-    }
+    
+    data = DATABASE
+
+    user = check_token(token)
+    
+    flag = False
+       
+    if user['token'][token]:
+        flag = True
+
+    return {'is_success': flag}
 
 def auth_register(email, password, name_first, name_last):
     
@@ -50,21 +60,40 @@ def auth_register(email, password, name_first, name_last):
         raise InputError('Last name is more than 50 characters long')
 
     # Check if email already registered
-    for registered_user in backend_database['users']:
+    for registered_user in data['users']:
         if registered_user['email'] == email:
             raise InputError('Email already taken by another registered user')
 
-    uID = len(backend_database['users']) # checks the number of people in the users database to establish the uID
+    u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
 
     pID = 2 # member ID by default
-    if uID == 0:
+    if u_id == 0:
         pID = 1 # first user in the server so changed to owner       
 
-    backend_database['users'].append({
-        'u_id': str(uID), 'p_id': pID, 'email': email, 'name_first':name_first, 'name_last': name_last, 'password': password, 'handle': handle, 'token': email,
+    data['users'].append({
+        'u_id': str(u_id), 
+        'p_id': pID, 
+        'email': email, 
+        'name_first':name_first, 
+        'name_last': name_last, 
+        'password': password, 
+        'handle': handle, 
+        'token': email,
     })
 
     return {
-        'u_id': uID,
+        'u_id': u_id,
         'token': email,
     }
+
+def check_token(token):
+
+    # Searches for a logged in user through a token
+
+    data = DATABASE
+    for user in data['users']:
+        if user['token'].get(token, None): # get() returns a value for the given key (token)
+            return user
+
+    # If the token doesn't exist/user is not logged in
+    raise AccessError("Token is not valid")
