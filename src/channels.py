@@ -39,9 +39,10 @@ def channels_listall(token):
     
     channels_listall = []
 
-    # assumption is that listall lists all public & private channels
     for channel in data['channels']:
-        if channel['is_public'] is True or user['u_id'] in channel['all_members']:
+        # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
+        # current assumption is that listall lists all public & private channels
+        if user['u_id'] in channel['all_members']:
             channel_info = {'channel_id': channel['channel_id'],
                             'name': channel['name']}
             channels_listall.append(channel_info)
