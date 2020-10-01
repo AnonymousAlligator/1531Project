@@ -15,7 +15,7 @@ test_user1_token = test_user1['token']
 
 # tests for listing one public channels
 def test_channels_listall_public():
-    # clear()    
+    # clear()
 
     # test_user0 creates 1 public channel
     pub_channel0 = channels_create(test_user0_token, "Public  Channel 0", True)
@@ -25,9 +25,9 @@ def test_channels_listall_public():
                                                     {
                                                         "channel_id": pub_channel0_id,
                                                         "name": pub_channel0['name']
-                                                    },                                                     
+                                                    },
                                                 ])
-    
+
 # tests for listing one private channels
 def test_channels_listsall_private():
     # clear()
@@ -40,7 +40,7 @@ def test_channels_listsall_private():
                                                 {
                                                     "channel_id": priv_channel0_id,
                                                     "name": priv_channel0['name']
-                                                },                                                     
+                                                },
                                             ])
 
 # tests for listing one of each public and private channels
@@ -59,7 +59,7 @@ def test_channels_listsall_both():
                                             {
                                                 "channel_id": pub_channel0_id,
                                                 "name": pub_channel0['name']
-                                            }, 
+                                            },
                                             {
                                                 "channel_id": priv_channel0_id,
                                                 "name": priv_channel0['name']
@@ -71,7 +71,7 @@ def test_channels_listsall_many():
     # clear()
 
     # create multiple test channels
-    
+
     # test_user0 creates 1 public channel
     pub_channel0 = channels_create(test_user0_token, "Public  Channel 0", True)
     pub_channel0_id = pub_channel0['channel_id']
@@ -87,12 +87,12 @@ def test_channels_listsall_many():
     # test_user1 creates 1 private channel
     priv_channel1 = channels_create(test_user1_token, "Private Channel 1", False)
     priv_channel1_id = priv_channel1['channel_id']
-    
+
     assert(channels_listall(test_user0_token) == [
                                                 {
                                                     "channel_id": pub_channel0_id,
                                                     "name": pub_channel0['name']
-                                                }, 
+                                                },
                                                 {
                                                     "channel_id": priv_channel0_id,
                                                     "name": priv_channel0['name']

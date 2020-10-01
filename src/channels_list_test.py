@@ -20,10 +20,10 @@ test_user1_id = test_user1['u_id']
 # user0 creates 1 public, 1 private channel. user1 joins only 1 public channel.
 # check that for user1, only return the public channel they are part of
 def test_channels_list_authorised_pub_channel():
-    # clear()    
+    # clear()
 
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0_token, "Public  Channel 0", True)
+    pub_channel0 = channels_create(test_user0_token, "Public Channel 0", True)
     pub_channel0_id = pub_channel0['channel_id']
 
     # test_user0 creates 1 private channel
@@ -37,11 +37,11 @@ def test_channels_list_authorised_pub_channel():
                                         {
                                             "channel_id": pub_channel0_id,
                                             "name": pub_channel0['name']
-                                        },                                         
+                                        },
                                     ])
 
 # user0 creates 1 public, 1 private channel. user1 joins only 1 private channel.
-# check that for user1, only return the private channel they are part of 
+# check that for user1, only return the private channel they are part of
 def test_channels_list_authorised_priv_channel():
     # clear()
 
@@ -60,7 +60,7 @@ def test_channels_list_authorised_priv_channel():
                                         {
                                             "channel_id": priv_channel0_id,
                                             "name": priv_channel0['name']
-                                        },                                         
+                                        },
                                     ])
 
 # user0 and user1 both create one of each public and private channels. user1 joins all 4 channels.
@@ -69,7 +69,7 @@ def test_channels_listsall_owner_channels():
     # clear()
 
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0_token, "Public  Channel 0", True)
+    pub_channel0 = channels_create(test_user0_token, "Public Channel 0", True)
     pub_channel0_id = pub_channel0['channel_id']
 
     # test_user0 creates 1 private channel
@@ -87,7 +87,7 @@ def test_channels_listsall_owner_channels():
                                                 {
                                                     "channel_id": pub_channel0_id,
                                                     "name": pub_channel0['name']
-                                                }, 
+                                                },
                                                 {
                                                     "channel_id": priv_channel0_id,
                                                     "name": priv_channel0['name']
@@ -99,9 +99,9 @@ def test_channels_listsall_owner_channels():
 # check that for user1, return list of all channels
 def test_channels_listsall_joined_channels():
     # clear()
-    
+
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0_token, "Public  Channel 0", True)
+    pub_channel0 = channels_create(test_user0_token, "Public Channel 0", True)
     pub_channel0_id = pub_channel0['channel_id']
 
     # test_user0 creates 1 private channel
@@ -109,7 +109,7 @@ def test_channels_listsall_joined_channels():
     priv_channel0_id = priv_channel0['channel_id']
 
     # test_user1 creates 1 public channel
-    pub_channel1 = channels_create(test_user1_token, "Public  Channel 1", True)
+    pub_channel1 = channels_create(test_user1_token, "Public Channel 1", True)
     pub_channel1_id = pub_channel1['channel_id']
 
     # test_user1 creates 1 private channel
@@ -125,7 +125,7 @@ def test_channels_listsall_joined_channels():
                                             {
                                                 "channel_id": pub_channel0_id,
                                                 "name": pub_channel0['name']
-                                            }, 
+                                            },
                                             {
                                                 "channel_id": priv_channel0_id,
                                                 "name": priv_channel0['name']
