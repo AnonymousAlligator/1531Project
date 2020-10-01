@@ -28,17 +28,5 @@ def test_channels_listsall_both():
     clear()
 
 # tests for listing many of each public and private channels
-def test_channels_listsall_both():
+def test_channels_listsall_many():
     clear()
-
-"""
-def channels_listall(token):
-    return {
-        'channels': [
-        	{
-        		'channel_id': 1,
-        		'name': 'My Channel',
-        	}
-        ],
-    }
-"""
