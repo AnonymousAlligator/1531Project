@@ -10,8 +10,6 @@ def channels_list(token):
         for valid_token in user['tokens']:
             if valid_token == token:
                 user = u
-    if user is None: 
-        raise error.AccessError(description="Invalid user token")
     
     # list of channels the authorised user is part of
     channels_list = []                
@@ -37,8 +35,6 @@ def channels_listall(token):
         for valid_token in user['tokens']:
             if valid_token == token:
                 user = u
-    if user is None: 
-        raise error.AccessError(description="Invalid user token")
 
     
     channels_listall = []
