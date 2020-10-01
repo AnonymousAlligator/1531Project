@@ -1,4 +1,6 @@
 import re 
+from other import data
+from error import InputError, AccessError
 
 def auth_login(email, password):
     
@@ -20,8 +22,6 @@ def auth_login(email, password):
 
 def auth_logout(token):
     
-    data = DATABASE
-
     user = check_token(token)
     
     flag = False
@@ -30,9 +30,9 @@ def auth_logout(token):
         for info in data[users]:
             if info == user:
                 info['token'][token] = flag    # # Invalidates the user token
+                flag = True
                 break
-        flag = True
-
+        
     return {'is_success': flag}
 
 def auth_register(email, password, name_first, name_last):
@@ -81,7 +81,7 @@ def auth_register(email, password, name_first, name_last):
         'name_first':name_first, 
         'name_last': name_last, 
         'password': password, 
-        'handle': handle, 
+        #'handle': handle, 
         'token': email,
     })
 
@@ -94,9 +94,8 @@ def check_token(token):
 
     # Searches for a logged in user through a token
 
-    data = DATABASE
     for user in data['users']:
-        if user['token'].get(token, None): # get() returns a value for the given key (token)
+        if user['token'] == token: # get() returns a value for the given key (token)
             return user
 
     # If the token doesn't exist/user isn't logged in
