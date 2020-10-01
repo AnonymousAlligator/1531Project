@@ -5,14 +5,14 @@ InputError when any of:
 
 '''
 from user import user_profile, user_profile_sethandle
+from auth import auth_register
 from error import InputError
 from other import clear
 import pytest
-import auth
 
 # Register 2 users
-test_user_0 = auth.auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
-test_user_1 = auth.auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")
+test_user_0 = auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
+test_user_1 = auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")
 
 # Get test users' tokens
 test_user0_token = test_user_0['token']
@@ -54,7 +54,7 @@ def test_user_profile_sethandle_works():
     user_profile_sethandle(test_user0_token, '1531_admin')    
     # get test_user0's profile
     test_user0_updated = user_profile(test_user0_token, test_user0_id)
-    
+
     assert test_user0_updated['handle_str'] == "1531_admin"
 
 
