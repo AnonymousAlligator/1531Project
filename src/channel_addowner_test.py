@@ -15,8 +15,10 @@ user_0 = auth_register("apples@email.com", "applepass", "apple", "red") #returns
 user_1 = auth_register("banana@email.com", "bananapass", "banana", "yellow") #returns { u_id, token }
 user_2 = auth_register("carrot@email.com", "carrotpass", "carrot", "orange") #returns { u_id, token }
 user_3 = auth_register("durian@email.com", "durianpass", "durian", "yellow")
+user_4 = auth_register("eggplant@email.com", "eggplantpass", "eggplant", "purple")
 user_5 = auth_register("figs@email.com", "figspass", "figs", "green")
 user_6 = auth_register("grape@email.com", "grapepass", "grape", "green")
+
 
 #Create public channel to join 
 channel_0 = channels_create(user_0['token'], "name", True) #returns channel ID_0
@@ -24,9 +26,9 @@ channel_0 = channels_create(user_0['token'], "name", True) #returns channel ID_0
 channel_1 = channels_create(user_5['token'], "name", False) #returns channel ID_1
 
 #Users 1, 2 ,3 are part of a public channel
-channel_invite(user1['token'], channel_0, user1['u_id'])
-channel_invite(user2['token'], channel_0, user2['u_id'])
-channel_invite(user3['token'], channel_0, user3['u_id'])
+channel_invite(user_1['token'], channel_0, user_1['u_id'])
+channel_invite(user_2['token'], channel_0, user_2['u_id'])
+channel_invite(user_3['token'], channel_0, user_3['u_id'])
 
 #User 6 is a member of a private channel
 channel_join(user_6['token'], channel_1)
