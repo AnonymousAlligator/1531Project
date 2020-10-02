@@ -34,8 +34,8 @@ def channels_create(token, name, is_public):
                 data['channels'].append({'channel_id': channel_id,
                                          'name': name,
                                          'is_public': is_public,
-                                         'owner_members': [{user['u_id'], user['token']},],
-                                         'all_members': [{user['u_id'], user['token']},],
-                                         'messages': []
+                                         'owner_members': [{user['u_id']}],
+                                         'all_members': [{user['u_id']}],
+                                         'messages': [],
                                         })
-                return {channel_id}
+                return channel_id
