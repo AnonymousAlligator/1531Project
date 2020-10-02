@@ -7,8 +7,8 @@ from channels import channels_create
 from auth import auth_register
 import error
 import pytest
-
-Jeffo = auth_register("Jeffo@email.com", "a1b2c3", "Jeffo", "Jeff")
+from test_helpers import create_one_test_user
+from other import clear
 
 channel_name1 = "Main Channel"
 channel_name2 = "abcdefhijklmnopqrst"
@@ -16,14 +16,29 @@ channel_name3 = "abcdefhijklmnopqrstuvwxyz"
 
 
 def test_channels_create_lessthan20():
-    assert channels_create(Jeffo['token'], channel_name1, True) == 0
+    clear()
+    test_user0 = create_one_test_user()
+    # in assert, check for returned value
+    assert channels_create(test_user0['token'], channel_name1, True) == 0
 
 
 def test_channels_create_exactly20():
-    assert channels_create(Jeffo['token'], channel_name2, True) == 0
+    clear()
+    test_user0 = create_one_test_user()
+    # in assert, check for returned value
+    assert channels_create(test_user0['token'], channel_name2, True) == 0
 
 def test_channels_create_morethan20():
-    with pytest.raises(error.InputError):
-        assert channels_create(Jeffo['token'], channel_name3, True)
+    clear()
+    test_user0 = create_one_test_user()
 
-#assume that name given is a string
+    with pytest.raises(error.InputError):
+        channels_create(test_user0['token'], channel_name3, True)
+
+def test_channels_create_public():
+    # assert that public channel gets created - check channels_list_test
+    pass
+
+def test_channels_create_private():
+    # assert that private channel gets created - check channels_list_test
+    pass
