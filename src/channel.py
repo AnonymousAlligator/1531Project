@@ -18,7 +18,7 @@ def channel_invite(token, channel_id, u_id):
                             # Check if caller is within the channel
                             for user in channel['all_members']:
                                 # If caller is in the channel then add invitee
-                                if (caller['u_id']) == (user['u_id']):
+                                if caller["u_id"] == user["u_id"]:
                                     channel['all_members'].append({'u_id': invitee['u_id'], 
                                                                     'name_first': invitee['name_first'], 
                                                                     'name_last': invitee['name_last'],})
