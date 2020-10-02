@@ -3,26 +3,32 @@ from remove_owner_helper import *
 import error
 
 def channel_invite(token, channel_id, u_id):
-    #Check if user exists within database
+    # Check that the token is valid
     for user in data['users']:
+        # Token is valid
+        if token == user['token']:
+            caller = user
+    #Check if user to be added exists within database
+    for invitee in data['users']:
         #If the user is valid
-        if u_id == user['u_id']:
+        if u_id == invitee['u_id']:
             # Check if the channel_id is valid
             for channel in data['channels']:
                 # if channel is valid
                 if channel_id == channel['id']:
-                    # Check if user is within the channel
+                    # Check if caller is within the channel
                     for user in channel['all_members']:
-                        #if the invitee is apart of channel add invited person to channel
-                        channel['all_members'].append({'u_id': user['u_id'], 
-                                                    'name_first': user['name_first'], 
-                                                    'name_last': user['name_last'],})
-                        # Also if u_id is 0, then make them an owner
-                        if u_id == 0:
-                            channel['owner_members'].append({'u_id': user['u_id'],
-                                                            'name_first': user['name_first'],
-                                                            'name_last': user['name_last']})
-                        return {}
+                        # If caller is in the channel then add invitee
+                        if caller['u_id'] == user['u_id']:
+                            channel['all_members'].append({'u_id': invitee['u_id'], 
+                                                            'name_first': invitee['name_first'], 
+                                                            'name_last': invitee['name_last'],})
+                            # Also if u_id is 0, then make them an owner
+                            if u_id == 0:
+                                channel['owner_members'].append({'u_id': invitee['u_id'],
+                                                                    'name_first': invitee['name_first'],
+                                                                    'name_last': invitee['name_last'],})
+                            return {}
                     #Access Error if the person inviting is not within the server
                     raise error.AccessError('You can only invite people to channels you are apart of')    
             #Input Error if the channel doesn't exist
