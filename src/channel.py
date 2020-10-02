@@ -44,21 +44,17 @@ def channel_details(token, channel_id):
                             # Look for each owner's details in the user data field by referenceing the u_id
                             channel_owners = []
                             for owner in channel['owner_members']:
-                                for owner_details in data['users']:
-                                    if owner['u_id'] == owner_details['u_id']:
-                                        channel_owners.append({'u_id': owner_details['u_id'],
-                                                                'name_first': owner_details['name_first'],
-                                                                'name_last': owner_details['name_last'],
-                                },)
+                                if user['u_id'] == owner['u_id']:
+                                    channel_owners.append({'u_id': owner['u_id'],
+                                                            'name_first': owner['name_first'],
+                                                            'name_last': owner['name_last'],})
                             # Look for each members details in the user data field by referenceing the u_id
                             channel_members = []
                             for member in channel['all_members']:
-                                for member_details in data['users']:
-                                    if member['u_id'] == member_details['u_id']:
-                                        channel_members.append({'u_id': member_details['u_id'],
-                                                                'name_first': member_details['name_first'],
-                                                                'name_last': member_details['name_last'],
-                                },)
+                                if user['u_id'] == member['u_id']:
+                                    channel_members.append({'u_id': member['u_id'],
+                                                            'name_first': member['name_first'],
+                                                            'name_last': member['name_last'],})
                             return {'name': channel_name,
                                     'owner_members': channel_owners,
                                     'all_members': channel_members,
@@ -125,7 +121,7 @@ def channel_leave(token, channel_id):
                 if channel_id == channel['id']:
                     # ..we now check if the user is a member of the channel
                     for member in channel['all_members']:
-                        if token == member['token']:
+                        if user['u_id'] == member['u_id']:
                             # If they are a member of the channel, remove them
                             channel['all_members'].remove(member)
                             channel['owner_members'].remove(member)
@@ -152,8 +148,12 @@ def channel_join(token, channel_id):
                     # ..we now check if the user is the flockr owner (u_id == 0)
                     # If they are the flockr owner then add them to the channel and make them an owner
                     if user['u_id'] == 0:
-                        channel['all_members'].append({'u_id': user['u_id'], 'token': user['token']},)
-                        channel['owner_members'].append({'u_id': user['u_id'], 'token': user['token']},)
+                        channel['all_members'].append({'u_id': user['u_id'], 
+                                                        'name_first': user['name_first'], 
+                                                        'name_last': user['name_last']})
+                        channel['owner_members'].append({'u_id': user['u_id'], 
+                                                            'name_first': user['name_first'], 
+                                                            'name_last': user['name_last']})
                         return {}
                     # Otherwise, check to see if the channel they are joining is private
                     elif channel['is_public'] == False:
@@ -161,8 +161,8 @@ def channel_join(token, channel_id):
                     else:
                         # Channel is public so we add their details into the channel list
                         channel['all_members'].append({'u_id': user['u_id'], 
-                                                        'token': user['token'],
-                                                        },)
+                                                        'name_first': user['name_first'], 
+                                                        'name_last': user['name_last']})
                         return {}
             # If we're here then we didn't find the channel so input error
             raise error.InputError('The channel you are trying to join does not exist')
