@@ -10,6 +10,9 @@ from error import InputError
 from other import clear
 import pytest
 
+# clear previous test data
+clear() 
+
 # Register 2 users
 test_user_0 = auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
 test_user_1 = auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")

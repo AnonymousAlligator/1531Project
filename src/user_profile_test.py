@@ -8,6 +8,9 @@ from auth import auth_register
 from other import clear
 import pytest
 
+# clear previous test data
+clear()
+
 # Register 1 users
 test_user_0 = auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
 

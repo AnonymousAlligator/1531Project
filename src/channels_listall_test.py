@@ -6,6 +6,7 @@ from channels import channels_listall, channels_create
 from auth import auth_register, auth_login
 from other import clear 
 
+# clear previous test data
 clear()
 
 # register test users
