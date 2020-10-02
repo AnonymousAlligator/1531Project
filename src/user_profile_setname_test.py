@@ -26,7 +26,7 @@ test_user0_id = test_user_0['u_id']
 
 # check for correct name update
 def test_profile_setname():
-        
+    clear()    
     user_profile_setname(test_user0_token, "Jayden", "Haycob")    
     updated_test_user_0 = user_profile(test_user0_token, test_user_0['u_id'])    
     assert updated_test_user_0['name_first'] == "Jayden"
@@ -34,7 +34,7 @@ def test_profile_setname():
 
 # check for invalid token
 def test_profile_setname_invalid_token():
-    
+    clear()
     with pytest.raises(InputError):
         user_profile_setname('invalid_token', "Jayden", "Haycob")
 
@@ -43,7 +43,7 @@ def test_profile_setname_invalid_token():
 
 # check for invalid first name input 
 def test_profile_setname_invalid_fname():    
-    
+    clear()
     # Invalid firstname input - more than 50 characters
     with pytest.raises(InputError):
         user_profile_setname(test_user0_token, "A" * 51, "valid_new_lname")
@@ -57,7 +57,7 @@ def test_profile_setname_invalid_fname():
 
 # check for invalid last name input 
 def test_profile_setname_invalid_lname():        
-    
+    clear()
     # Invalid last name input - more than 50 characters
     with pytest.raises(InputError):
         user_profile_setname(test_user0_token, "valid_new_fname", "A" * 51)
