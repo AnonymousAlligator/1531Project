@@ -31,7 +31,7 @@ channel_join(user_2['token'], channel_0)
 channel_join(user_3['token'], channel_0)
 
 #User 6 is a member of a private channel
-channel_invite(user_5['token'], channel_1,user_6['u_id'])
+channel_invite(user_5['token'], channel_1, user_6['u_id'])
 
 ################################################################################################
 #Make user with user id u_id an owner of this channel
