@@ -17,7 +17,7 @@ def channel_invite(token, channel_id, u_id):
                         if channel_id == channel['id']:
                             # Check to see if the user is part of that channel
                             for member in channel['all_members']:
-                                if member.get('u_id') == user.get('u_id'):
+                                if member.get('u_id') == user['u_id']:
                                     channel['all_members'].append({'u_id': invitee['u_id'], 
                                                                     'name_first': invitee['name_first'], 
                                                                     'name_last': invitee['name_last'],})
