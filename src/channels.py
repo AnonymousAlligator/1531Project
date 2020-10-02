@@ -18,7 +18,7 @@ def channels_list(token):
         for member_id in channel['all_members']:
             if member_id == user['u_id']:
                 channel_info = {
-                                'channel_id': channel['channel_id'],
+                                'channel_id': channel['id'],
                                 'name': channel['name']
                                 }
                 channels_list.append(channel_info)
@@ -42,7 +42,7 @@ def channels_listall(token):
         # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
         # current assumption is that listall lists all public & private channels
         if user['u_id'] in channel['all_members']:
-            channel_info = {'channel_id': channel['channel_id'],
+            channel_info = {'channel_id': channel['id'],
                             'name': channel['name']}
             channels_listall.append(channel_info)
 
