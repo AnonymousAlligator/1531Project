@@ -4,10 +4,10 @@ import error
 
 def channel_invite(token, channel_id, u_id):
     # Check that the token is valid
-    for p in data['users']:
+    for user in data['users']:
         # Token is valid
-        if token == p['token']:
-            caller = p
+        if token == user['token']:
+            caller = user
             #Check if user to be added exists within database
             for invitee in data['users']:
                 #If the user is valid
@@ -29,12 +29,14 @@ def channel_invite(token, channel_id, u_id):
                                                                             'name_first': invitee['name_first'],
                                                                             'name_last': invitee['name_last'],})
                                     return {}
-                    #Access Error if the person inviting is not within the server
-                    raise error.AccessError('You can only invite people to channels you are apart of')    
-            #Input Error if the channel doesn't exist
-            raise error.InputError('Channel does not exist')
-    #Input Error if the user doesn't exist
-    raise error.InputError('User you are trying to invite does not exist')
+                            #Access Error if the person inviting is not within the server
+                            raise error.AccessError('You can only invite people to channels you are apart of')    
+                    #Input Error if the channel doesn't exist
+                    raise error.InputError('Channel does not exist')
+            #Input Error if the user doesn't exist
+            raise error.InputError('User you are trying to invite does not exist')
+    # If we are here then the token was invalid
+    raise error.AccessError('Invalid token recieved')
 
 def channel_details(token, channel_id):
     # Check that the token is valid
