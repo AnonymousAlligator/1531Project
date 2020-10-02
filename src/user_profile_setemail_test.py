@@ -58,10 +58,10 @@ def test_user_profile_setemail_invalid_check_helper():
 # as recommended in project spec
 def emailCheck(email):  
 	
-		regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
+		regex_pattern = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
 		# pass the regular expression and the string in search() method 
-		if(re.search(regex,email)):  
+		if(re.search(regex_pattern,email)):  
 				return True  
 					
 		return False
-				
+				# r'\nRevision: (\d+)\n'
