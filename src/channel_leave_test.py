@@ -37,3 +37,9 @@ def test_channel_leave_not_a_member():
     #This should throw AccessError
     with pytest.raises(error.AccessError):
         assert channel_leave(Benjamin['token'], channel_id1)
+
+def test_invalid_token():
+    #Token parsed in is invalid
+    #This should throw AccessError
+    with pytest.raises(error.AccessError):
+        assert channel_leave("Booooop", channel_id1)

@@ -1,7 +1,6 @@
-from data import data
+from other import data
 import error
 
-'''Provide a list of all channels (and their associated details) that the authorised user is part of'''
 def channels_list(token):
         
     #TODO: add in taimoor's user check
@@ -50,6 +49,20 @@ def channels_listall(token):
     return channels_listall
 
 def channels_create(token, name, is_public):
-    return {
-        'channel_id': 1,
-    }
+    if len(name) > 20:
+        raise error.InputError('Channel name is more than 20 characters')
+    else:
+        # Find user details in the user field of data
+        for user in data['users']:
+            # Found the user, now making the channel
+            if token == user['token']:
+                # Channel id is equivalent to the size of channels field before making the channel
+                channel_id = len(data['channels'])
+                data['channels'].append({'channel_id': channel_id,
+                                         'name': name,
+                                         'is_public': is_public,
+                                         'owner_members': [{user['u_id']}],
+                                         'all_members': [{user['u_id']}],
+                                         'messages': [],
+                                        })
+                return channel_id

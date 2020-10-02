@@ -25,14 +25,31 @@ channel_invite(Alex['token'], channel_id1, Alex['u_id'])
 def test_channel_details_public():
     details = channel_details(Benjamin['token'], channel_id0)
     assert details['name'] == 'Channel0'
-    assert details['owner_members'] == 'Benjamin Long'
-    assert details['all_members'] == ['Benjamin Long', 'Ross Short', 'Alex Smith']
+    assert details['owner_members'] == [{'u_id': 0,  
+                                        'name_first':"Benjamin", 
+                                        'name_last': "Long",}]
+    assert details['all_members'] == [{'u_id': 0, 
+                                        'name_first':"Benjamin", 
+                                        'name_last': "Long",},
+                                    {'u_id': 1,  
+                                        'name_first':"Ross", 
+                                        'name_last': "Short", },
+                                    {'u_id': 2, 
+                                        'name_first':"Alex", 
+                                        'name_last': "Smith",}]
 
 def test_channel_details_private():
     details = channel_details(Ross['token'], channel_id1)
     assert details['name'] == 'Channel1'
-    assert details['owner_members'] == 'Ross Short'
-    assert details['all_members'] == ['Ross Short', 'Alex Smith']
+    assert details['owner_members'] == [{'u_id': 1,  
+                                        'name_first':"Ross", 
+                                        'name_last': "Short", },]
+    assert details['all_members'] == [{'u_id': 1,  
+                                        'name_first':"Ross", 
+                                        'name_last': "Short", },
+                                    {'u_id': 2, 
+                                        'name_first':"Alex", 
+                                        'name_last': "Smith",}]
 
 def test_channel_details_invalid_channel():
     #The channel doesn't exist
@@ -45,3 +62,9 @@ def test_channel_details_not_a_member():
     #This should throw AccessError
     with pytest.raises(error.AccessError):
         assert channel_details(Benjamin['token'], channel_id1)
+
+def test_invalid_token():
+    #Token parsed in is invalid
+    #This should throw AccessError
+    with pytest.raises(error.AccessError):
+        assert channel_details("Booooop", channel_id1)
