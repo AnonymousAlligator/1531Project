@@ -4,21 +4,20 @@ import error
 
 def channel_invite(token, channel_id, u_id):
     # Check that the token is valid
-    for caller in data['users']:
+    for user in data['users']:
         # Token is valid
-        if token == caller['token']:
+        if token == user['token']:
             #Check if user to be added exists within database
             for invitee in data['users']:
                 #If the user is valid
                 if u_id == invitee['u_id']:
-                    # Check if the channel_id is valid
+                    # Find the channel
                     for channel in data['channels']:
-                        # if channel is valid
+                        # If we find the channel..
                         if channel_id == channel['id']:
-                            # Check if caller is within the channel
-                            for user in channel['all_members']:
-                                # If caller is in the channel then add invitee
-                                if caller["u_id"] == user["u_id"]:
+                            # Check to see if the user is part of that channel
+                            for member in channel['all_members']:
+                                if member['u_id'] == user['u_id']:
                                     channel['all_members'].append({'u_id': invitee['u_id'], 
                                                                     'name_first': invitee['name_first'], 
                                                                     'name_last': invitee['name_last'],})
