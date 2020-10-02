@@ -193,28 +193,41 @@ def channel_addowner(token, channel_id, u_id):
     raise error.InputError('The channel you are trying to join does not exists')
 
 def channel_removeowner(token, channel_id, u_id):
-#Check if channel exists
-    for channel in data['channels']:
-        if channel_id == channel['id']:
-            #Checks to see if the member is an owner of the channel
-                for owner in channel['owner_members']:
-                    if token == owner['token']:
-                        #Checks if the caller is an owner
-                        if owner['u_id'] == u_id:
-                            #if they are the last person in the  in the channel, we raise an error. If not we remove them as owner
-                            if len(channel['all_members']) == 1:
-                                raise error.InputError('You are the only person in the channel, you cannot remove yourself as owner, please add another member')
-                            elif len(channel['owner_members']) == 1:
-                                raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
-                            else: 
-                                remove_helper_func(channel_id, u_id)
-                                return {}
-                        #If the caller is not an owner, we check if the user is a member of the channel
-                        for owner in channel['owner_members']:
-                            if u_id == owner['u_id']:
-                                remove_helper_func(channel_id, u_id)
-                                return {}
-                        raise error.InputError('The member you are trying to remove is not an owner of the channel')
-                raise error.AccessError('You are not an owner of the channel and cannot remove owners')
-    raise error.InputError('The channel you are trying to access does not exists')
+    callerdata = return_data(token)
 
+#Check if channel exists
+    for caller in data['users']:
+        # Token is valid
+        if token == caller['token']:    
+            for channel in data['channels']:
+                if channel_id == channel['id']:
+                    #Checks to see if the member is an owner of the channel
+                        for owner in channel['owner_members']:
+                                
+
+                            if token == owner['u_id']
+
+
+
+
+                            if user['u_id'] == owner['u_id']:
+                                #Checks if the caller is an owner
+                                if owner['u_id'] == u_id:
+                                    #if they are the last person in the  in the channel, we raise an error. If not we remove them as owner
+                                    if len(channel['all_members']) == 1:
+                                        raise error.InputError('You are the only person in the channel, you cannot remove yourself as owner, please add another member')
+                                    elif len(channel['owner_members']) == 1:
+                                        raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
+                                    else: 
+                                        remove_helper_func(channel_id, u_id)
+                                        return {}
+                                #If the caller is not an owner, we check if the user is a member of the channel
+                                for owner in channel['owner_members']:
+                                    if u_id == owner['u_id']:
+                                        remove_helper_func(channel_id, u_id)
+                                        return {}
+                                raise error.InputError('The member you are trying to remove is not an owner of the channel')
+                        raise error.AccessError('You are not an owner of the channel and cannot remove owners')
+            raise error.InputError('The channel you are trying to access does not exists')
+    # If we are here then the token was invalid
+    raise error.AccessError('Invalid token recieved')
