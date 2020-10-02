@@ -1,6 +1,11 @@
 Auth Functions
 
-Auth_login:
+auth_register:
+-User ID's are assigned in the order that auth_register is called.
+
+-User ID 0 is the flock owner.
+
+auth_login:
 -When a user registers, they are automatically logged in at the end of registration (since they are given a token).
 
 -When a user is logged in but a login attempt is made once again with same credentials, the system will get an error but the user will remain logged in.
@@ -11,15 +16,18 @@ Channel Functions
 channel_leave:
 -If all users leave a certain channel, that channel will be deleted from the Flockr.
 
--If an owner leaves the channel, then then user who has spent the most time in the channel becomes the owner of the channel.
+-If an owner leaves the channel and they are the only owner, they will receive an error prompting them to make another user a memeber of the channel.
+
 
 channel_join:
 -Creating a channel will automatically add the user as a member of the channel.
 
 channel_addowner:
-- If the user being added is not a member of the channel, an error will be given. 
+
 
 channel_removeowner:
+- If the user being removed is not a member of the channel, it will be treated as if they are not an owner.
+
 - If the caller of the function is removing themself and they are the only member of the channel, they will receive an error prompting them to add someone else to the channel.
 
 - If the caller of the function is the only owner, they will receive an error prompting them to add someone else as owner first. 
@@ -28,6 +36,9 @@ channels_list:
 -If a user isn't a part of any channels, the channel list is empty.
 
 channels_create:
+
+-Channels ID's are asssigned in the order that channel_create is called. 
+
 -Multiple channels in a single Flockr can't have the same name.
 
 -When a channel is created by a user, they are immediately a member and owner of that channel.

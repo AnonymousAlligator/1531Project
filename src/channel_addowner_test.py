@@ -26,12 +26,12 @@ channel_0 = channels_create(user_0['token'], "name", True) #returns channel ID_0
 channel_1 = channels_create(user_5['token'], "name", False) #returns channel ID_1
 
 #Users 1, 2 ,3 are part of a public channel
-channel_invite(user_0['token'], channel_0, user_1['u_id'])
-channel_invite(user_0['token'], channel_0, user_2['u_id'])
-channel_invite(user_0['token'], channel_0, user_3['u_id'])
+channel_join(user_1['token'], channel_0)
+channel_join(user_2['token'], channel_0)
+channel_join(user_3['token'], channel_0)
 
 #User 6 is a member of a private channel
-channel_join(user_6['token'], channel_1)
+channel_invite(user_5['token'], channel_1, user_6['u_id'])
 
 ################################################################################################
 #Make user with user id u_id an owner of this channel
