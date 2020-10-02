@@ -9,7 +9,7 @@ from user import user_profile_setname, user_profile
 from error import InputError
 from auth import auth_register
 from other import clear
-from test_helpers import create_one_test_user, create_two_test_user
+from test_helpers import create_one_test_user
 import pytest
 
 # clear previous test data
@@ -68,7 +68,7 @@ def test_profile_setname_invalid_fname():
 def test_profile_setname_invalid_lname():        
     clear()
     test_user0 = create_one_test_user()
-    
+
     # Invalid last name input - more than 50 characters
     with pytest.raises(InputError):
         user_profile_setname(test_user0['token'], "valid_new_fname", "A" * 51)
