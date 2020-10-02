@@ -26,8 +26,8 @@ def test_profile_setname():
 
 # check for invalid token
 def test_profile_setname_invalid_token():
-    clear()
     
+    clear()
     create_one_test_user()
 
     with pytest.raises(InputError):
@@ -38,6 +38,7 @@ def test_profile_setname_invalid_token():
 
 # check for invalid first name input 
 def test_profile_setname_invalid_fname():    
+    
     clear()
     test_user0 = create_one_test_user()
 
@@ -54,6 +55,7 @@ def test_profile_setname_invalid_fname():
 
 # check for invalid last name input 
 def test_profile_setname_invalid_lname():        
+    
     clear()
     test_user0 = create_one_test_user()
 

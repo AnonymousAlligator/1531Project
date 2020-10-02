@@ -12,7 +12,6 @@ from test_helpers import create_one_test_user, create_two_test_users, create_thr
 def test_users_all_1_valid_token():
 		
 		clear()
-
 		user0 = create_one_test_user()
 		
 		# check all 1 user return same list
@@ -22,7 +21,6 @@ def test_users_all_1_valid_token():
 def test_users_all_2_valid_token():
 		
 		clear()
-
 		user0, user1 = create_two_test_users()
 		
 		# check all 2 users return same list
@@ -33,7 +31,6 @@ def test_users_all_2_valid_token():
 def test_users_all_3_valid_token():
 		
 		clear()
-
 		user0, user1, user2 = create_three_test_users()
 		
 		# check all 3 users return same list

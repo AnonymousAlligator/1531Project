@@ -12,8 +12,8 @@ import pytest
 
 # check that a valid token and valid u_id returns the correct profile data
 def test_user_profile():	
+    
     clear()	
-
     test_user0 = create_one_test_user()
 
     assert(user_profile(test_user0['token'], test_user0['u_id']) == {
@@ -26,8 +26,8 @@ def test_user_profile():
 
 # check for invalid token with a valid u_id
 def test_user_profile_invalid_token():
+    
     clear()	
-
     test_user0 = create_one_test_user()
 
     with pytest.raises(InputError):
@@ -39,8 +39,8 @@ def test_user_profile_invalid_token():
 
 # check for invalid u_id with a token
 def test_user_profile_invalid_uid():
-    clear()	
     
+    clear()	    
     test_user0 = create_one_test_user()
 
     with pytest.raises(InputError):
