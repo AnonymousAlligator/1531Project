@@ -4,7 +4,6 @@ Returns a list of all users and their associated details
 '''
 from other import users_all
 import pytest
-import auth
 from other import clear
 from test_helpers import create_one_test_user, create_two_test_users, create_three_test_users
 

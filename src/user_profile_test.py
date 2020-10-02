@@ -4,7 +4,6 @@ For a valid user, returns information about their email, first name, last name, 
 '''
 from user import user_profile
 from error import InputError
-from auth import auth_register
 from other import clear
 from test_helpers import create_one_test_user
 import pytest

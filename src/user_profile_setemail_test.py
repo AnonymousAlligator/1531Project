@@ -6,27 +6,10 @@ Email address is already being used by another user
 from user import user_profile, user_profile_setemail
 from error import InputError
 from other import clear
-import auth
+from test_helpers import create_one_test_user, create_two_test_users
+
 import pytest
 import re
-
-# clear previous test data
-# clear()
-
-# Register 2 test users
-test_user_0 = auth.auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")      
-test_user_1 = auth.auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")      
-
-# Get test users' tokens
-test_user0_token = test_user_0['token']	
-test_user1_token = test_user_1['token']	
-
-# Get test users' u_id
-test_user0_id = test_user_0['u_id']
-test_user1_id = test_user_1['u_id']
-
-# Get test_user1's profile
-test_user1_profile = user_profile(test_user1_token, test_user1_id)
 
 # assert that email set works
 def test_user_profile_setemail_works():

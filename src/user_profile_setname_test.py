@@ -7,7 +7,6 @@ name_last is not between 1 and 50 characters inclusively in length
 '''
 from user import user_profile_setname, user_profile
 from error import InputError
-from auth import auth_register
 from other import clear
 from test_helpers import create_one_test_user
 import pytest

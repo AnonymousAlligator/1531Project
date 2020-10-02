@@ -5,7 +5,6 @@ InputError when any of:
 
 '''
 from user import user_profile, user_profile_sethandle
-from auth import auth_register
 from error import InputError
 from other import clear
 from test_helpers import create_one_test_user, create_two_test_users
