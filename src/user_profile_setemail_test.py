@@ -54,14 +54,13 @@ def test_user_profile_setemail_invalid_check_helper():
     assert emailCheck('invalid.com') == False		
 
 
-# Modified email validity checker from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
-# as recommended in project spec
+# regex taken from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
 def emailCheck(email):  
 	
-		regex_pattern = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
-		# pass the regular expression and the string in search() method 
-		if(re.search(regex_pattern,email)):  
+		regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
+		
+        # pass the regular expression and the string in search() method 
+		if(re.search(regex,email)):  
 				return True  
 					
 		return False
-				# r'\nRevision: (\d+)\n'
