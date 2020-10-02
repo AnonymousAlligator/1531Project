@@ -12,23 +12,11 @@ from other import clear
 from test_helpers import create_one_test_user
 import pytest
 
-# clear previous test data
-# clear() 
-
-# Register 1 users
-# test_user_0 = auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
-
-# # Get test user's tokens
-# test_user0_token = test_user_0['token']
-
-# # Get test user's u_id
-# test_user0_id = test_user_0['u_id']
-
 
 # check for correct name update
 def test_profile_setname():
-    clear()    
-
+    
+    clear()
     test_user0 = create_one_test_user()
 
     user_profile_setname(test_user0['token'], "Nick", "Smith")    
