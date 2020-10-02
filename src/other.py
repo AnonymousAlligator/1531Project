@@ -2,14 +2,14 @@ from error import AccessError
 
 data = {
 'users': [],
-'channels': [{
+'channels': [
     #id: 'channel_id'
     #name: 'channel_name'
     #is_public: True or False
     #owner_members: [{u_id, token},]
     #all_members: [{u_id, token},]
     #messages:[{message_id, u_id, message, time_created},]
-    }],
+    ],
 }
 
 
