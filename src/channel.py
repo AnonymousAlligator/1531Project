@@ -22,7 +22,7 @@ def channel_invite(token, channel_id, u_id):
                             if u_id == 0:
                                 channel['owner_members'].append({'u_id': user['u_id'],
                                                                 'name_first': user['name_first']
-                                                                'name_list': user['name_first']})
+                                                                'name_last': user['name_first']})
                             return {}
                     #Access Error if the person inviting is not within the server
                     raise error.AccessError('You can only invite people to channels you are apart of')    
