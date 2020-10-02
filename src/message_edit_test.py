@@ -5,7 +5,7 @@ AccessError when message_id was not sent by the user or when the user is not own
 from channel import channel_invite, channel_addowner
 from channels import channels_create
 from auth import auth_register
-from message import message_send, message_edit
+from message import message_send, message_edit, message_remove
 import error
 import pytest
 
