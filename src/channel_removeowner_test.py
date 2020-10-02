@@ -16,7 +16,7 @@ channel_0 = channels_create(user_0['token'], "name", True) #returns channel ID_0
 channel_1 = channels_create(user_0['token'], "name", False) #returns channel ID_1
 
 #invites user_0 to the private channel
-channel_invite(user_0['token'],channel_1)
+channel_invite(user_0['token'],user_0['u_id'], channel_1)
 
 #makes user_0 channel owner of public
 channel_addowner(user_0['token'], channel_0, user_0['u_id'])
@@ -41,14 +41,14 @@ def channel_removeowner_not_owner():
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
 #attempting to remove owner when they are part of private channel (channel_1)
-def channel_removeowner_invited
+def channel_removeowner_invited():
     token = user_0['token']
     u_id = user_0['u_id']
     channel_id = channel_1
     assert channel_removeowner(token, channel_id, u_id) == {}
 
 #attempting to remove owner when they are NOT part of private channel(channel_1)
-def test_channel_addowner_not_invited
+def test_channel_addowner_not_invited():
     token = user_1['token']
     u_id = user_1['u_id']
     channel_id = channel_1
