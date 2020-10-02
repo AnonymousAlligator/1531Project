@@ -4,10 +4,9 @@ import error
 
 def channel_invite(token, channel_id, u_id):
     # Check that the token is valid
-    for user in data['users']:
+    for caller in data['users']:
         # Token is valid
-        if token == user['token']:
-            caller = user
+        if token == caller['token']:
             #Check if user to be added exists within database
             for invitee in data['users']:
                 #If the user is valid
