@@ -10,8 +10,8 @@ def create_two_test_users():
         test_user_1 = auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")
 
         test_users = {
-            'user0': test_user_0
-            'user1': test_user_1
+            'user0': test_user_0,
+            'user1': test_user_1,
         }
         return test_users
 
