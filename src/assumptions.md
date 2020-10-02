@@ -11,7 +11,8 @@ Channel Functions
 channel_leave:
 -If all users leave a certain channel, that channel will be deleted from the Flockr.
 
--If an owner leaves the channel, then then user who has spent the most time in the channel becomes the owner of the channel.
+-If an owner leaves the channel and they are the only owner, they will receive an error prompting them to make another user a memeber of the channel.
+
 
 channel_join:
 -Creating a channel will automatically add the user as a member of the channel.
@@ -28,6 +29,9 @@ channels_list:
 -If a user isn't a part of any channels, the channel list is empty.
 
 channels_create:
+
+-Channels ID's are asssigned in the order that channel_create is called. 
+
 -Multiple channels in a single Flockr can't have the same name.
 
 -When a channel is created by a user, they are immediately a member and owner of that channel.
