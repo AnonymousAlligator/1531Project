@@ -13,17 +13,16 @@ def channel_invite(token, channel_id, u_id):
                 if channel_id == channel['id']:
                     # Check if user is within the channel
                     for user in channel['all_members']:
-                        if token == user['token']:
-                            #if the invitee is apart of channel add invited person to channel
-                            channel['all_members'].append({'u_id': user['u_id'], 
-                                                        'name_first': user['name_first'], 
-                                                        'name_last': user['name_last'],})
-                            # Also if u_id is 0, then make them an owner
-                            if u_id == 0:
-                                channel['owner_members'].append({'u_id': user['u_id'],
-                                                                'name_first': user['name_first'],
-                                                                'name_last': user['name_last']})
-                            return {}
+                        #if the invitee is apart of channel add invited person to channel
+                        channel['all_members'].append({'u_id': user['u_id'], 
+                                                    'name_first': user['name_first'], 
+                                                    'name_last': user['name_last'],})
+                        # Also if u_id is 0, then make them an owner
+                        if u_id == 0:
+                            channel['owner_members'].append({'u_id': user['u_id'],
+                                                            'name_first': user['name_first'],
+                                                            'name_last': user['name_last']})
+                        return {}
                     #Access Error if the person inviting is not within the server
                     raise error.AccessError('You can only invite people to channels you are apart of')    
             #Input Error if the channel doesn't exist
