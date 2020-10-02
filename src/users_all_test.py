@@ -7,6 +7,7 @@ import pytest
 import auth
 from other import clear
 
+
 def test_users_all():
 		
 		clear()
