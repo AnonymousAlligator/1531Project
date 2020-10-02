@@ -17,12 +17,12 @@ def channel_invite(token, channel_id, u_id):
                             #if the invitee is apart of channel add invited person to channel
                             channel['all_members'].append({'u_id': user['u_id'], 
                                                         'name_first': user['name_first'], 
-                                                        'name_last': user['name_last']})
+                                                        'name_last': user['name_last'],})
                             # Also if u_id is 0, then make them an owner
                             if u_id == 0:
                                 channel['owner_members'].append({'u_id': user['u_id'],
-                                                                'name_first': user['name_first']
-                                                                'name_last': user['name_first']})
+                                                                'name_first': user['name_first'],
+                                                                'name_last': user['name_last']})
                             return {}
                     #Access Error if the person inviting is not within the server
                     raise error.AccessError('You can only invite people to channels you are apart of')    
@@ -175,7 +175,6 @@ def channel_join(token, channel_id):
 
 def channel_addowner(token, channel_id, u_id):
     caller_data = find_with_token(token)
-    removed_person = find_with_uid(u_id)
     for channel in data['channels']:
         if channel_id == channel['id']:
             #Checks that the caller is an owner
@@ -191,7 +190,7 @@ def channel_addowner(token, channel_id, u_id):
                         if u_id == member['u_id']:
                             for users in data['users']:
                                 if u_id == users['u_id']:
-                                    channel['owner_members'].append({'u_id' : caller_data[0], 'name_first': caller_data[1], 'name_last':caller_data[2]),
+                                    channel['owner_members'].append({'u_id' : caller_data[0], 'name_first': caller_data[1], 'name_last':caller_data[2],})
                                     return {}
                     raise error.InputError('The member you are trying to add is not a member of the channel')
             raise error.AccessError('You are not an owner of the flockr and cannot add owners')
@@ -199,13 +198,13 @@ def channel_addowner(token, channel_id, u_id):
 
 def channel_removeowner(token, channel_id, u_id):
     caller_data = find_with_token(token)
-    removed_person = find_with_uid(u_id)
+    removed_person_data = find_with_uid(u_id)
     #Check if channel exists
     for channel in data['channels']:
         if channel_id == channel['id']:
             #Checks to see if the caller is an owner of the channel
                 for owner in channel['owner_members']:
-                    if caller_data[0] == owner['u_id']
+                    if caller_data[0] == owner['u_id']:
                         #Checks if the caller is an owner
                         if owner['u_id'] == u_id:
                             #if they are the last person in the channel, we raise an error. If not we remove them as owner
