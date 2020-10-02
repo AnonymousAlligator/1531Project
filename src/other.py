@@ -1,3 +1,5 @@
+from error import AccessError
+
 data = {
 'users': [],
 'channels': [{
@@ -43,3 +45,14 @@ def search(token, query_str):
             }
         ],
     }
+
+def check_token(token):
+
+    # Searches for a logged in user through a token
+
+    for user in data['users']:
+        if user['token'] == token: # get() returns a value for the given key (token)
+            return user
+
+    # If the token doesn't exist/user isn't logged in
+    raise AccessError("Token is not valid")
