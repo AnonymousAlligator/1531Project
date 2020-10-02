@@ -4,11 +4,13 @@ from error import InputError, AccessError
 
 def auth_login(email, password):
     
+    flag = 0
     for user in data['users']:
         if user['email'] == email:
             found_user = user
+            flag = 1
 
-    if not found_user:
+    if flag == 0:
         raise InputError('Email has not been registered previously')
     
     if password != found_user['password']:
@@ -17,7 +19,7 @@ def auth_login(email, password):
     token = email # not sure what else to do with token here
     
     return {
-        'u_id': found_user[u_id], 'token': token,
+        'u_id': found_user['u_id'], 'token': token,
     }
 
 def auth_logout(token):
@@ -26,10 +28,10 @@ def auth_logout(token):
     
     flag = False
        
-    if user['token'][token]:
-        for info in data[users]:
+    if user['token'] == token:
+        for info in data['users']:
             if info == user:
-                info['token'][token] = flag    # # Invalidates the user token
+                #info['token'][token] = flag    Invalidates the user token
                 flag = True
                 break
         
@@ -89,3 +91,4 @@ def auth_register(email, password, name_first, name_last):
         'u_id': u_id,
         'token': email,
     }
+

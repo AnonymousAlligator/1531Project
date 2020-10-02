@@ -7,7 +7,7 @@ data = {
 }
 
 def clear():
-    global data
+    #global data
     data = {
     'users': [],
     'channels': [],
