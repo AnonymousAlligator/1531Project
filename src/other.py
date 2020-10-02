@@ -1,3 +1,5 @@
+from error import AccessError
+
 data = {
 'users': [],
 'channels': [],
