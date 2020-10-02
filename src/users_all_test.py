@@ -6,23 +6,37 @@ from other import users_all
 import pytest
 import auth
 from other import clear
+from test_helpers import create_one_test_user, create_two_test_users, create_three_test_users
 
-
-def test_users_all():
+# check attempt to list all 1 with a valid token
+def test_users_all_1_valid_token():
 		
 		clear()
 
-		# Register 3 test users
-		test_user_0 = auth.auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")      
-		test_user_1 = auth.auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")      
-		test_user_2 = auth.auth_register("test_email_2@email.com", "valid_pw2", "Smith", "Smith")      
+		user0 = create_one_test_user()
 		
-		# Get test users' tokens
-		test_user0_token = test_user_0['token']	
-		test_user1_token = test_user_1['token']	
-		test_user2_token = test_user_2['token']	
+		# check all 1 user return same list
+		assert len(users_all(user0['token'])) == 1
+
+# check attempt to list all 2 users with a valid token
+def test_users_all_2_valid_token():
 		
-		# attempt to list all users with a valid token
-		assert len(users_all(test_user0_token)) == 3
-		assert len(users_all(test_user1_token)) == 3
-		assert len(users_all(test_user2_token)) == 3
+		clear()
+
+		user0, user1 = create_two_test_users()
+		
+		# check all 2 users return same list
+		assert len(users_all(user0['token'])) == 2
+		assert len(users_all(user1['token'])) == 2
+
+# check attempt to list all 3 users with a valid token
+def test_users_all_3_valid_token():
+		
+		clear()
+
+		user0, user1, user2 = create_three_test_users()
+		
+		# check all 3 users return same list
+		assert len(users_all(user0['token'])) == 3
+		assert len(users_all(user1['token'])) == 3
+		assert len(users_all(user2['token'])) == 3

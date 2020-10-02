@@ -9,22 +9,16 @@ def create_two_test_users():
         test_user_0 = auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
         test_user_1 = auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")
 
-        test_users = {
-            'user0': test_user_0,
-            'user1': test_user_1,
-        }
-        return test_users
+        return test_user_0, test_user_1
 
 def create_three_test_users():
     # Register 3 users
         test_user_0 = auth_register("test_email_0@email.com", "valid_pw0", "Hayden", "Jacobs")
         test_user_1 = auth_register("test_email_1@email.com", "valid_pw1", "Jayden", "Haycobs")
+        test_user_3 = auth_register("test_email_2@email.com", "valid_pw1", "Nick", "Smith")
 
-        test_users = {
-            'user0': test_user_0,
-            'user1': test_user_1,
-        }
-        return test_users
+        return test_user_0, test_user_1, test_user_3
+
 
 def create_one_test_public_channel():
     pass
