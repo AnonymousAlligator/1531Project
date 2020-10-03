@@ -123,7 +123,7 @@ def channel_messages(token, channel_id, start):
         raise error.InputError('The start value entered is older than all messages')
     # Check to see if start is the least recent message
     elif start == (number_of_messages - 1):
-        message = channel['messages'][start]
+        message = target_channel['messages'][start]
         message_data.append(message)
         return {'messages': message_data, 
                 'start': start, 
@@ -131,7 +131,7 @@ def channel_messages(token, channel_id, start):
     # We can iterate from start until either end or start + 50
     else:
         while (message_number < number_of_messages) and (end <= start + 49):
-            message = channel['messages'][message_number]
+            message = target_channel['messages'][message_number]
             message_data.append(message)
             message_number += 1
             end += 1
@@ -141,29 +141,34 @@ def channel_messages(token, channel_id, start):
 
 def channel_leave(token, channel_id):
     # Check that the token is valid
-    for user in data['users']:
-        # Token is valid
-        if token == user['token']:
-            # Check for if the channel_id is valid
-            for channel in data['channels']:
-                # If we find the channel..
-                if channel_id == channel['id']:
-                    # ..we now check if the user is a member of the channel
-                    for member in channel['all_members']:
-                        if user['u_id'] == member['u_id']:
-                            # If they are a member of the channel, remove them
-                            channel['all_members'].remove(member)
-                            channel['owner_members'].remove(member)
-                                # If there is now no one in the channel, delete the channel
-                            if len(channel['all_members']) == 0:
-                                data['channels'].remove(channel)
-                            return {}
-                    # If we are here then the person is not a member of the channel
-                    raise error.AccessError('You are not a member of the channel you are trying to leave')
-            # If we're here then we didn't find the channel so input error
-            raise error.InputError('The channel you are trying to leave does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+    caller = check_token(token)
+    
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    # Check to see if inviter is part of that channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You are not a member of the channel you are trying to leave')
+
+    # If they are a member of the channel, remove them
+    target_channel['all_members'].remove(caller)
+    target_channel['owner_members'].remove(caller)
+    # If there is now no one in the channel, delete the channel
+    if len(target_channel['all_members']) == 0:
+        data['channels'].remove(target_channel)
+    return {}
 
 def channel_join(token, channel_id):
     # Check that the token is valid
