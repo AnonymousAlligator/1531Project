@@ -281,7 +281,7 @@ def channel_removeowner(token, channel_id, u_id):
     for owner in target_channel['owner_members']:
         if owner['u_id'] == caller['u_id']:
             is_owner = True
-    # Access Error if the person inviting is not within the server
+    # Access Error if the caller is not an owner
     if is_owner == False:
         raise error.AccessError('You are not an owner of the channel and cannot remove owners')
     
@@ -290,7 +290,7 @@ def channel_removeowner(token, channel_id, u_id):
     for owner in target_channel['owner_members']:
         if owner['u_id'] == removed_person['u_id']:
             is_owner = True
-    # Access Error if the person inviting is not within the server
+    # Input Error if the person inviting is not within the server
     if is_owner == False:
         raise error.InputError('The member you are trying to remove is not an owner of the channel')
 
