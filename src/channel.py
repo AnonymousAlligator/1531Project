@@ -111,47 +111,33 @@ def channel_messages(token, channel_id, start):
     # Access Error if the person inviting is not within the server
     if is_member == False:
         raise error.AccessError('You are not part of the channel you want details about')
-
-
     
-            # Find the channel
-            for channel in data['channels']:
-                # If we find the channel..
-                if channel_id == channel['id']:
-                     # Check to see if the user is part of that channel
-                    for member in channel['all_members']:
-                        if member['u_id'] == user['u_id']:
-                            # Looping through the message data of the channel
-                            message_data = []
-                            number_of_messages = len(channel['messages'])
-                            message_number = start
-                            end = 0
-                            # Check if start is beyond range of messages
-                            if start >= number_of_messages:
-                                raise error.InputError('The start value entered is older than all messages')
-                            # Check to see if start is the least recent message
-                            elif start == (number_of_messages - 1):
-                                message = channel['messages'][start]
-                                message_data.append(message)
-                                return {'messages': message_data, 
-                                        'start': start, 
-                                        'end': -1,}
-                            # We can iterate from start until either end or start + 50
-                            else:
-                                while (message_number < number_of_messages) and (end <= start + 49):
-                                    message = channel['messages'][message_number]
-                                    message_data.append(message)
-                                    message_number += 1
-                                    end += 1
-                                return {'messages': message_data,
-                                        'start': start,
-                                        'end': end,}
-                    # If we are here then the user isnt in the channel
-                    raise error.AccessError('You are not part of the channel you want details about')
-            # If we are here then that means the channel id couldnt be found
-            raise error.InputError('The channel you have entered does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+    # Made it through all checks so now we start building the return
+    # Looping through the message data of the channel
+    message_data = []
+    number_of_messages = len(channel['messages'])
+    message_number = start
+    end = 0
+    # Check if start is beyond range of messages
+    if start >= number_of_messages:
+        raise error.InputError('The start value entered is older than all messages')
+    # Check to see if start is the least recent message
+    elif start == (number_of_messages - 1):
+        message = channel['messages'][start]
+        message_data.append(message)
+        return {'messages': message_data, 
+                'start': start, 
+                'end': -1,}
+    # We can iterate from start until either end or start + 50
+    else:
+        while (message_number < number_of_messages) and (end <= start + 49):
+            message = channel['messages'][message_number]
+            message_data.append(message)
+            message_number += 1
+            end += 1
+        return {'messages': message_data,
+                'start': start,
+                'end': end,}
 
 def channel_leave(token, channel_id):
     # Check that the token is valid
