@@ -15,9 +15,9 @@ data = {
 
 
 def clear():
-    data = {'users': [],
-            'channels': [],
-    }
+    for value in data.values():
+        del value[:]
+
 
 
 def users_all(token):

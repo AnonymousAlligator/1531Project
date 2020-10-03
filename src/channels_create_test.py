@@ -4,7 +4,6 @@ InputError when channel name is more than 20 characters
 
 
 from channels import channels_create
-from auth import auth_register
 import error
 import pytest
 from test_helpers import create_one_test_user
