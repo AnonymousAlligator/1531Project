@@ -2,44 +2,49 @@
 AccessError when message_id was not sent by the user or when the user is not owner of the channel
 '''
 
-from channel import channel_invite, channel_addowner
+from channel import channel_join
 from channels import channels_create
-from auth import auth_register
 from message import message_send, message_edit, message_remove
-import error
+from test_helpers import create_one_test_user, create_two_test_users
+from error import AccessError
+from other import clear
 import pytest
 
-Jeffo = auth_register("Jeffo@email.com", "a1b2c3", "Jeffo", "Jeff")
-Smith = auth_register("smith@email.com", "a1b2c3", "Smith", "Smith")
-Tom = auth_register("tom@email.com", "a1b2c3", "Tom", "Tommery")
-
-channels_create(Jeffo['token'], "Main Channel", True)
-channel_invite(Jeffo['token'], 0, 0)
-channel_invite(Smith['token'], 0, 1)
-channel_invite(Tom['token'], 0, 2)
-channel_addowner(Jeffo['token'], 0, 0)
-
-message1 = "Let's geddit"
-message_send(Jeffo['token'], 0, message1)
-message2 = "Shut up rat"
-message_send(Smith['token'], 0, message2)
-message3 = "Mb lmao"
-message_send(Jeffo['token'], 0, message3)
-message4 = "I hate you"
-message_send(Jeffo['token'], 0, message4)
-message5 = "I love you"
-message6 = "Hi"
-message7 = "Rats"
+# check that editing a message works
 def test_message_edit():
-    assert message_remove(Jeffo['token'], 3, message5) == {}
+    
+    clear()
+    test_user0 = create_one_test_user()
 
+    # test_user0 creates 1 public channel
+    channel_id = channels_create(test_user0['token'], "Public Channel", True)
+        
+    # test_user0 sends 1 message to public channel
+    message0_id = "inital message"
+    message_send(test_user0['token'], channel_id, message0_id)
+
+    # TODO: update in iter2
+    assert message_edit(test_user0['token'], message0_id, 'edited message') == {}
+
+
+# check that user1 cannot edit user0's message
 def test_message_edit_notusermsg():
-    with pytest.raises(error.AccessError):
-        assert message_edit(Smith['token'], 0, message6)
 
-def test_message_edit_notowner():
-    message_edit(Smith['token'], 1, message6)
-    with pytest.raises(error.AccessError):
-        assert message_edit(Tom['token'], 0, message7) 
+    clear()
+    test_user0, test_user1 = create_two_test_users()
 
-#assume that edited message is a string, message_id is valid
+    # test_user0 creates 1 public channel
+    public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
+
+    # test_user1 joins public channel 
+    channel_join(test_user1['token'], public_channel_id)
+        
+    # test_user0 sends 1 message
+    message0_id = "user0's message"
+    message_send(test_user0['token'], public_channel_id, message0_id)
+    
+    #TODO: update in iter2
+    # raise error if user1 tries to edit user0's message
+    # with pytest.raises(AccessError):
+    #     message_edit(test_user1['token'], message0_id, 'edited message')
+    pass
