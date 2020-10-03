@@ -25,26 +25,26 @@ def initialisation():
 ##################################################################################################
 
 def test_channel_leave_success():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, channel_id0, _ = initialisation()
     #Successful leave
     assert channel_leave(Benjamin['token'], channel_id0) == {}
 
 def test_channel_leave_invalid_channel():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, _, _ = initialisation()
     #The channel doesn't exist
     #This should throw InputError
     with pytest.raises(error.InputError):
         assert channel_leave(Benjamin['token'], 2)
 
 def test_channel_leave_not_a_member():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, _, channel_id1 = initialisation()
     #User is not part of this channel
     #This should throw AccessError
     with pytest.raises(error.AccessError):
         assert channel_leave(Benjamin['token'], channel_id1)
 
 def test_invalid_token():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    _, _, _, _, channel_id1 = initialisation()
     #Token parsed in is invalid
     #This should throw AccessError
     with pytest.raises(error.AccessError):

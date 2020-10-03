@@ -23,30 +23,30 @@ def initialisation():
 ##################################################################################################
 
 def test_channel_join_success():
-    Benjamin, Ross, Alex, James, channel_id0, channel_id1 = initialisation()
+    _, Ross, _, _, channel_id0, _ = initialisation()
     assert channel_join(Ross['token'], channel_id0) == {}
 
 def test_channel_join_invalid_channel():
-    Benjamin, Ross, Alex, James, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, _, _, _ = initialisation()
     #The channel doesn't exist
     #This should throw InputError
     with pytest.raises(error.InputError):
         assert channel_join(Benjamin['token'], 2)
 
 def test_channel_join_not_a_member():
-    Benjamin, Ross, Alex, James, channel_id0, channel_id1 = initialisation()
+    _, _, _, James, _, channel_id1 = initialisation()
     #Channel is private i.e. user is not admin
     #This should throw AccessError
     with pytest.raises(error.AccessError):
         assert channel_join(James['token'], channel_id1)
 
 def test_channel_join_flockr_owner():
-    Benjamin, Ross, Alex, James, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, _, _, channel_id1 = initialisation()
     #U_id is 0 so person can join private channels and added as an owner
     assert channel_join(Benjamin['token'], channel_id1) == {}
 
 def test_invalid_token():
-    Benjamin, Ross, Alex, James, channel_id0, channel_id1 = initialisation()
+    _, _, _, _, _, _ = initialisation()
     #Token parsed in is invalid
     #This should throw AccessError
     with pytest.raises(error.AccessError):

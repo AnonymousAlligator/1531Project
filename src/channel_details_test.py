@@ -25,7 +25,7 @@ def initialisation():
 ##################################################################################################
 
 def test_channel_details_public():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, channel_id0, _ = initialisation()
     details = channel_details(Benjamin['token'], channel_id0)
     assert details['name'] == 'Channel0'
     assert details['owner_members'] == [{'u_id': 0,  
@@ -42,7 +42,7 @@ def test_channel_details_public():
                                         'name_last': "Smith",}]
 
 def test_channel_details_private():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    _, Ross, _, _, channel_id1 = initialisation()
     details = channel_details(Ross['token'], channel_id1)
     assert details['name'] == 'Channel1'
     assert details['owner_members'] == [{'u_id': 1,  
@@ -56,21 +56,21 @@ def test_channel_details_private():
                                         'name_last': "Smith",}]
 
 def test_channel_details_invalid_channel():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, _, _ = initialisation()
     #The channel doesn't exist
     #This should throw InputError
     with pytest.raises(error.InputError):
         assert channel_details(Benjamin['token'], 2)
 
 def test_channel_details_not_a_member():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    Benjamin, _, _, _, channel_id1 = initialisation()
     #User not a member of the channel
     #This should throw AccessError
     with pytest.raises(error.AccessError):
         assert channel_details(Benjamin['token'], channel_id1)
 
 def test_invalid_token():
-    Benjamin, Ross, Alex, channel_id0, channel_id1 = initialisation()
+    _, _, _, _, channel_id1 = initialisation()
     #Token parsed in is invalid
     #This should throw AccessError
     with pytest.raises(error.AccessError):

@@ -82,49 +82,49 @@ def test_channel_messages_100():
     assert messages['end'] == 50
 
 def test_channel_messages_50():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, _, channel_id1, _, _, _, expected_messages1, _, _ = initialisation()
     messages = channel_messages(Benjamin['token'], channel_id1, 0)
     assert messages['messages'] == expected_messages1
     assert messages['start'] == 0
     assert messages['end'] == 50
 
 def test_channel_messages_10():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, _, _, channel_id2, _, _, _, expected_messages2, _ = initialisation()
     messages = channel_messages(Benjamin['token'], channel_id2, 0)
     assert messages['messages'] == expected_messages2
     assert messages['start'] == 0
     assert messages['end'] == 10
 
 def test_channel_messages_no_more():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, _, _, channel_id2, _, _, _, _, expected_messages3 = initialisation()
     messages = channel_messages(Benjamin['token'], channel_id2, 9)
     assert messages['messages'] == expected_messages3
     assert messages['start'] == 9
     assert messages['end'] == -1
 
 def test_channel_messages_invalid_channel():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, _, _, _, _, _, _, _, _ = initialisation()
     #The channel doesn't exist
     #This should throw InputError
     with pytest.raises(error.InputError):
         assert channel_messages(Benjamin['token'], 4, 0)
 
 def test_channel_messages_invalid_start():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, _, _, channel_id2, _, _, _, _, _ = initialisation()
     #Start is greater than total
     #This should throw InputError
     with pytest.raises(error.InputError):
         assert channel_messages(Benjamin['token'], channel_id2, 11)
 
 def test_channel_messages_not_a_member():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, _, _, _, channel_id3, _, _, _, _ = initialisation()
     #User not a member of the channel
     #This should throw AccessError
     with pytest.raises(error.AccessError):
         assert channel_messages(Benjamin['token'], channel_id3, 3)
 
 def test_invalid_token():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    _, _, _, _, channel_id1, _, _, _, _, _, _ = initialisation()
     #Token parsed in is invalid
     #This should throw AccessError
     with pytest.raises(error.AccessError):
