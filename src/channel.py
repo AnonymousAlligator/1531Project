@@ -39,8 +39,8 @@ def channel_invite(token, channel_id, u_id):
     for member in target_channel['all_members']:
         if member['u_id'] == invitee['u_id']:
             is_member = True
-    # Access Error if the person inviting is not within the server
-    if is_member == False:
+    # Input Error if the person you are inviting is in the channel already
+    if is_member == True:
         raise error.InputError('The person you are trying to invite is already in the channel')
 
     # Made it through all the checks so now we can add the invitee
