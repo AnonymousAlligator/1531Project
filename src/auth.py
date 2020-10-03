@@ -76,13 +76,8 @@ def auth_register(email, password, name_first, name_last):
 
     u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
 
-    #pID = 2 # member ID by default
-    #if u_id == 0:
-    #    pID = 1 # first user in the server so changed to owner       
-
     data['users'].append({
-        'u_id': u_id, 
-        #'p_id': pID, 
+        'u_id': u_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 
