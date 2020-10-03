@@ -10,6 +10,7 @@ from error import AccessError
 from other import clear
 import pytest
 
+@pytest.mark.skip(reason='function implementation not done yet')    
 # check that editing a message works
 def test_message_edit():
     
@@ -26,7 +27,7 @@ def test_message_edit():
     # TODO: update in iter2
     assert message_edit(test_user0['token'], message0_id, 'edited message') == {}
 
-
+@pytest.mark.skip(reason='function implementation not done yet')    
 # check that user1 cannot edit user0's message
 def test_message_edit_notusermsg():
 
@@ -43,8 +44,7 @@ def test_message_edit_notusermsg():
     message0_id = "user0's message"
     message_send(test_user0['token'], public_channel_id, message0_id)
     
-    #TODO: update in iter2
     # raise error if user1 tries to edit user0's message
-    # with pytest.raises(AccessError):
-    #     message_edit(test_user1['token'], message0_id, 'edited message')
-    pass
+    with pytest.raises(AccessError):
+        message_edit(test_user1['token'], message0_id, 'edited message')
+    
