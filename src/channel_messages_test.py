@@ -75,7 +75,7 @@ def initialisation():
 ##################################################################################################
 
 def test_channel_messages_100():
-    Benjamin, Ross, Alex, channel_id0, channel_id1, channel_id2, channel_id3, expected_messages0, expected_messages1, expected_messages2, expected_messages3 = initialisation()
+    Benjamin, _, _, channel_id0, _, _, _, expected_messages0, _, _, _ = initialisation()
     messages = channel_messages(Benjamin['token'], channel_id0, 0)
     assert messages['messages'] == expected_messages0
     assert messages['start'] == 0
