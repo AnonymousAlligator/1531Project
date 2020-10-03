@@ -9,7 +9,7 @@ def auth_login(email, password):
         if user['email'] == email:
             found_user = user
             flag = 1
-        if user['token'] != False:
+        if user['token'] != "False":
             raise InputError('You are already logged in')
 
     if flag == 0:
@@ -37,7 +37,7 @@ def auth_logout(token):
             if info == user:
                 #info['token'][token] = flag    Invalidates the user token
                 flag = True
-                user['token'] = False
+                user['token'] = "False"
                 break
     return {'is_success': flag}
 
