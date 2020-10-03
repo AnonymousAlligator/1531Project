@@ -1,40 +1,49 @@
-from other import data
+from other import data, check_token
 from remove_owner_helper import *
 import error
 
 def channel_invite(token, channel_id, u_id):
     # Check that the token is valid
+    inviter = check_token(token)
+
+    # Check if user to be added exists within database
+    invitee = {}
     for user in data['users']:
-        # Token is valid
-        if token == user['token']:
-            #Check if user to be added exists within database
-            for invitee in data['users']:
-                #If the user is valid
-                if u_id == invitee['u_id']:
-                    # Find the channel
-                    for channel in data['channels']:
-                        # If we find the channel..
-                        if channel_id == channel['id']:
-                            # Check to see if the user is part of that channel
-                            for member in channel['all_members']:
-                                if member['u_id'] == user['u_id']:
-                                    channel['all_members'].append({'u_id': invitee['u_id'], 
-                                                                    'name_first': invitee['name_first'], 
-                                                                    'name_last': invitee['name_last'],})
-                                    # Also if u_id is 0, then make them an owner
-                                    if u_id == 0:
-                                        channel['owner_members'].append({'u_id': invitee['u_id'],
-                                                                            'name_first': invitee['name_first'],
-                                                                            'name_last': invitee['name_last'],})
-                                    return {}
-                            #Access Error if the person inviting is not within the server
-                            raise error.AccessError('You can only invite people to channels you are apart of')    
-                    #Input Error if the channel doesn't exist
-                    raise error.InputError('Channel does not exist')
-            #Input Error if the user doesn't exist
-            raise error.InputError('User you are trying to invite does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+        if u_id == user['u_id']:
+            invitee = user
+    # Input Error if the user doesn't exist
+    if invitee == {}:
+        raise error.InputError('User you are trying to invite does not exist')
+
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    is_member = False
+    # Check to see if inviter is part of that channel
+    for member in target_channel['all_members']:
+        if member['u_id'] == inviter['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You can only invite people to channels you are apart of')  
+    
+    # Made it through all the checks so now we can add the invitee
+    target_channel['all_members'].append({'u_id': invitee['u_id'], 
+                                            'name_first': invitee['name_first'], 
+                                            'name_last': invitee['name_last'],})
+    # Also if u_id is 0, then make them an owner
+    if u_id == 0:
+        target_channel['owner_members'].append({'u_id': invitee['u_id'],
+                                                'name_first': invitee['name_first'],
+                                                'name_last': invitee['name_last'],})
+    return {}
 
 def channel_details(token, channel_id):
     # Check that the token is valid
