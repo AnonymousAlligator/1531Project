@@ -36,9 +36,21 @@ def test_channels_create_morethan20():
         channels_create(test_user0['token'], channel_name3, True)
 
 def test_channels_create_public():
+    clear()
+    test_user0 = create_one_test_user()
     # assert that public channel gets created - check channels_list_test
-    pass
+    assert channels_create(test_user0['token'], channel_name2, True) == 0
+    
 
 def test_channels_create_private():
+    clear()
+    test_user0 = create_one_test_user()
     # assert that private channel gets created - check channels_list_test
-    pass
+    assert channels_create(test_user0['token'], channel_name1, False) == 0
+
+def test_channels_create_invalidtoken():
+    clear()
+    test_user0 = create_one_test_user()
+    #access error if token is invalid
+    with pytest.raises(error.AccessError):
+        channels_create('Hello', channel_name1, True)
