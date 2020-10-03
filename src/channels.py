@@ -1,22 +1,23 @@
-from other import data
+from other import data, check_token
 import error
 
 def channels_list(token):
         
     #TODO: add in taimoor's user check
     # check for valid user
-    for u in data['users']:
-        for valid_token in user['tokens']:
-            if valid_token == token:
-                user = u
+    user = check_token(token)   
     
+    for user in data['users']:
+        if token == user['token']:
+            u_id = user['u_id']
+
     # list of channels the authorised user is part of
     channels_list = []                
 
     # get all channels info
     for channel in data['channels']: 
         for member_id in channel['all_members']:
-            if member_id == user['u_id']:
+            if member_id['u_id'] == u_id:
                 channel_info = {
                                 'channel_id': channel['id'],
                                 'name': channel['name']
@@ -30,18 +31,17 @@ def channels_listall(token):
 
     #TODO: add in taimoor's user check
     # check for valid user
-    for u in data['users']:
-        for valid_token in user['tokens']:
-            if valid_token == token:
-                user = u
-
+    user = check_token(token)   
+    
+    for user in data['users']:
+        if token == user['token']:
+            u_id = user['u_id']
     
     channels_listall = []
 
     for channel in data['channels']:
         # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
         # current assumption is that listall lists all public & private channels
-        if user['u_id'] in channel['all_members']:
             channel_info = {'channel_id': channel['id'],
                             'name': channel['name']}
             channels_listall.append(channel_info)
