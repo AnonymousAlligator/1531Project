@@ -51,7 +51,7 @@ def test_channel_addowner_already_owner():
 #Channel exists, token is adding themselves.
 def test_channel_addowner_self():
     clear()
-    user_0, user_1 = create_two_test_users() 
+    user_0 = create_one_test_user() 
     public_channel = channels_create(user_0['token'], "name", True)
     with pytest.raises(error.InputError):
         assert channel_addowner(user_0['token'], public_channel, user_0['u_id']) == {}
