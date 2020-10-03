@@ -51,6 +51,7 @@ Messages Functions
 message_send:
 -message_id is assigned in the ordder that messages are sent.
 -If multiple people in a channel send messages at the same time, the messages are sent in order of increasing u_ID.
+-no messages will be sent if the message has 0 characters. 
 
 message_remove:
 -After a message is sent, the message can be deleted at any point in time in the future (no time limit to delete it).

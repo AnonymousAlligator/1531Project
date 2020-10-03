@@ -14,13 +14,12 @@ def test_channels_listall_public():
     test_user0 = create_one_test_user()
     
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0['token'], "Public  Channel 0", True)
-    pub_channel0_id = pub_channel0['channel_id']
+    pub_channel0 = channels_create(test_user0['token'], "Public Channel 0", True)
 
     assert(channels_listall(test_user0['token']) == [
                                                     {
-                                                        "channel_id": pub_channel0_id,
-                                                        "name": pub_channel0['name']
+                                                        "channel_id": pub_channel0,
+                                                        "name": "Public Channel 0",
                                                     },
                                                 ])
 
@@ -32,12 +31,11 @@ def test_channels_listsall_private():
 
     # test_user0 creates 1 private channel
     priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
-    priv_channel0_id = priv_channel0['channel_id']
 
     assert(channels_listall(test_user0['token']) == [
                                                 {
-                                                    "channel_id": priv_channel0_id,
-                                                    "name": priv_channel0['name']
+                                                    "channel_id": priv_channel0,
+                                                    "name": "Private Channel 0",
                                                 },
                                             ])
 
@@ -48,21 +46,19 @@ def test_channels_listsall_both():
     test_user0 = create_one_test_user()
 
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0['token'], "Public  Channel 0", True)
-    pub_channel0_id = pub_channel0['channel_id']
+    pub_channel0 = channels_create(test_user0['token'], "Public Channel 0", True)
 
     # test_user0 creates 1 private channel
     priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
-    priv_channel0_id = priv_channel0['channel_id']
 
     assert(channels_listall(test_user0['token']) == [
                                             {
-                                                "channel_id": pub_channel0_id,
-                                                "name": pub_channel0['name']
+                                                "channel_id": pub_channel0,
+                                                "name": "Public Channel 0",
                                             },
                                             {
-                                                "channel_id": priv_channel0_id,
-                                                "name": priv_channel0['name']
+                                                "channel_id": priv_channel0,
+                                                "name": "Private Channel 0",
                                             },
                                         ])
 
@@ -75,36 +71,32 @@ def test_channels_listsall_many():
     # create multiple test channels
 
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0['token'], "Public  Channel 0", True)
-    pub_channel0_id = pub_channel0['channel_id']
+    pub_channel0 = channels_create(test_user0['token'], "Public Channel 0", True)
 
     # test_user0 creates 1 private channel
     priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
-    priv_channel0_id = priv_channel0['channel_id']
 
     # test_user1 creates 1 public channel
-    pub_channel1 = channels_create(test_user1['token'], "Public  Channel 1", True)
-    pub_channel1_id = pub_channel1['channel_id']
+    pub_channel1 = channels_create(test_user1['token'], "Public Channel 1", True)
 
     # test_user1 creates 1 private channel
     priv_channel1 = channels_create(test_user1['token'], "Private Channel 1", False)
-    priv_channel1_id = priv_channel1['channel_id']
 
-    assert(channels_listall(test_user0_token) == [
+    assert(channels_listall(test_user0['token']) == [
                                                 {
-                                                    "channel_id": pub_channel0_id,
-                                                    "name": pub_channel0['name']
+                                                    "channel_id": pub_channel0,
+                                                    "name": "Public Channel 0",
                                                 },
                                                 {
-                                                    "channel_id": priv_channel0_id,
-                                                    "name": priv_channel0['name']
+                                                    "channel_id": priv_channel0,
+                                                    "name": "Private Channel 0",
                                                 },
                                                 {
-                                                    "channel_id": pub_channel1_id,
-                                                    "name": pub_channel1['name']
+                                                    "channel_id": pub_channel1,
+                                                    "name": "Public Channel 1",
                                                 },
                                                 {
-                                                    "channel_id": priv_channel1_id,
-                                                    "name": priv_channel1['name']
+                                                    "channel_id": priv_channel1,
+                                                    "name": "Private Channel 1",
                                                 },
                                             ])
