@@ -20,12 +20,4 @@ def create_three_test_users():
         return test_user_0, test_user_1, test_user_3
 
 
-def create_one_test_public_channel():
-    pass
-
-def create_one_test_private_channel():
-    pass
-
-def create_both_test_channel_types():
-    pass
-
+# TODO: Potentially add channel helpers

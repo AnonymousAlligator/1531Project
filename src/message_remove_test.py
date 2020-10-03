@@ -7,7 +7,9 @@ from channel import channel_invite, channel_addowner
 from channels import channels_create
 from auth import auth_register
 from message import message_send, message_remove
-import error
+from test_helpers import create_three_test_users
+from error import InputError
+from other import clear
 import pytest
 
 Jeffo = auth_register("Jeffo@email.com", "a1b2c3", "Jeffo", "Jeff")
@@ -31,6 +33,10 @@ message_send(Jeffo['token'], 0, message4)
 message_remove(Jeffo['token'], 3)
 
 def test_message_remove_firstmessage():
+
+    clear()
+    test_user0, test_user1, test_user2 = create_three_test_users()
+
     assert message_remove(Jeffo['token'], 0) == {}
 
 def test_message_remove_ownerremove():
@@ -46,4 +52,4 @@ def test_message_remove_messagedoesnotbelongtouser():
 
 def test_message_remove_isnotowner():
     with pytest.raises(error.AccessError):
-        assert message_remove(Tom['token'], 0)       
+        assert message_remove(Tom['token'], 0)
