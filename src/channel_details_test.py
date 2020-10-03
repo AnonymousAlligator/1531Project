@@ -15,11 +15,11 @@ channel_id0 = channels_create(Benjamin['token'], "Channel0", True)  # ID = 0
 channel_id1 = channels_create(Ross['token'], "Channel1", False)     # ID = 1
 
 # Everyone is in channel 0, Benjamin is owner
-channel_invite(Ross['token'], channel_id0, Ross['u_id'])
-channel_invite(Alex['token'], channel_id0, Alex['u_id'])
+channel_invite(Benjamin['token'], channel_id0, Ross['u_id'])
+channel_invite(Benjamin['token'], channel_id0, Alex['u_id'])
 
 # Ross and Alex are in channel 1, Ross is owner
-channel_invite(Alex['token'], channel_id1, Alex['u_id'])
+channel_invite(Ross['token'], channel_id1, Alex['u_id'])
 ##################################################################################################
 
 def test_channel_details_public():

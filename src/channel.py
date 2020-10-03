@@ -17,7 +17,7 @@ def channel_invite(token, channel_id, u_id):
                         if channel_id == channel['id']:
                             # Check to see if the user is part of that channel
                             for member in channel['all_members']:
-                                if %member['u_id']% == user['u_id']:
+                                if member['u_id'] == user['u_id']:
                                     channel['all_members'].append({'u_id': invitee['u_id'], 
                                                                     'name_first': invitee['name_first'], 
                                                                     'name_last': invitee['name_last'],})
@@ -190,7 +190,7 @@ def channel_addowner(token, channel_id, u_id):
                 #If caller is an owner, we will give permision
                 elif caller_data[0] == owner['u_id']:
                    #If the user is not a member of the channel we raise error
-                    for member in channel['all members']:
+                    for member in channel['all_members']:
                         #If user is a member, we append details to the owner_members
                         if u_id == member['u_id']:
                             for users in data['users']:

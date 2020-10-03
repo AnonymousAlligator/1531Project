@@ -55,19 +55,19 @@ while i < 50:
     i += 1
 
 # Channel 0 will have 100 messages
-channel_invite(Ross['token'], channel_id0, Ross['u_id'])
-channel_invite(Alex['token'], channel_id0, Alex['u_id'])
+channel_invite(Benjamin['token'], channel_id0, Ross['u_id'])
+channel_invite(Benjamin['token'], channel_id0, Alex['u_id'])
 
 # Channel 1 will have 50 messages
-channel_invite(Ross['token'], channel_id1, Ross['u_id'])
-channel_invite(Alex['token'], channel_id1, Alex['u_id'])
+channel_invite(Benjamin['token'], channel_id1, Ross['u_id'])
+channel_invite(Benjamin['token'], channel_id1, Alex['u_id'])
 
 # Channel 2 will have 10 messages
-channel_invite(Ross['token'], channel_id2, Ross['u_id'])
-channel_invite(Alex['token'], channel_id2, Alex['u_id'])
+channel_invite(Benjamin['token'], channel_id2, Ross['u_id'])
+channel_invite(Benjamin['token'], channel_id2, Alex['u_id'])
 
 # Channel 3 used to test AccessError
-channel_invite(Alex['token'], channel_id3, Alex['u_id'])
+channel_invite(Ross['token'], channel_id3, Alex['u_id'])
 ##################################################################################################
 
 def test_channel_messages_100():
