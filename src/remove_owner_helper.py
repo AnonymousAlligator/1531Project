@@ -16,3 +16,10 @@ def find_with_uid(u_id):
             return(user)
     # If we are here then the token was invalid
     raise error.AccessError('The user ID does not exist')
+
+def check_member_of_channel(removed_person):
+    for channel in data['channels']:
+        for member in channel['all_members']:
+            if removed_person['u_id'] == member['u_id']:
+                return(member)
+        raise error.InputError('The person you are trying to add is not a member of this channel')
