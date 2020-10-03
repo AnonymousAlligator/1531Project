@@ -9,9 +9,9 @@ def test_channel_invite():
 
     clear()
 
-    zero_user = auth_register("user1@email.com", "hellothere", "Mike", "Pike")
+    zero_user = auth_register("user0@email.com", "hellothere", "Mike", "Pike")
     one_user = auth_register("user1@email.com", "overthere", "Like", "Kite")
-    two_user = auth_register("user1@email.com", "somewherethere", "Rite", "Lite")
+    two_user = auth_register("user2@email.com", "somewherethere", "Rite", "Lite")
 
     channels_create(zero_user['token'], "Chan1", "true") #0
     channels_create(one_user['token'], "Chan2", "true") #1 
