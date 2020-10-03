@@ -22,8 +22,8 @@ channel_leave:
 channel_join:
 -Creating a channel will automatically add the user as a member of the channel.
 
-channel_addowner:
-
+channel_invite:
+- If the channel is public, calling channel_invite will have the same effect as channel_join
 
 channel_removeowner:
 - If the user being removed is not a member of the channel, it will be treated as if they are not an owner.
@@ -46,7 +46,10 @@ channels_create:
 ######################################
 Messages Functions
 
+-The channel_id will always be valid
+
 message_send:
+-message_id is assigned in the ordder that messages are sent.
 -If multiple people in a channel send messages at the same time, the messages are sent in order of increasing u_ID.
 
 message_remove:
