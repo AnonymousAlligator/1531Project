@@ -34,13 +34,24 @@ channel_addowner(user_0['token'], channel_0, user_1['u_id'])
 channel_addowner(user_0['token'], channel_0, user_2['u_id'])
 
 #Creating second public channel
-channel_1 = channels_create(user_1['token'], "Single owner", True) #returns channel ID_0
+channel_1 = channels_create(user_1['token'], "Multiple owner", True) #returns channel ID_0
+channel_join(user_2['token'], channel_1)
+channel_addowner(user_1['token'], channel_1, user_2['u_id'])
+
+#Creating third public channel
+channel_3 = channels_create(user_1['token'], "Single owner,two mem", True) #returns channel ID_0
 channel_join(user_2['token'], channel_1)
 
-#data files fro private channel checks
-channel_2 = channels_create(user_0['token'], "name", False) #returns channel ID_0
-channel_invite(user_0['token'], channel_2, user_1['u_id'])
+#Creating fourth public channel
+channel_4 = channels_create(user_1['token'], "Single owner,two mem", True) #returns channel ID_0
 
+#data files for private channel checks
+channel_2 = channels_create(user_1['token'], "name", False) #returns channel ID_0
+channel_invite(user_1['token'], channel_2, user_2['u_id'])
+channel_addowner(user_1['token'], channel_2, user_2['u_id'])
+
+#data files for private channel checks
+channel_5 = channels_create(user_0['token'], "name", False) #returns channel ID_0
 ########################################################################################
 def test_channel_removeowner_success():
     token = user_0['token']
@@ -48,7 +59,7 @@ def test_channel_removeowner_success():
     channel_id = channel_0
     assert channel_removeowner(token, channel_id, u_id) == {}   
 
-#channel does not exist
+#Channel does not exist
 def test_channel_removeowner_invalid_channel():
     token = user_0['token']
     u_id = user_2['u_id']
@@ -80,46 +91,43 @@ def test_channel_removeowner_niether_owner():
     with pytest.raises(error.AccessError):
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
-#Owner removing themselves as owner when there is no other owner
-def test_channel_removeowner_only_owner():
-    token = user_1['token']
-    u_id = user_1['u_id']
-    channel_id = channel_1    
-    with pytest.raises(error.InputError):
-        assert channel_removeowner(token, channel_id, u_id) == {}   
-
 #Owner removing themselves success
 def test_channel_removeowner_owner_success():
-    #Channel addowner called to make all members owner
-    channel_addowner(user_1['token'], channel_1, user_2['u_id'])
     token = user_1['token']
     u_id = user_1['u_id']
     channel_id = channel_1    
     assert channel_removeowner(token, channel_id, u_id) == {}    
 
-#Owner removing themselves as owner when there is no other member in the channel
-def test_channel_removeowner_only_member():
-    #remove user_1 from channel_1 so that user_0 is the only person remaining
-    channel_leave(user_1['token'], channel_1)
+#Owner removing themselves as owner when there is no other owner
+def test_channel_removeowner_only_owner():
     token = user_1['token']
     u_id = user_1['u_id']
-    channel_id = channel_1
+    channel_id = channel_3    
     with pytest.raises(error.InputError):
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
-#Attempting to remove owner when they are part of private channel (channel_1)
-def test_channel_removeowner_invited():
-    token = user_0['token']
+
+#Owner removing themselves as owner when there is no other member in the channel
+def test_channel_removeowner_only_member():
+    token = user_1['token']
     u_id = user_1['u_id']
+    channel_id = channel_4
+    with pytest.raises(error.InputError):
+        assert channel_removeowner(token, channel_id, u_id) == {}   
+
+#Attempting to remove owner when person is part of private channel (channel_1)
+def test_channel_removeowner_invited():
+    token = user_1['token']
+    u_id = user_2['u_id']
     channel_id = channel_2
     assert channel_removeowner(token, channel_id, u_id) == {}
 
-#attempting to remove owner when they are NOT part of private channel(channel_1)
-def test_channel_addowner_not_invited():
+#attempting to remove owner when person is NOT part of private channel(channel_1)
+def test_channel_removeowner_not_invited():
     token = user_0['token']
     u_id = user_3['u_id']
-    channel_id = channel_2
+    channel_id = channel_5
     with pytest.raises(error.InputError):
-        assert channel_addowner(token, channel_id, u_id) == {}
+        assert channel_removeowner(token, channel_id, u_id) == {}
  
 
