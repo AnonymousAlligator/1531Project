@@ -25,8 +25,8 @@ def channel_invite(token, channel_id, u_id):
         #Input Error if the channel doesn't exist
         raise error.InputError('Channel does not exist')
 
-    is_member = False
     # Check to see if inviter is part of that channel
+    is_member = False
     for member in target_channel['all_members']:
         if member['u_id'] == inviter['u_id']:
             is_member = True
@@ -59,8 +59,8 @@ def channel_details(token, channel_id):
         #Input Error if the channel doesn't exist
         raise error.InputError('Channel does not exist')
 
-    is_member = False
     # Check to see if inviter is part of that channel
+    is_member = False
     for member in target_channel['all_members']:
         if member['u_id'] == caller['u_id']:
             is_member = True
@@ -69,16 +69,16 @@ def channel_details(token, channel_id):
         raise error.AccessError('You are not part of the channel you want details about') 
 
     # Made it through all checks so now we start building the return
-    channel_name = channel['name']
+    channel_name = target_channel['name']
     # Append owner details
     channel_owners = []
-    for owner in channel['owner_members']:
+    for owner in target_channel['owner_members']:
         channel_owners.append({'u_id': owner['u_id'],
                                 'name_first': owner['name_first'],
                                 'name_last': owner['name_last'],})
     # Append member details
     channel_members = []
-    for member in channel['all_members']:
+    for member in target_channel['all_members']:
         channel_members.append({'u_id': member['u_id'],
                                 'name_first': member['name_first'],
                                 'name_last': member['name_last'],})
@@ -91,9 +91,29 @@ def channel_details(token, channel_id):
 
 def channel_messages(token, channel_id, start):
     # Check that the token is valid
-    for user in data['users']:
-        # Token is valid
-        if token == user['token']:
+    caller = check_token(token)
+    
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    # Check to see if inviter is part of that channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You are not part of the channel you want details about')
+
+
+    
             # Find the channel
             for channel in data['channels']:
                 # If we find the channel..
