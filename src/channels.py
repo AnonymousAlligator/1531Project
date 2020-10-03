@@ -66,3 +66,4 @@ def channels_create(token, name, is_public):
                                          'messages': [],
                                         })
                 return channel_id
+        raise error.AccessError('Invalid token recieved')
