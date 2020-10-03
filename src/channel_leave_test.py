@@ -11,7 +11,7 @@ Benjamin = auth_register("Benjamin@email.com", "password", "Benjamin", "Long")  
 Ross = auth_register("Ross@email.com", "password", "Ross", "Short")             # ID = 1
 Alex = auth_register("Alex@email.com", "password", "Alex", "Smith")             # ID = 2
 
-channel_id0 =channels_create(Benjamin['token'], "Channel0", True)  # ID = 0
+channel_id0 = channels_create(Benjamin['token'], "Channel0", True)  # ID = 0
 channel_id1 = channels_create(Ross['token'], "Channel1", True)     # ID = 1
 
 # Everyone is in channel 0

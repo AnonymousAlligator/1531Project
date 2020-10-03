@@ -17,11 +17,12 @@ channel_id0 = channels_create(Benjamin['token'], "Channel0", True)     # ID = 0
 i = 0
 expected_messages0 = []
 while i < 50:
-    data['channels'][0]['messages'].insert(0, {'message_id': i,'u_id': Benjamin['u_id'],'message': "hi",'time_created': i + 200})
+    message = {'message_id': i,'u_id': Benjamin['u_id'],'message': "hi",'time_created': i + 200}
+    data['channels'][channel_id0]['messages'].insert(0, message)
     i += 1
 while i < 100:
     message = {'message_id': i,'u_id': Benjamin['u_id'],'message': "bye",'time_created': i + 200}
-    data['channels'][0]['messages'].insert(0, message)
+    data['channels'][channel_id0]['messages'].insert(0, message)
     expected_messages0.insert(0, message)
     i += 1
 
@@ -31,7 +32,7 @@ i = 0
 expected_messages1 = []
 while i < 50:
     message = {'message_id': i,'u_id': 0,'message': "hello",'time_created': i + 200}
-    data['channels'][1]['messages'].insert(0, message)
+    data['channels'][channel_id1]['messages'].insert(0, message)
     expected_messages1.insert(0, message)
     i += 1
 
@@ -41,7 +42,7 @@ i = 0
 expected_messages2 = []
 while i < 10:
     message = {'message_id': i,'u_id': 0,'message': "why",'time_created': i + 200}
-    data['channels'][2]['messages'].insert(0, message)
+    data['channels'][channel_id2]['messages'].insert(0, message)
     expected_messages2.insert(0, message)
     i += 1
 expected_messages3 = [expected_messages2[9]]
@@ -51,7 +52,7 @@ channel_id3 = channels_create(Ross['token'], "Channel3", True)        # ID = 3
 i = 0
 while i < 50:
     message = {'message_id': i,'u_id': 1,'message': "why",'time_created': i + 200}
-    data['channels'][3]['messages'].insert(0, message)
+    data['channels'][channel_id3]['messages'].insert(0, message)
     i += 1
 
 # Channel 0 will have 100 messages
