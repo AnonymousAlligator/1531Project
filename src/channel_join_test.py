@@ -17,7 +17,7 @@ channel_id0 = channels_create(Benjamin['token'], "Channel0", True)  # ID = 0
 channel_id1 = channels_create(Ross['token'], "Channel1", False)     # ID = 1
 
 # Ross and Alex are in channel 1 but not Benjamin
-channel_invite(Alex['token'], channel_id1, Alex['u_id'])
+channel_invite(Ross['token'], channel_id1, Alex['u_id'])
 ##################################################################################################
 
 def test_channel_join_success():
