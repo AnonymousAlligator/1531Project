@@ -4,6 +4,7 @@ from auth import auth_register
 from channel import channel_details, channel_addowner, channel_invite, channel_join
 from channels import channels_create
 from test_helpers import create_one_test_user, create_two_test_users
+from other import clear
 
 
 #Setting up data files:
