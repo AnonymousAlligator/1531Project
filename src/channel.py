@@ -190,7 +190,7 @@ def channel_addowner(token, channel_id, u_id):
                 #If caller is an owner, we will give permision
                 elif caller_data[0] == owner['u_id']:
                    #If the user is not a member of the channel we raise error
-                    for member in channel['all members']:
+                    for member in channel['all_members']:
                         #If user is a member, we append details to the owner_members
                         if u_id == member['u_id']:
                             for users in data['users']:
