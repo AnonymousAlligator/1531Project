@@ -207,29 +207,56 @@ def channel_join(token, channel_id):
         return {}
 
 def channel_addowner(token, channel_id, u_id):
+    # Check that the token is valid
     caller = check_token(token)
+    # Checks that user is part of the flockr
     added_person = find_with_uid(u_id)
+
+    # Find the channel
+    target_channel = {}
     for channel in data['channels']:
         if channel_id == channel['id']:
-            #Checks that the caller is an owner
-            for owner in channel['owner_members']:
-                #If the caller is trying to add themselves as owner we raise error
-                if caller['u_id'] == owner['u_id'] and added_person['u_id'] == owner['u_id']:
-                    raise error.InputError('You are already an owner of this channel.')
-                #If caller is an owner, we will give permision
-                elif caller['u_id'] == owner['u_id']:
-                   #If the user is not a member of the channel we raise error
-                    for member in channel['all_members']:
-                        #If user is a member, we append details to the owner_members
-                        if added_person['u_id'] == member['u_id']:
-                            for owner in channel['owner_members']:
-                                if added_person['u_id'] == owner['u_id']:
-                                    raise error.InputError('The person you are trying to make owner is already an owner') 
-                            channel['owner_members'].append({'u_id' : added_person['u_id'], 'name_first': added_person['name_first'], 'name_last':added_person['name_last'],})
-                            return {}
-                    raise error.InputError('The member you are trying to add is not a member of the channel')
-            raise error.AccessError('You are not an owner of the flockr and cannot add owners')
-    raise error.InputError('The channel you are trying to join does not exists')
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        # Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+    
+    # Check to see if caller is an owner
+    is_owner = False
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == caller['u_id']:
+            is_owner = True
+    # Access Error if the person inviting is not within the server
+    if is_owner == False:
+        raise error.AccessError('You are not an owner of the channel and cannot add owners')
+
+    # We know the caller is an owner, now we see if they are adding themselves as owner
+    if added_person['u_id'] == caller['u_id']:
+        raise error.InputError('You are already an owner of this channel.')
+        
+    # If we are here then we can proceed to check if the person to be promoted is in the channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if added_person['u_id'] == member['u_id']:
+            is_member = True
+    # Input Error if the user doesn't exist
+    if is_member == False:
+        raise error.InputError('The member you are trying to add is not a member of the channel')
+    
+    # We now check if the person to be promoted is already and owner
+    is_already_owner = False
+    for owner in target_channel['owner_members']:
+        if added_person['u_id'] == owner['u_id']:
+            is_already_owner = True
+    if is_already_owner == True:
+        raise error.InputError('The person you are trying to make owner is already an owner')
+
+    # We can now promote the user to owner
+    target_channel['owner_members'].append({'u_id' : added_person['u_id'], 
+                                            'name_first': added_person['name_first'], 
+                                            'name_last':added_person['name_last'],})
+    return {}
 
 def channel_removeowner(token, channel_id, u_id):
     caller = check_token(token)
