@@ -39,7 +39,7 @@ channel_join(user_2['token'], channel_1)
 
 #data files fro private channel checks
 channel_2 = channels_create(user_0['token'], "name", False) #returns channel ID_0
-channel_invite(user_0['token'], channel_2, user_1['u_id'])\
+channel_invite(user_0['token'], channel_2, user_1['u_id'])
 
 ########################################################################################
 def test_channel_removeowner_success():
@@ -91,7 +91,7 @@ def test_channel_removeowner_only_owner():
 #Owner removing themselves success
 def test_channel_removeowner_owner_success():
     #Channel addowner called to make all members owner
-    channel_addowner(user_1['token'], channel_1, user_2['i_id]'])
+    channel_addowner(user_1['token'], channel_1, user_2['u_id'])
     token = user_1['token']
     u_id = user_1['u_id']
     channel_id = channel_1    
@@ -99,8 +99,8 @@ def test_channel_removeowner_owner_success():
 
 #Owner removing themselves as owner when there is no other member in the channel
 def test_channel_removeowner_only_member():
-    #remove user_2 from channel_1 so that user_1 is the only person remaining
-    channel_leave(user_2['u_id'], channel_1)
+    #remove user_1 from channel_1 so that user_0 is the only person remaining
+    channel_leave(user_1['token'], channel_1)
     token = user_1['token']
     u_id = user_1['u_id']
     channel_id = channel_1
