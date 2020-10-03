@@ -62,6 +62,13 @@ def test_invalid_format_4():
     with pytest.raises(InputError):
         auth_register("eeeemail", "iamsotiredloool", "Nadine", "Ross")
 
+def test_invalid_format_5():
+    
+    clear()
+    #When email is empty
+    with pytest.raises(InputError):
+        auth_register(" ", "iamsotiredloool", "Nadine", "Ross")
+
 def test_firstname_too_long():
     
     clear()
@@ -72,14 +79,14 @@ def test_firstname_too_long():
 def test_firstname_too_short():
     
     clear()
-    # When the first name is too long
+    # When the first name is too short
     with pytest.raises(InputError):
         auth_register("sample@email.com", "harrypotter", "", "Vic")
 
 def test_firstname_empty_space():
     
     clear()
-    # When the first name is too long
+    # When the first name is empty
     with pytest.raises(InputError):
         auth_register("sample@email.com", "harrypotter", "        ", "Vic")
 
@@ -94,7 +101,7 @@ def test_lastname_too_long():
 def test_lastname_too_short():
     
     clear()
-    # When the first name is too long
+    # When the last name is too short
     with pytest.raises(InputError):
         auth_register("sample@email.com", "harrypotter", "nottoomanychars", "")
 
@@ -102,7 +109,7 @@ def test_lastname_too_short():
 def test_lastname_empty_space():
     
     clear()
-    # When the first name is too long
+    # When thelast name is empty
     with pytest.raises(InputError):
         auth_register("sample@email.com", "harrypotter", "randomfirstname", "        ")
 
