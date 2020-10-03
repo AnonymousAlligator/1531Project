@@ -1,40 +1,65 @@
 from auth import auth_register
-from channel import channel_invite
+from channel import channel_invite, channel_join
 from channels import channels_create
 from error import InputError, AccessError
+from test_helpers import create_one_test_user, create_two_test_users, create_three_test_users
 from other import clear
 import pytest
 
-def test_channel_invite():
 
+
+#Owner inside channel inviting user
+def test_channel_invite_owner_pass():
     clear()
+    user_0, user_1 = create_two_test_users()
+    channel = channels_create(user_0['token'], "name", True)
+    assert channel_invite(user_0['token'], channel, user_1['u_id']) == {}
 
-    zero_user = auth_register("user0@email.com", "hellothere", "Mike", "Pike")
-    one_user = auth_register("user1@email.com", "overthere", "Like", "Kite")
-    two_user = auth_register("user2@email.com", "somewherethere", "Rite", "Lite")
+#Member inside channel inviting user
+def test_channel_invite_member_pass():
+    clear()
+    user_0, user_1, user_2 = create_three_test_users()
+    channel = channels_create(user_0['token'], "name", True)
+    channel_join(user_1['token'], channel)
+    assert channel_invite(user_0['token'], channel, user_2['u_id']) == {}
 
-    channels_create(zero_user['token'], "Chan1", "true") #0
-    channels_create(one_user['token'], "Chan2", "true") #1 
-    channels_create(two_user['token'], "Chan3", "true") #2
-
-    # test valid channels
-    assert channel_invite(zero_user['token'], 0, 2) == {} # invites user 2 to channel 0
-    assert channel_invite(one_user['token'], 1, 0) == {} # invites user 0 to channel 1
-    assert channel_invite(two_user['token'], 2, 1) == {} # invites user 1 to channel 2
-
-    # Test bad token
-    with pytest.raises(AccessError):
-        channel_invite(two_user['token'], 1, 0) 
-
-    # Test invalid channel
+# Test invalid channel
+def test_channel_invite_invalid_channel():
+    clear()
+    user_0, user_1 = create_two_test_users()
+    channel = 4
     with pytest.raises(InputError):
-        channel_invite(zero_user['token'], 9876, 2) 
+        assert channel_invite(user_0['token'], channel, user_1['token']) 
 
-    # Test invalid uID
+# Invitee does not exist as a user
+def test_channel_invite_invalid_u_id():
+    clear()
+    user_0 = create_one_test_user()
+    channel = channels_create(user_0['token'], "name", True)
     with pytest.raises(InputError):
-        channel_invite(zero_user['token'], 0, 17) 
+        assert channel_invite(user_0['token'], channel, 17) 
 
-    # Test when user inviting to a channel is not part of that channel themself
+# Inviter does not exist as a user
+def test_channel_invite_invalid_caller():
+    clear()
+    user_0 = create_one_test_user()
+    channel = channels_create(user_0['token'], "name", True)
     with pytest.raises(AccessError):
-        channel_invite(two_user['token'], 1, 0)
-    
+        assert channel_invite(user_1['token'], channel, user_0) 
+
+#Inviter not member of channel
+def test_channel_invite_inviter_not_member():
+    clear()
+    user_0, user_1, user_3 = create_three_test_users()
+    channel = channels_create(user_0['token'], "name", True)
+    with pytest.raises(AccessError):
+        assert channel_invite(user_1['token'], channel, user_3['token'])
+
+#Invited person is already an a member
+def test_channel_person_already_member():
+    clear()
+    user_0, user_1 = create_two_test_users()
+    channel = channels_create(user_0['token'], "name", True)
+    channel_join(user_1['token'], channel)
+    with pytest.raises(InputError):
+        assert channel_invite(user_0['token'], channel, user_1['token'])
