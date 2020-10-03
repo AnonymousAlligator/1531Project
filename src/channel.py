@@ -47,42 +47,47 @@ def channel_invite(token, channel_id, u_id):
 
 def channel_details(token, channel_id):
     # Check that the token is valid
-    for user in data['users']:
-        # Token is valid
-        if token == user['token']:
-            # Find the channel
-            for channel in data['channels']:
-                # If we find the channel..
-                if channel_id == channel['id']:
-                    # Check to see if the user is part of that channel
-                    for member in channel['all_members']:
-                        if member['u_id'] == user['u_id']:
-                            # Store the name of the channel
-                            channel_name = channel['name']
-                            # Look for each owner's details in the user data field by referenceing the u_id
-                            channel_owners = []
-                            for owner in channel['owner_members']:
-                                if user['u_id'] == owner['u_id']:
-                                    channel_owners.append({'u_id': owner['u_id'],
-                                                            'name_first': owner['name_first'],
-                                                            'name_last': owner['name_last'],})
-                            # Look for each members details in the user data field by referenceing the u_id
-                            channel_members = []
-                            for member in channel['all_members']:
-                                if user['u_id'] == member['u_id']:
-                                    channel_members.append({'u_id': member['u_id'],
-                                                            'name_first': member['name_first'],
-                                                            'name_last': member['name_last'],})
-                            return {'name': channel_name,
-                                    'owner_members': channel_owners,
-                                    'all_members': channel_members,
-                                    }
-                    # If we are here then the user isnt in the channel
-                    raise error.AccessError('You are not part of the channel you want details about')
-            # If we are here then that means the channel id couldnt be found
-            raise error.InputError('The channel you have entered does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+    caller = check_token(token)
+    
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    is_member = False
+    # Check to see if inviter is part of that channel
+    for member in target_channel['all_members']:
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You are not part of the channel you want details about') 
+
+    # Made it through all checks so now we start building the return
+    channel_name = channel['name']
+    # Append owner details
+    channel_owners = []
+    for owner in channel['owner_members']:
+        channel_owners.append({'u_id': owner['u_id'],
+                                'name_first': owner['name_first'],
+                                'name_last': owner['name_last'],})
+    # Append member details
+    channel_members = []
+    for member in channel['all_members']:
+        channel_members.append({'u_id': member['u_id'],
+                                'name_first': member['name_first'],
+                                'name_last': member['name_last'],})
+    
+    return {'name': channel_name,
+            'owner_members': channel_owners,
+            'all_members': channel_members,
+            }
+
 
 def channel_messages(token, channel_id, start):
     # Check that the token is valid
