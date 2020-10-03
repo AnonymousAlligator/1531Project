@@ -1,31 +1,92 @@
 '''
-Query String returns the collection of messages 
+Given a query string, return a collection of messages in all of the channels that the user has joined that match the query
 '''
 
 from channel import channel_invite
 from channels import channels_create
 from auth import auth_register
 from message import message_send
-from other import search
-import error
+from test_helpers import create_one_test_user
+from error import AccessError, InputError
+from other import clear, search
 import pytest
 
-Jeffo = auth_register("JeffoD@email.com", "a1b2c3", "Jeffo", "Jeff")
-channels_create(Jeffo['token'], "Main Channel", True)
-channel_invite(Jeffo['token'], 0, 0)
-message1 = "Let's geddit"
-message_send(Jeffo['token'], 0, message1)
-message2 = "Shut up rat"
-message_send(Jeffo['token'], 0, message2)
-message3 = "Mb lmao"
-message_send(Jeffo['token'], 0, message3)
-message4 = "Shut up ye"
-message_send(Jeffo['token'], 0, message4)
+# check search for existing string
+def test_search_single():
+    
+    clear()
+    test_user0 = create_one_test_user()
 
+    # test_user0 creates test channel
+    channels_create(test_user0['token'], "Main Channel", True)
+    
+    # test_user0 sends message to test channel
+    message_send(test_user0['token'], 0, "Let's geddit")
 
-def search_onestring():
-    assert search(Jeffo['token'], "Let's") == "Let's geddit"    
+    #TODO update in iter2    
+    assert search(test_user0['token'], "Let's") == {
+        'messages': [
+            {
+                'message_id': 1,
+                'u_id': 1,
+                'message': 'Hello world',
+                'time_created': 1582426789,
+            }
+        ],
+    }
 
-def search_multiplestring():
-    assert search(Jeffo['token'], "Shut") == "Shut up rat", "Shut up ye"
+    # assert search(test_user0['token'], "Let's") == "Let's geddit"    
+
+# check for returning multiple strings
+def test_search_multiple():
+
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates test channel
+    channels_create(test_user0['token'], "Main Channel", True)
+    
+    # test_user0 sends 2 messages to test channel
+    message_send(test_user0['token'], 0, "Let's geddit")
+    message_send(test_user0['token'], 0, "Let's go")
+
+    #TODO update in iter2    
+    assert search(test_user0['token'], "Let's") == {
+        'messages': [
+            {
+                'message_id': 1,
+                'u_id': 1,
+                'message': 'Hello world',
+                'time_created': 1582426789,
+            }
+        ],
+    }
+    
+    # assert search(test_user0['token'], "Let's") == "Let's geddit", "Let's go"
+
+# check for string that doesn't exist
+def test_search_multiplestring():
+
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates test channel
+    channels_create(test_user0['token'], "Main Channel", True)
+    
+    # test_user0 sends 2 messages to test channel
+    message_send(test_user0['token'], 0, "Let's geddit")
+    message_send(test_user0['token'], 0, "Let's go")
+
+    #TODO update in iter2    
+    assert search(test_user0['token'], "ahahhaaha") == {
+        'messages': [
+            {
+                'message_id': 1,
+                'u_id': 1,
+                'message': 'Hello world',
+                'time_created': 1582426789,
+            }
+        ],
+    }
+    # assert search(test_user0['token'], "ahahhaaha") == {}
 
