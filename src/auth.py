@@ -48,8 +48,8 @@ def auth_register(email, password, name_first, name_last):
     if not re.search(email_match, email): # If it returns FALSE
         raise InputError('Entered email is not valid')
 
-    first_name_length= len(name_first)
-    last_name_length= len(name_last)
+    first_name_length = len(name_first.strip())
+    last_name_length = len(name_last.strip())
 
     # First name doesn't contain at least 1 character
     if len(name_first) < 1:
