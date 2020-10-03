@@ -30,8 +30,8 @@ channel_invite(user_0['token'], channel_0, user_3['u_id'])
 channel_invite(user_0['token'], channel_0, user_4['u_id'])
 channel_invite(user_0['token'], channel_0, user_5['u_id'])
 
-channel_addowner(user_0['token'], channel_0, user_1['i_id]'])
-channel_addowner(user_0['token'], channel_0, user_2['i_id]'])
+channel_addowner(user_0['token'], channel_0, user_1['u_id'])
+channel_addowner(user_0['token'], channel_0, user_2['u_id'])
 
 #Creating second public channel
 channel_1 = channels_create(user_1['token'], "Single owner", True) #returns channel ID_0
@@ -65,7 +65,7 @@ def test_channel_removeowner_caller_not_owner():
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
 #attempting to remove owner when the person called is not an owner
-def channel_removeowner_not_owner():
+def test_channel_removeowner_not_owner():
     token = user_0['token']
     u_id = user_3['u_id']
     channel_id = channel_0
@@ -73,7 +73,7 @@ def channel_removeowner_not_owner():
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
 #attempting to remove owner when neither caller or person called is owner
-def channel_removeowner_niether_owner():
+def test_channel_removeowner_niether_owner():
     token = user_3['token']
     u_id = user_4['u_id']
     channel_id = channel_0
@@ -81,7 +81,7 @@ def channel_removeowner_niether_owner():
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
 #Owner removing themselves as owner when there is no other owner
-def channel_removeowner_only_owner():
+def test_channel_removeowner_only_owner():
     token = user_1['token']
     u_id = user_1['u_id']
     channel_id = channel_1    
@@ -89,7 +89,7 @@ def channel_removeowner_only_owner():
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
 #Owner removing themselves success
-def channel_removeowner_owner_success():
+def test_channel_removeowner_owner_success():
     #Channel addowner called to make all members owner
     channel_addowner(user_1['token'], channel_1, user_2['i_id]'])
     token = user_1['token']
@@ -98,7 +98,7 @@ def channel_removeowner_owner_success():
     assert channel_removeowner(token, channel_id, u_id) == {}    
 
 #Owner removing themselves as owner when there is no other member in the channel
-def channel_removeowner_only_member():
+def test_channel_removeowner_only_member():
     #remove user_2 from channel_1 so that user_1 is the only person remaining
     channel_leave(user_2['u_id'], channel_1)
     token = user_1['token']
@@ -108,7 +108,7 @@ def channel_removeowner_only_member():
         assert channel_removeowner(token, channel_id, u_id) == {}   
 
 #Attempting to remove owner when they are part of private channel (channel_1)
-def channel_removeowner_invited():
+def test_channel_removeowner_invited():
     token = user_0['token']
     u_id = user_1['u_id']
     channel_id = channel_2
