@@ -48,11 +48,11 @@ def test_channel_removeowner_not_owner():
     public_channel = channels_create(user_0['token'], "name", True)
     channel_join(user_1['token'], public_channel) 
     channel_join(user_2['token'], public_channel) 
-    with pytest.raises(error.AccessError):
+    with pytest.raises(error.InputError):
         assert channel_removeowner(user_0['token'], public_channel, user_2['u_id']) == {}   
 
 #attempting to remove owner when neither caller or person called is owner
-def test_channel_removeowner_niether_owner():
+def test_channel_removeowner_neither_owner():
     clear()
     user_0, user_1, user_2 = create_three_test_users() 
     public_channel = channels_create(user_0['token'], "name", True)
