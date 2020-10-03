@@ -193,37 +193,39 @@ def channel_join(token, channel_id):
     raise error.AccessError('Invalid token recieved')
 
 def channel_addowner(token, channel_id, u_id):
-    caller_data = find_with_token(token)
+    caller = find_with_token(token)
+    added_person = find_with_uid(u_id)
     for channel in data['channels']:
         if channel_id == channel['id']:
             #Checks that the caller is an owner
             for owner in channel['owner_members']:
                 #If the caller is trying to add themselves as owner we raise error
-                if caller_data[0] == owner['u_id'] and u_id == owner['u_id']:
+                if caller['u_id'] == owner['u_id'] and added_person['u_id'] == owner['u_id']:
                     raise error.InputError('You are already an owner of this channel.')
                 #If caller is an owner, we will give permision
-                elif caller_data[0] == owner['u_id']:
+                elif caller['u_id'] == owner['u_id']:
                    #If the user is not a member of the channel we raise error
                     for member in channel['all_members']:
                         #If user is a member, we append details to the owner_members
-                        if u_id == member['u_id']:
-                            for users in data['users']:
-                                if u_id == users['u_id']:
-                                    channel['owner_members'].append({'u_id' : caller_data[0], 'name_first': caller_data[1], 'name_last':caller_data[2],})
-                                    return {}
+                        if added_person['u_id'] == member['u_id']:
+                            for owner in channel['owner_members']:
+                                if added_person['u_id'] == owner['owner_members']
+                                    raise error.InputError('The person you are trying to make owner is already an owner') 
+                            channel['owner_members'].append({'u_id' : added_person['uid'], 'name_first': added_person['name_first'], 'name_last':added_person['name_last'],})
+                            return {}
                     raise error.InputError('The member you are trying to add is not a member of the channel')
             raise error.AccessError('You are not an owner of the flockr and cannot add owners')
     raise error.InputError('The channel you are trying to join does not exists')
 
 def channel_removeowner(token, channel_id, u_id):
-    caller_data = find_with_token(token)
-    removed_person_data = find_with_uid(u_id)
+    caller = check_token(token)
+    removed_person = find_with_uid(u_id)
     #Check if channel exists
     for channel in data['channels']:
         if channel_id == channel['id']:
             #Checks to see if the caller is an owner of the channel
                 for owner in channel['owner_members']:
-                    if caller_data[0] == owner['u_id']:
+                    if caller['u_id'] == owner['u_id']:
                         #Checks if the caller is an owner
                         if owner['u_id'] == u_id:
                             #if they are the last person in the channel, we raise an error. If not we remove them as owner
@@ -232,12 +234,12 @@ def channel_removeowner(token, channel_id, u_id):
                             elif len(channel['owner_members']) == 1:
                                 raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
                             else: 
-                                remove_helper_func(channel_id, removed_person_data)
+                                remove_helper_func(channel_id, removed_person)
                                 return {}
                         #If the caller is not removing himself, we check if the user is a member of the channel
                         for owner in channel['owner_members']:
                             if u_id == owner['u_id']:
-                                remove_helper_func(channel_id, removed_person_data)
+                                remove_helper_func(channel_id, removed_person)
                                 return {}
                         raise error.InputError('The member you are trying to remove is not an owner of the channel')
                 raise error.AccessError('You are not an owner of the channel and cannot remove owners')
