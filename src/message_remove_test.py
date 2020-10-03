@@ -52,7 +52,7 @@ def test_message_remove_works_private():
 def test_message_remove_works_more_people_channel():
     
     clear()
-    test_user0, test_user1 = create_two_test_user()
+    test_user0, test_user1 = create_two_test_users()
 
     # test_user0 creates 1 public channel
     public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
