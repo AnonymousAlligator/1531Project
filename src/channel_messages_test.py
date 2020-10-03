@@ -90,7 +90,7 @@ def test_channel_messages_10():
 
 def test_channel_messages_no_more():
     messages = channel_messages(Benjamin['token'], channel_id2, 9)
-    assert messages['messages'] == 'why'
+    assert messages['messages'] == expected_messages3
     assert messages['start'] == 9
     assert messages['end'] == -1
 

@@ -1,85 +1,119 @@
-from other import data
+from other import data, check_token
 from remove_owner_helper import *
 import error
 
 def channel_invite(token, channel_id, u_id):
     # Check that the token is valid
+    inviter = check_token(token)
+
+    # Check if user to be added exists within database
+    invitee = {}
     for user in data['users']:
-        # Token is valid
-        if token == user['token']:
-            #Check if user to be added exists within database
-            for invitee in data['users']:
-                #If the user is valid
-                if u_id == invitee['u_id']:
-                    # Find the channel
-                    for channel in data['channels']:
-                        # If we find the channel..
-                        if channel_id == channel['id']:
-                            # Check to see if the user is part of that channel
-                            for member in channel['all_members']:
-                                if member['u_id'] == user['u_id']:
-                                    channel['all_members'].append({'u_id': invitee['u_id'], 
-                                                                    'name_first': invitee['name_first'], 
-                                                                    'name_last': invitee['name_last'],})
-                                    # Also if u_id is 0, then make them an owner
-                                    if u_id == 0:
-                                        channel['owner_members'].append({'u_id': invitee['u_id'],
-                                                                            'name_first': invitee['name_first'],
-                                                                            'name_last': invitee['name_last'],})
-                                    return {}
-                            #Access Error if the person inviting is not within the server
-                            raise error.AccessError('You can only invite people to channels you are apart of')    
-                    #Input Error if the channel doesn't exist
-                    raise error.InputError('Channel does not exist')
-            #Input Error if the user doesn't exist
-            raise error.InputError('User you are trying to invite does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+        if u_id == user['u_id']:
+            invitee = user
+    # Input Error if the user doesn't exist
+    if invitee == {}:
+        raise error.InputError('User you are trying to invite does not exist')
+
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    # Check to see if inviter is part of that channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == inviter['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You can only invite people to channels you are apart of')  
+    
+    # Made it through all the checks so now we can add the invitee
+    target_channel['all_members'].append({'u_id': invitee['u_id'], 
+                                            'name_first': invitee['name_first'], 
+                                            'name_last': invitee['name_last'],})
+    # Also if u_id is 0, then make them an owner
+    if u_id == 0:
+        target_channel['owner_members'].append({'u_id': invitee['u_id'],
+                                                'name_first': invitee['name_first'],
+                                                'name_last': invitee['name_last'],})
+    return {}
 
 def channel_details(token, channel_id):
     # Check that the token is valid
-    for user in data['users']:
-        # Token is valid
-        if token == user['token']:
-            # Find the channel
-            for channel in data['channels']:
-                # If we find the channel..
-                if channel_id == channel['id']:
-                    # Check to see if the user is part of that channel
-                    for member in channel['all_members']:
-                        if member['u_id'] == user['u_id']:
-                            # Store the name of the channel
-                            channel_name = channel['name']
-                            # Look for each owner's details in the user data field by referenceing the u_id
-                            channel_owners = []
-                            for owner in channel['owner_members']:
-                                if user['u_id'] == owner['u_id']:
-                                    channel_owners.append({'u_id': owner['u_id'],
-                                                            'name_first': owner['name_first'],
-                                                            'name_last': owner['name_last'],})
-                            # Look for each members details in the user data field by referenceing the u_id
-                            channel_members = []
-                            for member in channel['all_members']:
-                                if user['u_id'] == member['u_id']:
-                                    channel_members.append({'u_id': member['u_id'],
-                                                            'name_first': member['name_first'],
-                                                            'name_last': member['name_last'],})
-                            return {'name': channel_name,
-                                    'owner_members': channel_owners,
-                                    'all_members': channel_members,
-                                    }
-                    # If we are here then the user isnt in the channel
-                    raise error.AccessError('You are not part of the channel you want details about')
-            # If we are here then that means the channel id couldnt be found
-            raise error.InputError('The channel you have entered does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+    caller = check_token(token)
+    
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    # Check to see if inviter is part of that channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You are not part of the channel you want details about') 
+
+    # Made it through all checks so now we start building the return
+    channel_name = target_channel['name']
+    # Append owner details
+    channel_owners = []
+    for owner in target_channel['owner_members']:
+        channel_owners.append({'u_id': owner['u_id'],
+                                'name_first': owner['name_first'],
+                                'name_last': owner['name_last'],})
+    # Append member details
+    channel_members = []
+    for member in target_channel['all_members']:
+        channel_members.append({'u_id': member['u_id'],
+                                'name_first': member['name_first'],
+                                'name_last': member['name_last'],})
+    
+    return {'name': channel_name,
+            'owner_members': channel_owners,
+            'all_members': channel_members,
+            }
+
 
 def channel_messages(token, channel_id, start):
     # Check that the token is valid
-    for user in data['users']:
-        # Token is valid
-        if token == user['token']:
+    caller = check_token(token)
+    
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    # Check to see if inviter is part of that channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    # Access Error if the person inviting is not within the server
+    if is_member == False:
+        raise error.AccessError('You are not part of the channel you want details about')
+
+
+    
             # Find the channel
             for channel in data['channels']:
                 # If we find the channel..
@@ -179,37 +213,39 @@ def channel_join(token, channel_id):
     raise error.AccessError('Invalid token recieved')
 
 def channel_addowner(token, channel_id, u_id):
-    caller_data = find_with_token(token)
+    caller = check_token(token)
+    added_person = find_with_uid(u_id)
     for channel in data['channels']:
         if channel_id == channel['id']:
             #Checks that the caller is an owner
             for owner in channel['owner_members']:
                 #If the caller is trying to add themselves as owner we raise error
-                if caller_data[0] == owner['u_id'] and u_id == owner['u_id']:
+                if caller['u_id'] == owner['u_id'] and added_person['u_id'] == owner['u_id']:
                     raise error.InputError('You are already an owner of this channel.')
                 #If caller is an owner, we will give permision
-                elif caller_data[0] == owner['u_id']:
+                elif caller['u_id'] == owner['u_id']:
                    #If the user is not a member of the channel we raise error
                     for member in channel['all_members']:
                         #If user is a member, we append details to the owner_members
-                        if u_id == member['u_id']:
-                            for users in data['users']:
-                                if u_id == users['u_id']:
-                                    channel['owner_members'].append({'u_id' : caller_data[0], 'name_first': caller_data[1], 'name_last':caller_data[2],})
-                                    return {}
+                        if added_person['u_id'] == member['u_id']:
+                            for owner in channel['owner_members']:
+                                if added_person['u_id'] == owner['u_id']:
+                                    raise error.InputError('The person you are trying to make owner is already an owner') 
+                            channel['owner_members'].append({'u_id' : added_person['u_id'], 'name_first': added_person['name_first'], 'name_last':added_person['name_last'],})
+                            return {}
                     raise error.InputError('The member you are trying to add is not a member of the channel')
             raise error.AccessError('You are not an owner of the flockr and cannot add owners')
     raise error.InputError('The channel you are trying to join does not exists')
 
 def channel_removeowner(token, channel_id, u_id):
-    caller_data = find_with_token(token)
-    removed_person_data = find_with_uid(u_id)
+    caller = check_token(token)
+    removed_person = find_with_uid(u_id)
     #Check if channel exists
     for channel in data['channels']:
         if channel_id == channel['id']:
             #Checks to see if the caller is an owner of the channel
                 for owner in channel['owner_members']:
-                    if caller_data[0] == owner['u_id']:
+                    if caller['u_id'] == owner['u_id']:
                         #Checks if the caller is an owner
                         if owner['u_id'] == u_id:
                             #if they are the last person in the channel, we raise an error. If not we remove them as owner
@@ -218,12 +254,12 @@ def channel_removeowner(token, channel_id, u_id):
                             elif len(channel['owner_members']) == 1:
                                 raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
                             else: 
-                                remove_helper_func(channel_id, removed_person_data)
+                                remove_helper_func(channel_id, removed_person)
                                 return {}
                         #If the caller is not removing himself, we check if the user is a member of the channel
                         for owner in channel['owner_members']:
                             if u_id == owner['u_id']:
-                                remove_helper_func(channel_id, removed_person_data)
+                                remove_helper_func(channel_id, removed_person)
                                 return {}
                         raise error.InputError('The member you are trying to remove is not an owner of the channel')
                 raise error.AccessError('You are not an owner of the channel and cannot remove owners')
