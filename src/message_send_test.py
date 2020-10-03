@@ -82,7 +82,7 @@ def test_message_send_usernotinchannel():
     test_user_0 = create_one_test_user()
     channel_name1 = channels_create(test_user_0['token'], "Main Channel", True)
     with pytest.raises(error.InputError):
-       assert message_send(Smith['token'], 0, message1)
+       assert message_send(test_user_0['token'], channel_name1, message1)
 
 
 #assume that message is a string, assume that channel given is valid, assume user is authorised
