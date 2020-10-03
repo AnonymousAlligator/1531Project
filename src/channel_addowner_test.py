@@ -3,6 +3,7 @@ import error
 from auth import auth_register
 from channel import channel_details, channel_addowner, channel_invite, channel_join
 from channels import channels_create
+from test_helpers import create_one_test_user, create_two_test_users
 
 
 #Setting up data files:
@@ -38,6 +39,9 @@ channel_invite(user_5['token'], channel_1, user_6['u_id'])
 
 #Channel exists, token is an owner, u_id is a member, 
 def test_channel_addowner_sucess():
+    
+    clear()
+    
     token = user_0['token']
     u_id = user_1['u_id']
     channel_id = channel_0
@@ -45,6 +49,9 @@ def test_channel_addowner_sucess():
 
 #Channel exists, token is NOT an owner, u_id is a member
 def test_channel_addowner_not_owner():
+    
+    clear()
+    
     token = user_3['token']
     u_id = user_2['u_id']
     channel_id = channel_0
@@ -53,6 +60,9 @@ def test_channel_addowner_not_owner():
 
 #Channel exists, token is NOT a member, u_id is a member
 def test_adder_not_member():
+    
+    clear()
+
     token = user_4['token']
     u_id = user_2['u_id']
     channel_id = channel_0
@@ -61,6 +71,9 @@ def test_adder_not_member():
 
 #Channel exists, token is owner adding someone who is already a owner
 def test_channel_addowner_already_owner():
+    
+    clear()
+
     token = user_0['token']
     u_id = user_1['u_id']
     channel_id = channel_0
@@ -69,6 +82,9 @@ def test_channel_addowner_already_owner():
 
 #Channel exists, token is adding themselves.
 def test_channel_addowner_self():
+    
+    clear()
+
     token = user_0['token']
     u_id = user_0['u_id']
     channel_id = channel_0
@@ -77,6 +93,9 @@ def test_channel_addowner_self():
 
 #Channel does NOT exist, throw input error
 def test_channel_addowner_invalid_channel(): 
+    
+    clear()
+
     token = user_0['token']
     u_id = user_1['u_id']
     channel_id = 4
@@ -85,6 +104,9 @@ def test_channel_addowner_invalid_channel():
 
 #Channel is private, user is part of private channel 
 def test_channel_addowner_invited():
+    
+    clear()
+
     token = user_5['token']
     u_id = user_6['u_id']
     channel_id = channel_1
@@ -92,6 +114,9 @@ def test_channel_addowner_invited():
 
 #Channel is private, user is not part of private channel
 def test_channel_addowner_not_invited():
+    
+    clear()
+    
     token = user_5['token']
     u_id = user_2['u_id']
     channel_id = channel_1
