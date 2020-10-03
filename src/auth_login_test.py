@@ -20,7 +20,7 @@ def test_auth_login_and_register():
     assert reg_uid == login_uid # check if u_id after login is same from when registering
     assert login_token == reg_token # check if token after login is same from when registering
 # need to discuss
-"""
+
 def test_auth_login_twice():
 
     clear()
@@ -32,8 +32,8 @@ def test_auth_login_twice():
 
     # When the email is already logged in
     with pytest.raises(InputError):
-        auth_login("registeredemail2@valid.com", "password1")
-"""        
+        assert auth_login("registeredemail2@valid.com", "password1")
+      
 
 def test_auth_login_invalid_password():
     

@@ -14,5 +14,5 @@ def test_auth_logout():
     assert auth_logout(auth_dictionary0['token']) == {'is_success': True}
     assert auth_logout(auth_dictionary1['token']) == {'is_success': True}
     
-    #assert auth_logout(auth_dictionary0['token']) == {'is_success': False}
-    #assert auth_logout(auth_dictionary1['token']) == {'is_success': False}
+    assert auth_logout(auth_dictionary0['token']) == {'is_success': False}
+    assert auth_logout(auth_dictionary1['token']) == {'is_success': False}

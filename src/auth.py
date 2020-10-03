@@ -9,6 +9,8 @@ def auth_login(email, password):
         if user['email'] == email:
             found_user = user
             flag = 1
+        if user['token'] != False:
+            raise InputError('You are already logged in')
 
     if flag == 0:
         raise InputError('Email has not been registered previously')
@@ -17,14 +19,16 @@ def auth_login(email, password):
         raise InputError('Password entered is not correct')
     
     token = email # not sure what else to do with token here
-    
+    user['token'] = token
     return {
         'u_id': found_user['u_id'], 'token': token,
     }
 
 def auth_logout(token):
-    
-    user = check_token(token)
+    try:
+        user = check_token(token)
+    except:
+        return {'is_success': False}
     
     flag = False
        
@@ -33,8 +37,8 @@ def auth_logout(token):
             if info == user:
                 #info['token'][token] = flag    Invalidates the user token
                 flag = True
+                user['token'] = False
                 break
-        
     return {'is_success': flag}
 
 def auth_register(email, password, name_first, name_last):
@@ -83,7 +87,7 @@ def auth_register(email, password, name_first, name_last):
         'name_first':name_first, 
         'name_last': name_last, 
         'password': password, 
-        #'handle': handle, 
+        'handle': name_first+name_last, 
         'token': email,
     })
 
