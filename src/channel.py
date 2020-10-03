@@ -259,31 +259,56 @@ def channel_addowner(token, channel_id, u_id):
     return {}
 
 def channel_removeowner(token, channel_id, u_id):
+    # Check that token is valied
     caller = check_token(token)
+    # Check that user is part of flockr
     removed_person = find_with_uid(u_id)
-    check_member_of_channel(removed_person)  
-    #Check if channel exists
+    # Check person to remove is part of channel
+    check_member_of_channel(removed_person)
+
+    # Find the channel
+    target_channel = {}
     for channel in data['channels']:
         if channel_id == channel['id']:
-                #Checks to see if the caller is an owner of the channel
-                for owner in channel['owner_members']:
-                    if caller['u_id'] == owner['u_id']:
-                        #Checks to see if the removed_owner is an owner of the channel
-                        for person in channel['owner_members']:
-                            if removed_person['u_id'] == person['u_id']:
-                                if caller['u_id'] == removed_person['u_id']:
-                                #if they are the last person in the channel, we raise an error. If not we remove them as owner
-                                    if len(channel['all_members']) == 1:
-                                        raise error.InputError('You are the only person in the channel, you cannot remove yourself as owner, please add another member')
-                                    elif len(channel['owner_members']) == 1:
-                                        raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
-                                    else: 
-                                        remove_helper_func(channel_id, removed_person)
-                                        return {}
-                                remove_helper_func(channel_id, removed_person)
-                                return {}
-                        raise error.InputError('The member you are trying to remove is not an owner of the channel')
-                raise error.AccessError('You are not an owner of the channel and cannot remove owners')
-    raise error.InputError('The channel you are trying to access does not exists')
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        # Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+    
+    # Check to see if caller is an owner
+    is_owner = False
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == caller['u_id']:
+            is_owner = True
+    # Access Error if the person inviting is not within the server
+    if is_owner == False:
+        raise error.AccessError('You are not an owner of the channel and cannot remove owners')
+    
+    # Check to see if removed person is an owner
+    is_owner = False
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == removed_person['u_id']:
+            is_owner = True
+    # Access Error if the person inviting is not within the server
+    if is_owner == False:
+        raise error.InputError('The member you are trying to remove is not an owner of the channel')
+
+    # Check to see if we are removing ourselves as owner
+    if caller['u_id'] == removed_person['u_id']:
+        # If we are the only person left in the channel then raise error
+        if len(target_channel['all_members']) == 1:
+            raise error.InputError('You are the only person in the channel, you cannot remove yourself as owner, please add another member')
+        # If we are the only owner in the channel raise error to indicate a new owner must be assigned
+        elif len(target_channel['owner_members']) == 1:
+            raise error.InputError('You are the only owner in the channel, please make someone else owner before removing yourself')
+        # Otherwise, we can remove self as owner
+        else: 
+            remove_helper_func(channel_id, removed_person)
+            return {}
+    # We can remove the person as owner
+    remove_helper_func(channel_id, removed_person)
+    return {}
+
 
 
