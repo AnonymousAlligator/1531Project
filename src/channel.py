@@ -193,7 +193,7 @@ def channel_join(token, channel_id):
     raise error.AccessError('Invalid token recieved')
 
 def channel_addowner(token, channel_id, u_id):
-    caller = find_with_token(token)
+    caller = check_token(token)
     added_person = find_with_uid(u_id)
     for channel in data['channels']:
         if channel_id == channel['id']:
@@ -209,9 +209,9 @@ def channel_addowner(token, channel_id, u_id):
                         #If user is a member, we append details to the owner_members
                         if added_person['u_id'] == member['u_id']:
                             for owner in channel['owner_members']:
-                                if added_person['u_id'] == owner['owner_members']
+                                if added_person['u_id'] == owner['u_id']:
                                     raise error.InputError('The person you are trying to make owner is already an owner') 
-                            channel['owner_members'].append({'u_id' : added_person['uid'], 'name_first': added_person['name_first'], 'name_last':added_person['name_last'],})
+                            channel['owner_members'].append({'u_id' : added_person['u_id'], 'name_first': added_person['name_first'], 'name_last':added_person['name_last'],})
                             return {}
                     raise error.InputError('The member you are trying to add is not a member of the channel')
             raise error.AccessError('You are not an owner of the flockr and cannot add owners')

@@ -90,10 +90,10 @@ def test_channel_addowner_invited():
     channel_id = channel_1
     assert channel_addowner(token, channel_id, u_id) == {}
 
-#User 1 is NOT part of private channel
+#Channel is private, user is not part of private channel
 def test_channel_addowner_not_invited():
     token = user_5['token']
     u_id = user_2['u_id']
     channel_id = channel_1
-    with pytest.raises(error.AccessError):
+    with pytest.raises(error.InputError):
         assert channel_addowner(token, channel_id, u_id) == {}
