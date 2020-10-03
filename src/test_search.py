@@ -11,6 +11,7 @@ from error import AccessError, InputError
 from other import clear, search
 import pytest
 
+@pytest.mark.skip(reason='function implementation not done yet')
 # check search for existing string
 def test_search_single():
     
@@ -23,20 +24,9 @@ def test_search_single():
     # test_user0 sends message to test channel
     message_send(test_user0['token'], 0, "Let's geddit")
 
-    #TODO update in iter2    
-    assert search(test_user0['token'], "Let's") == {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
-    }
+    assert search(test_user0['token'], "Let's") == "Let's geddit"    
 
-    # assert search(test_user0['token'], "Let's") == "Let's geddit"    
-
+@pytest.mark.skip(reason='function implementation not done yet')
 # check for returning multiple strings
 def test_search_multiple():
 
@@ -50,20 +40,9 @@ def test_search_multiple():
     message_send(test_user0['token'], 0, "Let's geddit")
     message_send(test_user0['token'], 0, "Let's go")
 
-    #TODO update in iter2    
-    assert search(test_user0['token'], "Let's") == {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
-    }
-    
-    # assert search(test_user0['token'], "Let's") == "Let's geddit", "Let's go"
+    assert search(test_user0['token'], "Let's") == "Let's geddit", "Let's go"
 
+@pytest.mark.skip(reason='function implementation not done yet')
 # check for string that doesn't exist
 def test_search_multiplestring():
 
@@ -77,16 +56,5 @@ def test_search_multiplestring():
     message_send(test_user0['token'], 0, "Let's geddit")
     message_send(test_user0['token'], 0, "Let's go")
 
-    #TODO update in iter2    
-    assert search(test_user0['token'], "ahahhaaha") == {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
-    }
-    # assert search(test_user0['token'], "ahahhaaha") == {}
+    assert search(test_user0['token'], "ahahhaaha") == {}
 

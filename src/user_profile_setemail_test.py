@@ -11,44 +11,45 @@ from test_helpers import create_one_test_user, create_two_test_users
 import pytest
 import re
 
+@pytest.mark.skip(reason='function implementation not done yet')
 # assert that email set works
 def test_user_profile_setemail_works():
     
-    # clear()
-    # test_user0 = create_one_test_user()
+    clear()
+    test_user0 = create_one_test_user()
 
-    # user_profile_setemail(test_user0['token'], "cs1531@cse.unsw.edu.au")
-    # test_user0_updated = user_profile(test_user0['token'], test_user0['u_id'])
-    # assert test_user0_updated['email'] == "cs1531@cse.unsw.edu.au"
-    pass
+    user_profile_setemail(test_user0['token'], "cs1531@cse.unsw.edu.au")
+    test_user0_updated = user_profile(test_user0['token'], test_user0['u_id'])
+    assert test_user0_updated['email'] == "cs1531@cse.unsw.edu.au"
+    
 
+@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid email - setting an existing user's email
 def test_user_profile_setemail_existing():
     
-    # clear()    
-    # test_user0, test_user1 = create_two_test_users()
+    clear()    
+    test_user0, test_user1 = create_two_test_users()
 
-    # test_user1_profile = user_profile(test_user1['token'], test_user1['u_id'])
+    test_user1_profile = user_profile(test_user1['token'], test_user1['u_id'])
 
-    # with pytest.raises(InputError):
-    #     user_profile_setemail(test_user0['token'], test_user1_profile['email'])
-    pass
+    with pytest.raises(InputError):
+        user_profile_setemail(test_user0['token'], test_user1_profile['email'])
+    
 
+@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid email address input - no '@' character		
 def test_user_profile_setemail_invalid_check():
     
-    # clear()
-    # test_user0 = create_one_test_user()
+    clear()
+    test_user0 = create_one_test_user()
 
-    # with pytest.raises(InputError):
-    #     user_profile_setemail(test_user0['token'], 'asdsad.com')
-    pass
+    with pytest.raises(InputError):
+        user_profile_setemail(test_user0['token'], 'asdsad.com')
 
+
+@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid email address input using email check helper function
 def test_user_profile_setemail_invalid_check_helper():
-
-    # clear()
-    # test_user0 = create_one_test_user()
 
     assert emailCheck('bob@gmail.com') == True
     assert emailCheck('invalid.com') == False	    
