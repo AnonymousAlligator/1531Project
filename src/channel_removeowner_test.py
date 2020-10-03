@@ -103,7 +103,8 @@ def test_channel_removeowner_not_invited():
     clear()
     user_0, user_1 = create_two_test_users() 
     private_channel = channels_create(user_0['token'], "name", False)
+    
     with pytest.raises(error.InputError):
-        assert channel_removeowner(user_0['token'],private_channel, user_1['token']) == {}
+        assert channel_removeowner(user_0['token'],private_channel, user_1['u_id']) == {}
  
 
