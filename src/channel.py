@@ -115,7 +115,7 @@ def channel_messages(token, channel_id, start):
     # Made it through all checks so now we start building the return
     # Looping through the message data of the channel
     message_data = []
-    number_of_messages = len(channel['messages'])
+    number_of_messages = len(target_channel['messages'])
     message_number = start
     end = 0
     # Check if start is beyond range of messages
