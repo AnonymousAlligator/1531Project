@@ -115,7 +115,7 @@ def channel_messages(token, channel_id, start):
     # Made it through all checks so now we start building the return
     # Looping through the message data of the channel
     message_data = []
-    number_of_messages = len(channel['messages'])
+    number_of_messages = len(target_channel['messages'])
     message_number = start
     end = 0
     # Check if start is beyond range of messages
@@ -162,46 +162,49 @@ def channel_leave(token, channel_id):
     if is_member == False:
         raise error.AccessError('You are not a member of the channel you are trying to leave')
 
-    # If they are a member of the channel, remove them
-    target_channel['all_members'].remove(caller)
-    target_channel['owner_members'].remove(caller)
-    # If there is now no one in the channel, delete the channel
-    if len(target_channel['all_members']) == 0:
-        data['channels'].remove(target_channel)
-    return {}
+    # Navigate to the user entry and remove it
+    for user in channel['all_members']:
+        if user['u_id'] == caller['u_id']:
+            target_channel['all_members'].remove(user)
+            target_channel['owner_members'].remove(user)
+            # If there is now no one in the channel, delete the channel
+            if len(target_channel['all_members']) == 0:
+                data['channels'].remove(target_channel)
+        return {}
 
 def channel_join(token, channel_id):
     # Check that the token is valid
-    for user in data['users']:
-        # Token is valid
-        if token == user['token']:
-            # Check for if the channel_id is valid
-            for channel in data['channels']:
-                # If we find the channel..
-                if channel_id == channel['id']:
-                    # ..we now check if the user is the flockr owner (u_id == 0)
-                    # If they are the flockr owner then add them to the channel and make them an owner
-                    if user['u_id'] == 0:
-                        channel['all_members'].append({'u_id': user['u_id'], 
-                                                        'name_first': user['name_first'], 
-                                                        'name_last': user['name_last']})
-                        channel['owner_members'].append({'u_id': user['u_id'], 
-                                                            'name_first': user['name_first'], 
-                                                            'name_last': user['name_last']})
-                        return {}
-                    # Otherwise, check to see if the channel they are joining is private
-                    elif channel['is_public'] == False:
-                        raise error.AccessError('The channel you are trying to join is private')
-                    else:
-                        # Channel is public so we add their details into the channel list
-                        channel['all_members'].append({'u_id': user['u_id'], 
-                                                        'name_first': user['name_first'], 
-                                                        'name_last': user['name_last']})
-                        return {}
-            # If we're here then we didn't find the channel so input error
-            raise error.InputError('The channel you are trying to join does not exist')
-    # If we are here then the token was invalid
-    raise error.AccessError('Invalid token recieved')
+    caller = check_token(token)
+    
+    # Find the channel
+    target_channel = {}
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            target_channel = channel
+    # Input Error if the channel doesn't exist
+    if target_channel == {}:
+        #Input Error if the channel doesn't exist
+        raise error.InputError('Channel does not exist')
+
+    # If caller is flockr owner then add them to the channel and make them an owner
+    if caller['u_id'] == 0:
+        target_channel['all_members'].append({'u_id': caller['u_id'], 
+                                                'name_first': caller['name_first'], 
+                                        '       name_last': caller['name_last'],})
+        target_channel['owner_members'].append({'u_id': caller['u_id'], 
+                                                'name_first': caller['name_first'], 
+                                                'name_last': caller['name_last'],})
+        return {}
+
+    # Otherwise, check to see if the channel they are joining is private
+    elif target_channel['is_public'] == False:
+        raise error.AccessError('The channel you are trying to join is private')
+    else:
+        # Channel is public so we add their details into the channel list
+        target_channel['all_members'].append({'u_id': caller['u_id'], 
+                                                'name_first': caller['name_first'], 
+                                                'name_last': caller['name_last'],})
+        return {}
 
 def channel_addowner(token, channel_id, u_id):
     caller = check_token(token)
