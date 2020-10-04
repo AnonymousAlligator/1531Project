@@ -31,6 +31,9 @@ for i in range(chars):
     msg_char = "hello"
     message3 += msg_char
 
+message_spaces += " "*100
+
+
 #Checking message ID's are sent in assigned in order
 @pytest.mark.skip(reason='function implementation not done yet')
 def test_message_send_in_order():
@@ -72,6 +75,15 @@ def test_message_send_message_empty():
     channel_name1 = channels_create(test_user_0['token'], "Main Channel", True)
     with pytest.raises(error.InputError):
        assert message_send(test_user_0['token'], channel_name1, message_empty)
+
+#Attempting to send a message with only spaces
+@pytest.mark.skip(reason='function implementation not done yet')
+def test_message_send_message_spaces():
+    clear()
+    test_user_0 = create_one_test_user()
+    channel_name1 = channels_create(test_user_0['token'], "Main Channel", True)
+    with pytest.raises(error.InputError):
+       assert message_send(test_user_0['token'], channel_name1, message_spaces)
 
 #Attempting to send a message with over 1000 characters
 @pytest.mark.skip(reason='function implementation not done yet')
