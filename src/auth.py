@@ -18,7 +18,7 @@ def auth_login(email, password):
     if password != found_user['password']:
         raise InputError('Password entered is not correct')
     
-    token = email # not sure what else to do with token here
+    token = email 
     user['token'] = token
     return {
         'u_id': found_user['u_id'], 'token': token,
@@ -35,7 +35,6 @@ def auth_logout(token):
     if user['token'] == token:
         for info in data['users']:
             if info == user:
-                #info['token'][token] = flag    Invalidates the user token
                 flag = True
                 user['token'] = "False"
                 break
