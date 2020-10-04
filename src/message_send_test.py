@@ -30,7 +30,8 @@ chars = 201
 for i in range(chars):
     msg_char = "hello"
     message3 += msg_char
-
+    
+message_spaces = ""
 message_spaces += " "*100
 
 
