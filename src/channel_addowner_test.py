@@ -10,13 +10,22 @@ from other import clear
 ################################################################################################
 #Make user with user id u_id an owner of this channel
 
-#Channel exists, token is an owner, u_id is a member, 
+#Public channel exists, token is an owner, u_id is a member, 
 def test_channel_addowner_sucess():
     clear()
     user_0, user_1 = create_two_test_users() 
     public_channel = channels_create(user_0['token'], "name", True) #returns channel ID_0
     channel_join(user_1['token'], public_channel) 
     assert channel_addowner(user_0['token'], public_channel, user_1['u_id']) == {}
+
+#Channel is private, user is part of private channel 
+def test_channel_addowner_invited():
+    clear()
+    user_0, user_1 = create_two_test_users() 
+    private_channel = channels_create(user_0['token'], "name", False)
+    channel_invite(user_0['token'], private_channel, user_1['u_id'])
+    assert channel_addowner(user_0['token'], private_channel, user_1['u_id']) == {}
+
 
 #Channel exists, token is NOT an owner, u_id is a member
 def test_channel_addowner_not_owner():
@@ -64,13 +73,6 @@ def test_channel_addowner_invalid_channel():
     with pytest.raises(error.InputError):
         assert channel_addowner(user_0['token'], public_channel, user_1['u_id']) == {}
 
-#Channel is private, user is part of private channel 
-def test_channel_addowner_invited():
-    clear()
-    user_0, user_1 = create_two_test_users() 
-    private_channel = channels_create(user_0['token'], "name", False)
-    channel_invite(user_0['token'], private_channel, user_1['u_id'])
-    assert channel_addowner(user_0['token'], private_channel, user_1['u_id']) == {}
 
 #Channel is private, user is not part of private channel
 def test_channel_addowner_not_invited():
