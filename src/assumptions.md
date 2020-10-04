@@ -5,6 +5,8 @@ auth_register:
 
 -User ID 0 is the flock owner.
 
+-First and last name cant be empty/only spaces
+
 auth_login:
 -When a user registers, they are automatically logged in at the end of registration (since they are given a token).
 
