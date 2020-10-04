@@ -6,12 +6,7 @@ from test_helpers import create_one_test_user, create_two_test_users, create_thr
 from channels import channels_create
 from other import clear
 
-#Setting up data files:
-#user_0 is flockowner
-#Users 1, 2, 3 are part of a public channel
-#User 4 is not part of any channel
-#User 5 is owner of a private channel
-#User 6 is a member of a private channel
+
 
 ########################################################################################
 #Successfully removes owner
