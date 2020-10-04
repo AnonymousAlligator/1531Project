@@ -1,5 +1,24 @@
+from error import AccessError
+
+data = {
+'users': [],
+'channels': [
+    #id: 'channel_id'
+    #name: 'channel_name'
+    #is_public: True or False
+    #owner_members: [{u_id, name_first, name_last},]
+    #all_members: [{u_id, name_first, name_last},]
+    #messages:[{message_id, u_id, message, time_created},]
+    ],
+}
+
+
+
 def clear():
-    pass
+    for value in data.values():
+        del value[:]
+
+
 
 def users_all(token):
     return {
@@ -25,3 +44,14 @@ def search(token, query_str):
             }
         ],
     }
+
+def check_token(token):
+
+    # Searches for a logged in user through a token
+
+    for user in data['users']:
+        if user['token'] == token: # get() returns a value for the given key (token)
+            return user
+
+    # If the token doesn't exist/user isn't logged in
+    raise AccessError("Token is not valid")
