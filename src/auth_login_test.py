@@ -19,7 +19,7 @@ def test_auth_login_and_register():
 
     assert reg_uid == login_uid # check if u_id after login is same from when registering
     assert login_token == reg_token # check if token after login is same from when registering
-# need to discuss
+
 
 def test_auth_login_twice():
 
