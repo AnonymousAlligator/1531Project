@@ -49,17 +49,24 @@ channels_create:
 Messages Functions
 
 -The channel_id will always be valid
+-The user sending the message is an authorised (logged in) user.
 
 message_send:
--message_id is assigned in the ordder that messages are sent.
+-Message_id is assigned in the order that messages are sent.
+
 -If multiple people in a channel send messages at the same time, the messages are sent in order of increasing u_ID.
--no messages will be sent if the message has 0 characters. 
+
+-No message will be sent if the message has 0 characters. 
+
+-Messages containing only spaces will not be sent. 
 
 message_remove:
 -After a message is sent, the message can be deleted at any point in time in the future (no time limit to delete it).
 
 message_edit:
 -After a message is sent, the message can be edited at any point in time in the future (no time limit to edit it).
+
+-A message cannot be edited to only have spaces.
 
 ##########################################
 User Functions
