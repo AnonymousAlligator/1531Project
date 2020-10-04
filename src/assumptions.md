@@ -41,8 +41,6 @@ channels_create:
 
 - Channels ID's are asssigned in the order that channel_create is called. 
 
-- Multiple channels in a single Flockr can't have the same name.
-
 - When a channel is created by a user, they are immediately a member and owner of that channel.
 
 ######################################
