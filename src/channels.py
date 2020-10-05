@@ -29,22 +29,17 @@ def channels_list(token):
 '''Provide a list of all channels (and their associated details)'''
 def channels_listall(token):
 
-    #TODO: add in taimoor's user check
     # check for valid user
-    user = check_token(token)   
-    
-    for user in data['users']:
-        if token == user['token']:
-            u_id = user['u_id']
+    check_token(token)   
     
     channels_listall = []
 
     for channel in data['channels']:
         # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
         # current assumption is that listall lists all public & private channels
-            channel_info = {'channel_id': channel['id'],
-                            'name': channel['name']}
-            channels_listall.append(channel_info)
+        channel_info = {'channel_id': channel['id'],
+                        'name': channel['name']}
+        channels_listall.append(channel_info)
 
     return channels_listall
 
