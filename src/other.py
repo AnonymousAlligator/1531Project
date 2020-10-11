@@ -10,6 +10,7 @@ data = {
     #all_members: [{u_id, name_first, name_last},]
     #messages:[{message_id, u_id, message, time_created},]
     ],
+'message_id': 0,
 }
 
 
