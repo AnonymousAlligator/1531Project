@@ -1,3 +1,6 @@
+from other import data, check_token
+import error
+
 def message_send(token, channel_id, message):
     return {
         #'message_id': 1,
