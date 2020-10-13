@@ -3,7 +3,7 @@ import error
 import datetime
 
 def message_send(token, channel_id, message):
-     # Check that the token is valid
+    # Check that the token is valid
     caller = check_token(token)
     
     # Find the channel
@@ -29,16 +29,32 @@ def message_send(token, channel_id, message):
     if len(message) > 1000:
         raise error.InputError('The message you are sending is over 1000 characters')
 
-    # Start building the return
-    message_id = data['messages']['message_id']
+    # message gets added to the channel's message key
+    message_id = len(data['messages'])
     message_data = {message_id, caller['u_id'], message, datetime.datetime.now(),}
     target_channel['messages'].insert(0, message_data)
-    message_id += 1
+
+    # message id, channel id and u_id get added to the messages key (used in removal)
+    data['messages'].insert(0, {'u_id': caller['u_id'], 'message_id': message_id, 'channel_id': channel_id})
     return {
-        'message_id': message_id - 1
+        'message_id': message_id
     }
 
 def message_remove(token, message_id):
+    # Check that the token is valid
+    caller = check_token(token)
+
+    # Find the channel the message is in by searching the data key
+    target_message = {}
+    for message in data['messages']
+        if message_id == message['message_id']:
+            target_message = message
+    # If no target is returned then the message no longer exits, InputError
+    if target_message == {}:
+        raise error.InputError('Message no longer exists')
+
+    # Check to see if the caller's u_id matches that of the sender or if the caller is owner of channel/flockr
+    if caller['u_id'] == target_message['u_id'] or is_owner
     return {
     }
 
