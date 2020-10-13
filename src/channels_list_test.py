@@ -52,7 +52,7 @@ def test_channels_list_authorised_pub_channel():
     pub_channel0 = channels_create(test_user0['token'], "Public Channel 0", True)
 
     # test_user0 creates 1 private channel
-    priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
+    _ = channels_create(test_user0['token'], "Private Channel 0", False)
 
     # test_user1 joins public channel
     channel_join(test_user1['token'], pub_channel0)
@@ -73,7 +73,7 @@ def test_channels_list_authorised_priv_channel():
     test_user0, test_user1 = create_two_test_users()
 
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0['token'], "Public Channel 0", True)
+    _ = channels_create(test_user0['token'], "Public Channel 0", True)
 
     # test_user0 creates 1 private channel
     priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
@@ -97,10 +97,10 @@ def test_channels_listsall_owner_channels():
     test_user0, test_user1 = create_two_test_users()
 
     # test_user0 creates 1 public channel
-    pub_channel0 = channels_create(test_user0['token'], "Public Channel 0", True)
+    _ = channels_create(test_user0['token'], "Public Channel 0", True)
 
     # test_user0 creates 1 private channel
-    priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
+    _ = channels_create(test_user0['token'], "Private Channel 0", False)
 
     # test_user1 creates 1 public channel
     pub_channel1 = channels_create(test_user1['token'], "Public Channel 1", True)

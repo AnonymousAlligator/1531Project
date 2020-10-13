@@ -33,10 +33,6 @@ def channels_listall(token):
     # check for valid user
     user = check_token(token)   
     
-    for user in data['users']:
-        if token == user['token']:
-            u_id = user['u_id']
-    
     channels_listall = []
 
     for channel in data['channels']:

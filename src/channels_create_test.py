@@ -49,7 +49,7 @@ def test_channels_create_private():
 
 def test_channels_create_invalidtoken():
     clear()
-    test_user0 = create_one_test_user()
+    _ = create_one_test_user()
     #access error if token is invalid
     with pytest.raises(error.AccessError):
         channels_create('Hello', channel_name1, True)
