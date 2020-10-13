@@ -1,4 +1,4 @@
-from error import AccessError
+import error
 
 data = {
 'users': [],
@@ -34,19 +34,41 @@ def users_all(token):
     }
 
 def admin_userpermission_change(token, u_id, permission_id):
-    pass
+    #Check if token is valid and record user
+    caller = check_token(token)
+
+    #Check if the caller of the function is an owner
+    if caller['permission_id'] != 1:
+        raise error.AccessError('You are not an owner of the channel')
+
+    #Check if user to be permission changed exists within database
+    called = {}
+    for user in data['users']:
+        if u_id == user['u_id']:
+            called = user
+    # Input Error if the user doesn't exist
+    if called == {}:
+        raise error.InputError('User you are trying to change permissions for does not exist')
+
+    #Check if permssion_id is a value permission
+    if permission_id != 1 or permission_id != 2:
+        raise error.InputError('Incorrect value permission entered')
+
+    #Change the permission_id of the user and add them to owner_list for channel
+    called['[permission_id'] == 1
+    return {}
 
 def search(token, query_str):
-    return {
-        'messages': [
-            {
-                'message_id': 1,
-                'u_id': 1,
-                'message': 'Hello world',
-                'time_created': 1582426789,
-            }
-        ],
-    }
+    messages = []
+    #Check if token is correct
+    function_user = check_token(token)
+    #loop through all channels and their messages and add message dictionary to the list
+    for channel in data['channels']:
+        for queries in channel['messages']:
+            if query_str in queries['message']:
+                messages.append(queries)
+    return messages
+    
 
 def check_token(token):
 
