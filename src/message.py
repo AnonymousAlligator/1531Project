@@ -46,7 +46,7 @@ def message_remove(token, message_id):
 
     # Find the channel the message is in by searching the data key
     target_message = {}
-    for message in data['messages']
+    for message in data['messages']:
         if message_id == message['message_id']:
             target_message = message
     # If no target is returned then the message no longer exits, InputError
@@ -54,7 +54,8 @@ def message_remove(token, message_id):
         raise error.InputError('Message no longer exists')
 
     # Check to see if the caller's u_id matches that of the sender or if the caller is owner of channel/flockr
-    if caller['u_id'] == target_message['u_id'] or is_owner
+    if caller['u_id'] == target_message['u_id']:
+        pass
     return {
     }
 
