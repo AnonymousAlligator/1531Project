@@ -29,10 +29,9 @@ def channels_list(token):
 '''Provide a list of all channels (and their associated details)'''
 def channels_listall(token):
 
-    #TODO: add in taimoor's user check
     # check for valid user
-    user = check_token(token)   
-    
+    check_token(token)
+
     channels_listall = []
 
     for channel in data['channels']:
