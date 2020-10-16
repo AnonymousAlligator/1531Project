@@ -20,6 +20,11 @@ def test_auth_register1():
 
 def test_valid_but_already_registered():
 
+    clear()
+
+    auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
+    auth_register("registered2@valid.com", "potato321", "Elena", "Fisher")
+
     # When the email has a valid format but is already registered
     with pytest.raises(InputError):
         auth_register("registered@valid.com", "potato321", "Poopy", "Poopface")
