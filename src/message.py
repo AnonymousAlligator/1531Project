@@ -23,7 +23,7 @@ def message_send(token, channel_id, message):
             is_member = True
     # Access Error if the person inviting is not within the server
     if not is_member:
-        raise error.AccessError('You are not part of the channel you want details about')
+        raise error.AccessError('You are not part of the channel you want to send messages to')
 
     # Check the message length
     if len(message) > 1000:
