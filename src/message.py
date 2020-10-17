@@ -44,7 +44,7 @@ def message_remove(token, message_id):
     # Check that the token is valid
     caller = check_token(token)
 
-    # Find the channel the message is in by searching the data key
+    # Find the message in the message field of data
     target_message = {}
     for message in data['messages']:
         if message_id == message['message_id']:
@@ -53,11 +53,37 @@ def message_remove(token, message_id):
     if target_message == {}:
         raise error.InputError('Message no longer exists')
 
-    # Check to see if the caller's u_id matches that of the sender or if the caller is owner of channel/flockr
+    # Find the channel the message is in
+    target_channel = {}
+    for channel in data['channels']:
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
+    
+    # Check to see if the caller has the right to remove the message
+    is_allowed = False
+    # 1) Caller u_id == target_message u_id
     if caller['u_id'] == target_message['u_id']:
-        pass
-    return {
-    }
+        is_allowed = True
+
+    # 2) Caller is channel owner
+    if not is_allowed:
+        for owner in target_channel['owner_members']:
+            if owner['u_id'] == caller['u_id']:
+                is_allowed = True
+    
+    # 3) Caller is flockr owner
+    
+    # If permission is found then remove the message, else access error
+    if is_allowed:
+        for message in target_channel['messages']:
+            if message['message_id'] == target_message['message_id']:
+                message.clear()
+        for message in data['messages']:
+            if message_id == message['message_id']:
+                message.clear()
+        return {}
+    else:
+        raise error.AccessError('You are not allowed to remove the message')
 
 def message_edit(token, message_id, message):
     return {
