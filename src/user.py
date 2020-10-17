@@ -1,13 +1,24 @@
 def user_profile(token, u_id):
-    return {
-        'user': {
-        	'u_id': 1,
-        	'email': 'cs1531@cse.unsw.edu.au',
-        	'name_first': 'Hayden',
-        	'name_last': 'Jacobs',
-        	'handle_str': 'hjacobs',
-        },
+    
+    data.check_token(token)
+    
+    found_user = 0
+    for user in data['users']:
+        if user['u_id'] == u_id:
+            found_user = 1
+   
+    if found_user == 0:
+        raise InputError('User doesnt exist')
+
+    user_info = {
+        'u_id' : user['u_id'],
+        'email': user['email'],
+        'name_first': user['first_name'],
+        'name_last': user['second_name'],
+        'handle_str': user['handle'],
     }
+
+    return user_info
 
 def user_profile_setname(token, name_first, name_last):
     return {
