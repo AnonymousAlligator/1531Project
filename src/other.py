@@ -13,6 +13,7 @@ data = {
 'messages': [
     #message_id: the message id
     #channel_id: the channel the message was sent to
+    #u_id: user id of the person who sent the message
     ],
 }
 
