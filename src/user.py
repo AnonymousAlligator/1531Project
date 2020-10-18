@@ -1,3 +1,6 @@
+from other import data, check_token
+import error
+
 def user_profile(token, u_id):
     return {
         'user': {
@@ -18,5 +21,24 @@ def user_profile_setemail(token, email):
     }
 
 def user_profile_sethandle(token, handle_str):
+    #Check that the token is valid
+    caller = check_token(token)
+
+    handle_str_len = len(handle_str.strip())
+    if handle_str_len > 20:
+        raise InputError('User handle too long' )
+    if handle_str_len < 3:
+        raise InputError('User handle is too short')
+    
+    for user in data['users']:
+        if handle_str == user['handle']
+
+
+        
+    
+'''InputError when any of:
+handle_str must be between 3 and 20 characters
+handle is already used by another user'''
     return {
+        
     }
