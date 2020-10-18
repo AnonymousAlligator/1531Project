@@ -5,19 +5,19 @@ import error
 def user_profile(token, u_id):
 
     check_token(token)
-    user_profile = {}
+    user_prof = {}
 
     user = find_with_uid(u_id)
 
-    user_profile = {
+    user_prof = {
         'u_id' : user['u_id'],
-        'email': user['email'], 
-        'name_first':user['name_first'], 
-        'name_last': user['name_last'], 
+        'email': user['email'],
+        'name_first':user['name_first'],
+        'name_last': user['name_last'],
         'handle': user['handle'],
         }
     user_info = {}
-    user_info['user'] = user_profile
+    user_info['user'] = user_prof
     return user_info
 
 def user_profile_setname(token, name_first, name_last):
@@ -36,7 +36,7 @@ def user_profile_sethandle(token, handle_str):
 
     handle_str_len = len(handle_str.strip())
     if handle_str_len > 20:
-        raise error.InputError('User handle too long' )
+        raise error.InputError('User handle too long')
     if handle_str_len < 3:
         raise error.InputError('User handle is too short')
 
