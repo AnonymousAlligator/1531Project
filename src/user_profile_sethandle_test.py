@@ -33,7 +33,7 @@ def test_user_profile_sethandle_short():
     with pytest.raises(InputError):
         user_profile_sethandle(test_user_1['token'], "A" * 200)
     
-#@pytest.mark.skip(reason='function implementation not done yet')
+
 # check for invalid handle string - str < 3 char in length
 def test_user_profile_sethandle_long():
     
@@ -46,7 +46,7 @@ def test_user_profile_sethandle_long():
     with pytest.raises(InputError):
         user_profile_sethandle(test_user_1['token'], "aa")
 
-#@pytest.mark.skip(reason='function implementation not done yet')    
+ 
 # check for invalid handle string - handle already exists
 def test_user_profile_sethandle_already_exists():
     
@@ -55,7 +55,6 @@ def test_user_profile_sethandle_already_exists():
     
     # get test_user1's profile
     test_user_0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
-    test_user_1_updated = user_profile(test_user_1['token'], test_user_1['u_id'])
 
     existing_handle = test_user_0_updated['user']['handle']
 
