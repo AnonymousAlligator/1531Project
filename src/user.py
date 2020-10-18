@@ -1,22 +1,42 @@
-from other import data, check_token
+from other import data, check_token, find_with_uid
+
 import error
 
 def user_profile(token, u_id):
+    check_token(token)
+    user_profile = {}
+
+    user = find_with_uid(u_id)
+
+    user_profile = {
+        'u_id' : user['u_id'],
+        'email': user['email'], 
+        'name_first':user['name_first'], 
+        'name_last': user['name_last'], 
+        'handle': user['handle'],
+        }
+
+    return user_profile
+
+    '''
     return {
         'user': {
-        	'u_id': 1,
-        	'email': 'cs1531@cse.unsw.edu.au',
-        	'name_first': 'Hayden',
-        	'name_last': 'Jacobs',
-        	'handle_str': 'hjacobs',
+            'u_id': 1,
+            'email': 'cs1531@cse.unsw.edu.au',
+            'name_first': 'Hayden',
+            'name_last': 'Jacobs',
+            'handle': 'jacobs',
         },
     }
+    '''
 
 def user_profile_setname(token, name_first, name_last):
+    pass
     return {
     }
 
 def user_profile_setemail(token, email):
+    pass
     return {
     }
 
@@ -26,19 +46,19 @@ def user_profile_sethandle(token, handle_str):
 
     handle_str_len = len(handle_str.strip())
     if handle_str_len > 20:
-        raise InputError('User handle too long' )
+        raise error.InputError('User handle too long' )
     if handle_str_len < 3:
-        raise InputError('User handle is too short')
-    
+        raise error.InputError('User handle is too short')
+
+    #check that the handle is not already used
+    handle_used = False
     for user in data['users']:
-        if handle_str == user['handle']
+        if handle_str == user['handle']:
+            handle_used = True
+    if handle_used:
+        raise error.InputError('User handle is already used by another user')
 
+    #Sets handle
+    caller['handle'] = handle_str
 
-        
-    
-'''InputError when any of:
-handle_str must be between 3 and 20 characters
-handle is already used by another user'''
-    return {
-        
-    }
+    return {}

@@ -62,3 +62,10 @@ def check_token(token):
 
     # If the token doesn't exist/user isn't logged in
     raise AccessError("Token is not valid")
+
+def find_with_uid(u_id):
+    for user in data['users']:
+        if u_id == user['u_id']:
+            return(user)
+    # If we are here then the token was invalid
+    raise error.InputError('The user is not valid')
