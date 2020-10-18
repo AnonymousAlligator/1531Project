@@ -8,10 +8,8 @@ from user import user_profile, user_profile_sethandle
 from error import InputError
 from other import clear
 from test_helpers import create_one_test_user, create_two_test_users
-from auth import auth_register
 import pytest
 
-#@pytest.mark.skip(reason='function implementation not done yet')
 # assert handle updates correctly
 def test_user_profile_sethandle_works():
 
@@ -21,10 +19,8 @@ def test_user_profile_sethandle_works():
     user_profile_sethandle(test_user_0['token'], '1531_admin')
     # get test_user0's profile
     test_user0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
+    assert test_user0_updated['user']['handle'] == "1531_admin"
 
-    assert test_user0_updated['handle'] == "1531_admin"
-
-#@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid handle string - str > 20 char in length
 def test_user_profile_sethandle_short():
 
@@ -52,15 +48,16 @@ def test_user_profile_sethandle_long():
 
 #@pytest.mark.skip(reason='function implementation not done yet')    
 # check for invalid handle string - handle already exists
-def test_user_profile_sethandle_exists():
+def test_user_profile_sethandle_already_exists():
     
     clear()
     test_user_0, test_user_1 = create_two_test_users()
     
     # get test_user1's profile
-    test_user1_profile = user_profile(test_user_1['token'], test_user_1['u_id'])
+    test_user_0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
+    test_user_1_updated = user_profile(test_user_1['token'], test_user_1['u_id'])
+
+    existing_handle = test_user_0_updated['user']['handle']
 
     with pytest.raises(InputError):
-        user_profile_sethandle(test_user_0['token'], test_user1_profile['handle'])
-    
-
+        user_profile_sethandle(test_user_1['token'], existing_handle)
