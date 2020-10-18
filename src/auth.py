@@ -75,13 +75,30 @@ def auth_register(email, password, name_first, name_last):
 
     u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
 
+    initial_handle = (name_first + name_last).lower()
+    if len(initial_handle) >= 20:
+        initial_handle = initial_handle[:20]
+
+    middle_handle = initial_handle
+    
+    for user in data['users']:
+        if user['handle'] == initial_handle:
+            middle_handle = initial_handle
+            num_suffix = 1
+            for user in data['users']:
+                if user['handle'] == middle_handle:
+                    middle_handle = initial_handle + str(num_suffix)
+                    num_suffix = num_suffix + 1
+            
+    handle = middle_handle            
+
     data['users'].append({
         'u_id': u_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 
         'password': password, 
-        'handle': name_first+name_last, 
+        'handle': handle, 
         'token': email,
     })
 
@@ -89,4 +106,3 @@ def auth_register(email, password, name_first, name_last):
         'u_id': u_id,
         'token': email,
     }
-
