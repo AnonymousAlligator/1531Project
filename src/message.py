@@ -5,7 +5,7 @@ import datetime
 def message_send(token, channel_id, message):
     # Check that the token is valid
     caller = check_token(token)
-    
+
     # Find the channel
     target_channel = {}
     for channel in data['channels']:
@@ -31,7 +31,7 @@ def message_send(token, channel_id, message):
 
     # message gets added to the channel's message key
     message_id = len(data['messages'])
-    message_data = {message_id, caller['u_id'], message, datetime.datetime.now(),}
+    message_data = {message_id, caller['u_id'], message, (datetime.datetime.now()).timestamp(),}
     target_channel['messages'].insert(0, message_data)
 
     # message id, channel id and u_id get added to the messages key (used in removal)
@@ -82,8 +82,7 @@ def message_remove(token, message_id):
             if message_id == message['message_id']:
                 message.clear()
         return {}
-    else:
-        raise error.AccessError('You are not allowed to remove the message')
+    raise error.AccessError('You are not allowed to remove the message')
 
 def message_edit(token, message_id, message):
     return {
