@@ -18,20 +18,24 @@ def clear():
     for value in data.values():
         del value[:]
 
-
-
+#Returns a list of all users and their associated details
 def users_all(token):
-    return {
-        'users': [
-            {
-                'u_id': 1,
-                'email': 'cs1531@cse.unsw.edu.au',
-                'name_first': 'Hayden',
-                'name_last': 'Jacobs',
-                'handle_str': 'hjacobs',
-            },
-        ],
-    }
+    check_token(token)
+
+    users_list = []
+
+    for user in data['users']:
+        user_info = {
+            'u_id' : user['u_id'],
+            'email': user['email'], 
+            'name_first':user['name_first'], 
+            'name_last': user['name_last'], 
+            'password': user['password'], 
+            'handle': user['handle'],
+            'token': user['token']
+            }
+        users_list.append(user_info)
+    return users_list
 
 def admin_userpermission_change(token, u_id, permission_id):
     pass
