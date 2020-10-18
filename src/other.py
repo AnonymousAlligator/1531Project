@@ -1,4 +1,4 @@
-from error import AccessError
+import error
 
 data = {
 'users': [],
@@ -61,8 +61,9 @@ def check_token(token):
             return user
 
     # If the token doesn't exist/user isn't logged in
-    raise AccessError("Token is not valid")
+    raise error.AccessError("Token is not valid")
 
+#Finds user by u_ID, if the user does not exist then input error is given.
 def find_with_uid(u_id):
     for user in data['users']:
         if u_id == user['u_id']:

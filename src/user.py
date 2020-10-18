@@ -3,6 +3,7 @@ from other import data, check_token, find_with_uid
 import error
 
 def user_profile(token, u_id):
+
     check_token(token)
     user_profile = {}
 
@@ -15,20 +16,9 @@ def user_profile(token, u_id):
         'name_last': user['name_last'], 
         'handle': user['handle'],
         }
-
-    return user_profile
-
-    '''
-    return {
-        'user': {
-            'u_id': 1,
-            'email': 'cs1531@cse.unsw.edu.au',
-            'name_first': 'Hayden',
-            'name_last': 'Jacobs',
-            'handle': 'jacobs',
-        },
-    }
-    '''
+    user_info = {}
+    user_info['user'] = user_profile
+    return user_info
 
 def user_profile_setname(token, name_first, name_last):
     pass
