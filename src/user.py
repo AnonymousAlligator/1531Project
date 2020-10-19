@@ -20,6 +20,8 @@ def user_profile(token, u_id):
     user_info['user'] = user_prof
     return user_info
 
+    return user_info
+
 def user_profile_setname(token, name_first, name_last):
     
     caller = check_token(token)

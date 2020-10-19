@@ -61,5 +61,9 @@ def test_auth_login_invalid_input():
     # When the input parameters are of invalid type or length
     with pytest.raises(InputError):
         auth_login(" ", "pword14602")
+
+    with pytest.raises(InputError):    
         auth_login("registered@email.com", "12345")
+
+    with pytest.raises(InputError):    
         auth_login("invalid.com", "a12345678")
