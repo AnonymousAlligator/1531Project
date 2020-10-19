@@ -21,7 +21,7 @@ def test_user_profile():
             'email': 'testemail0@email.com', 
             'name_first': 'Hayden', 
             'name_last': 'Jacobs', 
-            'handle': 'HaydenJacobs',
+            'handle': 'haydenjacobs',
         }
     })
 

@@ -21,7 +21,18 @@ def test_user_profile_sethandle_works():
     test_user0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
     assert test_user0_updated['user']['handle'] == "1531_admin"
 
-# check for invalid handle string - str > 20 char in length
+# check for valid handle string - str = 20 char in length
+def test_user_profile_sethandle_20():
+
+    clear()
+    test_user_0 = create_one_test_user()
+    new_handle = "A" * 20
+    user_profile_sethandle(test_user_0['token'], "A" * 20)
+    test_user0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
+    assert test_user0_updated['user']['handle'] == new_handle
+
+
+# check for invalid handle string - str => 20 char in length
 def test_user_profile_sethandle_short():
 
     clear()
