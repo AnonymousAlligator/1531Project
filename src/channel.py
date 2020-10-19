@@ -176,22 +176,22 @@ def channel_leave(token, channel_id):
         if owner['u_id'] == caller['u_id']:
             if len(target_channel['owner_members']) == 1 and len(target_channel['all_members']) == 1:
                 target_channel['owner_members'].remove(owner)
-            elif len(target_channel['owner_members']) == 1:   
+            elif len(target_channel['owner_members']) == 1:
                 raise error.InputError('Please make another member an owner before leaving')
-    
+
     # Navigate to the user entry and remove it
-    for user in channel['all_members']:
-        if user['u_id'] == caller['u_id']: 
+    for user in target_channel['all_members']:
+        if user['u_id'] == caller['u_id']:
             target_channel['all_members'].remove(user)
             # If there is now no one in the channel, delete the channel
             if len(target_channel['all_members']) == 0:
-                data['channels'].remove(target_channel)
+                data['channels'].clear()
         return {}
 
 def channel_join(token, channel_id):
     # Check that the token is valid
     caller = check_token(token)
-    
+
     # Find the channel
     target_channel = {}
     for channel in data['channels']:
@@ -217,8 +217,8 @@ def channel_join(token, channel_id):
         raise error.AccessError('The channel you are trying to join is private')
     else:
         # Channel is public so we add their details into the channel list
-        target_channel['all_members'].append({'u_id': caller['u_id'], 
-                                                'name_first': caller['name_first'], 
+        target_channel['all_members'].append({'u_id': caller['u_id'],
+                                                'name_first': caller['name_first'],
                                                 'name_last': caller['name_last'],})
         return {}
 
