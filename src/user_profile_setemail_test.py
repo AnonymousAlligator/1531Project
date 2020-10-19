@@ -5,7 +5,7 @@ Email address is already being used by another user
 '''
 from user import user_profile, user_profile_setemail
 from error import InputError
-from other import clear, email_check
+from other import clear
 from test_helpers import create_one_test_user, create_two_test_users
 
 import pytest
@@ -41,11 +41,3 @@ def test_user_profile_setemail_invalid_check():
 
     with pytest.raises(InputError):
         user_profile_setemail(test_user0['token'], 'asdsad.com')
-
-
-# check for invalid email address input using email check helper function
-def test_user_profile_setemail_invalid_check_helper():
-
-    assert email_check('bob@gmail.com') == True
-    assert email_check('invalid.com') == False	    
-

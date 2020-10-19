@@ -1,5 +1,5 @@
-from other import data, check_token, find_with_uid, email_check
-
+from other import data, check_token, find_with_uid
+import re 
 import error
 
 def user_profile(token, u_id):
@@ -47,7 +47,8 @@ def user_profile_setemail(token, email):
     email = email.strip()
 
     # check for valid email
-    if not email_check(email):
+    email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
+    if not re.search(email_match, email): # If it returns FALSE
         raise error.InputError('Entered email is not valid')
 
     # check for existing email
