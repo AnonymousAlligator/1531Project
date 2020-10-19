@@ -46,7 +46,7 @@ def auth_register(email, password, name_first, name_last):
     if len(password) < 6:
         raise InputError('Password entered is less than 6 characters long')
 
-    if not email_check(email): # If it returns FALSE
+    if email_check(email): # If it returns FALSE
         raise InputError('Entered email is not valid')
 
     first_name_length = len(name_first.strip())
