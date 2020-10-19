@@ -1,4 +1,4 @@
-from other import data, check_token, find_with_uid
+from other import data, check_token, find_with_uid, email_check
 
 import error
 
@@ -21,12 +21,25 @@ def user_profile(token, u_id):
     return user_info
 
 def user_profile_setname(token, name_first, name_last):
-    pass
-    return {
-    }
+    
+    user = check_token(token)
+    
+    # check name_first is not between 1 and 50 characters
+    if len(name_first) < 1 or len(name_first) > 50:
+        raise error.InputError('First name must be between 1 and 50 characters')
+    
+    # check name_last is not between 1 and 50 characters
+    if len(name_last) < 1 or len(name_last) > 50:
+        raise error.InputError('Last name must be between 1 and 50 characters')
+    
+    user["name_first"] = name_first
+    user["name_last"] = name_last
 
 def user_profile_setemail(token, email):
-    pass
+    
+    user = check_token(token)
+
+
     return {
     }
 

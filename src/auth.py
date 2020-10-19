@@ -1,5 +1,5 @@
 import re 
-from other import data, check_token
+from other import data, check_token, email_check
 from error import InputError, AccessError
 
 def auth_login(email, password):
@@ -46,9 +46,7 @@ def auth_register(email, password, name_first, name_last):
     if len(password) < 6:
         raise InputError('Password entered is less than 6 characters long')
 
-
-    email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
-    if not re.search(email_match, email): # If it returns FALSE
+    if not email_check(email): # If it returns FALSE
         raise InputError('Entered email is not valid')
 
     first_name_length = len(name_first.strip())

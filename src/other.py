@@ -1,4 +1,5 @@
 import error
+import re
 
 data = {
 'users': [],
@@ -70,3 +71,13 @@ def find_with_uid(u_id):
             return(user)
     # If we are here then the token was invalid
     raise error.InputError('The user is not valid')
+
+# regex taken from https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
+def email_check(email):  
+
+        regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        # pass the regular expression and the string in search() method 
+        if (re.search(regex, email)):
+            return True
+        else:
+            return False
