@@ -47,8 +47,8 @@ def channel_invite(token, channel_id, u_id):
     target_channel['all_members'].append({'u_id': invitee['u_id'], 
                                             'name_first': invitee['name_first'], 
                                             'name_last': invitee['name_last'],})
-    # Also if u_id is 0, then make them an owner
-    if u_id == 0:
+    # Also if permission_id is 1, then make them an owner
+    if invitee['permission_id'] == 1:
         target_channel['owner_members'].append({'u_id': invitee['u_id'],
                                                 'name_first': invitee['name_first'],
                                                 'name_last': invitee['name_last'],})
@@ -176,22 +176,22 @@ def channel_leave(token, channel_id):
         if owner['u_id'] == caller['u_id']:
             if len(target_channel['owner_members']) == 1 and len(target_channel['all_members']) == 1:
                 target_channel['owner_members'].remove(owner)
-            elif len(target_channel['owner_members']) == 1:   
+            elif len(target_channel['owner_members']) == 1:
                 raise error.InputError('Please make another member an owner before leaving')
-    
+
     # Navigate to the user entry and remove it
-    for user in channel['all_members']:
-        if user['u_id'] == caller['u_id']: 
+    for user in target_channel['all_members']:
+        if user['u_id'] == caller['u_id']:
             target_channel['all_members'].remove(user)
             # If there is now no one in the channel, delete the channel
             if len(target_channel['all_members']) == 0:
-                data['channels'].remove(target_channel)
+                target_channel.clear()
         return {}
 
 def channel_join(token, channel_id):
     # Check that the token is valid
     caller = check_token(token)
-    
+
     # Find the channel
     target_channel = {}
     for channel in data['channels']:
@@ -203,7 +203,7 @@ def channel_join(token, channel_id):
         raise error.InputError('Channel does not exist')
 
     # If caller is flockr owner then add them to the channel and make them an owner
-    if caller['u_id'] == 0:
+    if caller['permission_id'] == 1:
         target_channel['all_members'].append({'u_id': caller['u_id'], 
                                                 'name_first': caller['name_first'], 
                                         '       name_last': caller['name_last'],})
@@ -217,8 +217,8 @@ def channel_join(token, channel_id):
         raise error.AccessError('The channel you are trying to join is private')
     else:
         # Channel is public so we add their details into the channel list
-        target_channel['all_members'].append({'u_id': caller['u_id'], 
-                                                'name_first': caller['name_first'], 
+        target_channel['all_members'].append({'u_id': caller['u_id'],
+                                                'name_first': caller['name_first'],
                                                 'name_last': caller['name_last'],})
         return {}
 
@@ -297,6 +297,9 @@ def channel_removeowner(token, channel_id, u_id):
     for owner in target_channel['owner_members']:
         if owner['u_id'] == caller['u_id']:
             is_owner = True
+    # Check to see if caller is a flockr owner
+    if caller['permission_id'] == 1:
+        is_owner = True
     # Access Error if the caller is not an owner
     if is_owner == False:
         raise error.AccessError('You are not an owner of the channel and cannot remove owners')
