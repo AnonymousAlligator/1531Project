@@ -48,7 +48,7 @@ def channel_invite(token, channel_id, u_id):
                                             'name_first': invitee['name_first'], 
                                             'name_last': invitee['name_last'],})
     # Also if permission_id is 1, then make them an owner
-    if permission_id == 1:
+    if invitee['permission_id'] == 1:
         target_channel['owner_members'].append({'u_id': invitee['u_id'],
                                                 'name_first': invitee['name_first'],
                                                 'name_last': invitee['name_last'],})
