@@ -185,7 +185,7 @@ def channel_leave(token, channel_id):
             target_channel['all_members'].remove(user)
             # If there is now no one in the channel, delete the channel
             if len(target_channel['all_members']) == 0:
-                data['channels'].clear()
+                target_channel.clear()
         return {}
 
 def channel_join(token, channel_id):
