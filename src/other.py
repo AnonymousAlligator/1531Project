@@ -61,15 +61,17 @@ def admin_userpermission_change(token, u_id, permission_id):
 def search(token, query_str):
     messageslist = []
     #Check if token is correct
-    function_user = check_token(token)
-    #loop through all channels and their messages and add message dictionary to the list
-    for msg in data['channels']:
-        #Check if the query_str is apart 
-        for msgdata in msg['messages']:
-            #if TRUE for string inside string then append the message dictionary to list
-            if query_str in msgdata['message']:
-                messageslist.append(msg)
-    return messageslist
+    for user in data['users']:
+        if user['token'] == token:
+            #loop through all channels and their messages and add message dictionary to the list
+            for msg in data['channels']:
+                #Check if the query_str is apart 
+                for msgdata in msg['messages']:
+                    #if TRUE for string inside string then append the message dictionary to list
+                    if query_str in msgdata['message']:
+                        messageslist.append(msg)
+                return messageslist
+    raise error.AccessError("Token is not valid")
     
 
 def check_token(token):
