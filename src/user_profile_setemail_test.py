@@ -18,7 +18,7 @@ def test_user_profile_setemail_works():
 
     user_profile_setemail(test_user0['token'], "testemail9@email.com")
     test_user0_updated = user_profile(test_user0['token'], test_user0['u_id'])
-    assert test_user0_updated['email'] == "testemail9@email.com"
+    assert test_user0_updated['user']['email'] == "testemail9@email.com"
     
 
 # check for invalid email - setting an existing user's email

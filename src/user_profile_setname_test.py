@@ -20,8 +20,8 @@ def test_profile_setname():
 
     user_profile_setname(test_user0['token'], "Nick", "Smith")    
     updated_test_user0 = user_profile(test_user0['token'], test_user0['u_id'])    
-    assert updated_test_user0['name_first'] == "Nick"
-    assert updated_test_user0['name_last'] == "Smith"
+    assert updated_test_user0['user']['name_first'] == "Nick"
+    assert updated_test_user0['user']['name_last'] == "Smith"
 
 # check for invalid token
 def test_profile_setname_invalid_token():
