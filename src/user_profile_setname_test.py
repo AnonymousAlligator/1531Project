@@ -11,7 +11,6 @@ from other import clear
 from test_helpers import create_one_test_user
 import pytest
 
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for correct name update
 def test_profile_setname():
     
@@ -24,8 +23,6 @@ def test_profile_setname():
     assert updated_test_user0['name_first'] == "Nick"
     assert updated_test_user0['name_last'] == "Smith"
 
-
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid token
 def test_profile_setname_invalid_token():
     
@@ -38,7 +35,6 @@ def test_profile_setname_invalid_token():
     with pytest.raises(InputError):
         user_profile_setname(123456, "Jayden", "Haycob")
 
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid first name input 
 def test_profile_setname_invalid_fname():    
     
@@ -56,7 +52,6 @@ def test_profile_setname_invalid_fname():
     with pytest.raises(InputError):
         user_profile_setname(test_user0['token'], "A", "valid_new_lname")
     
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid last name input 
 def test_profile_setname_invalid_lname():        
     

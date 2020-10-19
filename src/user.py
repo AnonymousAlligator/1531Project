@@ -22,7 +22,7 @@ def user_profile(token, u_id):
 
 def user_profile_setname(token, name_first, name_last):
     
-    user = check_token(token)
+    caller = check_token(token)
     
     # check name_first is not between 1 and 50 characters
     if len(name_first) < 1 or len(name_first) > 50:
@@ -32,16 +32,24 @@ def user_profile_setname(token, name_first, name_last):
     if len(name_last) < 1 or len(name_last) > 50:
         raise error.InputError('Last name must be between 1 and 50 characters')
     
-    user["name_first"] = name_first
-    user["name_last"] = name_last
+    caller["name_first"] = name_first
+    caller["name_last"] = name_last
 
 def user_profile_setemail(token, email):
     
-    user = check_token(token)
+    caller = check_token(token)
+    
+    # check for valid email
+    if not email_check(email):
+        raise error.InputError('Entered email is not valid')
+
+    # check for existing email
+    for user in data['users']:
+        if user['email'] == email:
+            raise error.InputError("Email already taken by another registered user")
 
 
-    return {
-    }
+    caller["email"] = email
 
 def user_profile_sethandle(token, handle_str):
     #Check that the token is valid
