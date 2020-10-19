@@ -30,7 +30,7 @@ def test_user_profile_setemail_existing():
     test_user1_profile = user_profile(test_user1['token'], test_user1['u_id'])
 
     with pytest.raises(InputError):
-        user_profile_setemail(test_user0['token'], test_user1_profile['email'])
+        user_profile_setemail(test_user0['token'], test_user1_profile['user']['email'])
     
 
 # check for invalid email address input - no '@' character		
