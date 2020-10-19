@@ -39,7 +39,7 @@ def admin_userpermission_change(token, u_id, permission_id):
 
     #Check if the caller of the function is an owner
     if caller['permission_id'] != 1:
-        raise error.AccessError('You are not an owner of the channel')
+        raise error.AccessError('You are not an owner of the flockr')
 
     #Check if user to be permission changed exists within database
     called = {}
@@ -59,15 +59,17 @@ def admin_userpermission_change(token, u_id, permission_id):
     return {}
 
 def search(token, query_str):
-    messages = []
+    messageslist = []
     #Check if token is correct
     function_user = check_token(token)
     #loop through all channels and their messages and add message dictionary to the list
-    for channel in data['channels']:
-        for queries in channel['messages']:
-            if query_str in queries['message']:
-                messages.append(queries)
-    return messages
+    for msg in data['channels']:
+        #Check if the query_str is apart 
+        for msgdata in msg['messages']
+            #if TRUE for string inside string then append the message dictionary to list
+            if query_str in msgdata['message']:
+                messageslist.append(msg)
+    return messageslist
     
 
 def check_token(token):
