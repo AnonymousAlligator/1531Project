@@ -25,8 +25,8 @@ def message_send(token, channel_id, message):
     if not is_member:
         raise error.AccessError('You are not part of the channel you want to send messages to')
 
-    # Check the message length
-    if len(message) > 1000:
+    # Check the message length for issues
+    if len(message) > 1000 or len(message) < 1 or len(message.strip()) < 1:
         raise error.InputError('The message you are sending is over 1000 characters')
 
     # message gets added to the channel's message key
