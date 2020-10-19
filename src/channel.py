@@ -47,8 +47,8 @@ def channel_invite(token, channel_id, u_id):
     target_channel['all_members'].append({'u_id': invitee['u_id'], 
                                             'name_first': invitee['name_first'], 
                                             'name_last': invitee['name_last'],})
-    # Also if u_id is 0, then make them an owner
-    if u_id == 0:
+    # Also if permission_id is 1, then make them an owner
+    if invitee['permission_id'] == 1:
         target_channel['owner_members'].append({'u_id': invitee['u_id'],
                                                 'name_first': invitee['name_first'],
                                                 'name_last': invitee['name_last'],})
@@ -203,12 +203,12 @@ def channel_join(token, channel_id):
         raise error.InputError('Channel does not exist')
 
     # If caller is flockr owner then add them to the channel and make them an owner
-    if caller['u_id'] == 0:
-        target_channel['all_members'].append({'u_id': caller['u_id'],
-                                                'name_first': caller['name_first'],
-                                                'name_last': caller['name_last'],})
-        target_channel['owner_members'].append({'u_id': caller['u_id'],
-                                                'name_first': caller['name_first'],
+    if caller['permission_id'] == 1:
+        target_channel['all_members'].append({'u_id': caller['u_id'], 
+                                                'name_first': caller['name_first'], 
+                                        '       name_last': caller['name_last'],})
+        target_channel['owner_members'].append({'u_id': caller['u_id'], 
+                                                'name_first': caller['name_first'], 
                                                 'name_last': caller['name_last'],})
         return {}
 
@@ -297,6 +297,9 @@ def channel_removeowner(token, channel_id, u_id):
     for owner in target_channel['owner_members']:
         if owner['u_id'] == caller['u_id']:
             is_owner = True
+    # Check to see if caller is a flockr owner
+    if caller['permission_id'] == 1:
+        is_owner = True
     # Access Error if the caller is not an owner
     if is_owner == False:
         raise error.AccessError('You are not an owner of the channel and cannot remove owners')

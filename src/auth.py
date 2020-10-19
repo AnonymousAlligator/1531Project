@@ -74,9 +74,14 @@ def auth_register(email, password, name_first, name_last):
             raise InputError('Email already taken by another registered user')
 
     u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
+    permission_id = 2
+    
+    if u_id == 0:
+        permission_id = 1
 
     data['users'].append({
         'u_id': u_id,
+        'permission_id': permission_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 

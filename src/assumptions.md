@@ -97,3 +97,5 @@ search:
 
 - Deleted messages will not be returned in the search results.
 
+- Messages returns with latest message at the front of the list
+
