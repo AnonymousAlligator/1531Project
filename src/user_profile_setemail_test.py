@@ -10,19 +10,17 @@ from test_helpers import create_one_test_user, create_two_test_users
 
 import pytest
 
-@pytest.mark.skip(reason='function implementation not done yet')
 # assert that email set works
 def test_user_profile_setemail_works():
     
     clear()
     test_user0 = create_one_test_user()
 
-    user_profile_setemail(test_user0['token'], "cs1531@cse.unsw.edu.au")
+    user_profile_setemail(test_user0['token'], "testemail9@email.com")
     test_user0_updated = user_profile(test_user0['token'], test_user0['u_id'])
-    assert test_user0_updated['email'] == "cs1531@cse.unsw.edu.au"
+    assert test_user0_updated['email'] == "testemail9@email.com"
     
 
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid email - setting an existing user's email
 def test_user_profile_setemail_existing():
     
@@ -35,7 +33,6 @@ def test_user_profile_setemail_existing():
         user_profile_setemail(test_user0['token'], test_user1_profile['email'])
     
 
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid email address input - no '@' character		
 def test_user_profile_setemail_invalid_check():
     
@@ -46,7 +43,6 @@ def test_user_profile_setemail_invalid_check():
         user_profile_setemail(test_user0['token'], 'asdsad.com')
 
 
-@pytest.mark.skip(reason='function implementation not done yet')
 # check for invalid email address input using email check helper function
 def test_user_profile_setemail_invalid_check_helper():
 

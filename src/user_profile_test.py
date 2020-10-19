@@ -18,7 +18,7 @@ def test_user_profile():
     assert(user_profile(test_user0['token'], test_user0['u_id']) == {
         'user': {
             'u_id': test_user0['u_id'], 
-            'email': 'test_email_0@email.com', 
+            'email': 'testemail0@email.com', 
             'name_first': 'Hayden', 
             'name_last': 'Jacobs', 
             'handle': 'HaydenJacobs',

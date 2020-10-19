@@ -48,7 +48,6 @@ def user_profile_setemail(token, email):
         if user['email'] == email:
             raise error.InputError("Email already taken by another registered user")
 
-
     caller["email"] = email
 
 def user_profile_sethandle(token, handle_str):
