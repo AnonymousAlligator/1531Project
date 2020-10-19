@@ -60,6 +60,8 @@ def admin_userpermission_change(token, u_id, permission_id):
 
 def search(token, query_str):
     messageslist = []
+    if query_str.isspace():
+        return messageslist
     #Check if token is correct
     for user in data['users']:
         if user['token'] == token:
