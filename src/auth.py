@@ -81,7 +81,7 @@ def auth_register(email, password, name_first, name_last):
 
     data['users'].append({
         'u_id': u_id,
-        'permission_id': permission_id
+        'permission_id': permission_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 
