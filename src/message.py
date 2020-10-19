@@ -96,7 +96,7 @@ def message_remove(token, message_id):
 
 def message_edit(token, message_id, message):
     
-    user = data.check_token(token)
+    user = check_token(token)
 
     info_message = None
     # Searches through all the messages in all the existing channels channel by channel
@@ -119,18 +119,35 @@ def message_edit(token, message_id, message):
 
     message_sender_uid = info_message['message']['u_id']
 
-    # If user who sent request didn't send the message, is not a channel owner, or is not a slackr owner
-    ############ NEED TO DISCUSS HOW WE WANT TO SET THE PID STUFF UP ################
-    if message_sender_uid != user['u_id'] and user['p_id'] == PID_MEMBER and channel.get(user['u_id'] != 1):
-        raise AccessError('You do not have permission to edit message')
+    # Check to see if the caller has the right to remove the message
+    is_allowed = False
+    # 1) Caller u_id == target_message u_id
+    if user['u_id'] == message_sender_uid:
+        is_allowed = True
 
-    new_message_length = len(message)
-    # Finds the message and edits it
-    for i in range(0, new_message_length):
-        if message[i] != ' ':
-            channel['messages'][nth_message]['message'] = message # Edits the message
+    # 2) Caller is channel owner
+    if not is_allowed:
+        for owner in returned_channel['owner_members']:
+            if owner['u_id'] == user['u_id']:
+                is_allowed = True
+
+    # 3) Caller is flockr owner
+    if not is_allowed:
+        if user['permission_id'] == 1:
+            is_allowed = True
+
+    if not is_allowed:
+        raise error.AccessError('You do not have permission to edit message')
+    
+    # If the message parsed in all white space or empty, then remove
+    message_length = len(message.strip())
+    if message_length == 0:
+        message_remove(token, message_id)
+        return {}
+    else:
+        channel['messages'][nth_message]['message'] = message
+
+    for messages in data['messages']:
+        if message_id == message['message_id']:
+            messages['message'] = message
             return {}
-
-    # Removes the old message
-    message_remove(token, message_id)
-    return {}
