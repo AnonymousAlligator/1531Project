@@ -61,12 +61,14 @@ def admin_userpermission_change(token, u_id, permission_id):
     if called == {}:
         raise error.InputError('User you are trying to change permissions for does not exist')
 
-    #Check if permssion_id is a value permission
-    if permission_id != 1 or permission_id != 2:
+    #Check if permssion_id is a value permission, then change the permission_id of the user and add them to owner_list for channel
+    if permission_id == 1:
+        called['permission_id'] == 1
+    elif permission_id == 2:
+        called['[permission_id'] == 2
+    else:
         raise error.InputError('Incorrect value permission entered')
 
-    #Change the permission_id of the user and add them to owner_list for channel
-    called['[permission_id'] == 1
     return {}
 
 def search(token, query_str):
@@ -77,12 +79,11 @@ def search(token, query_str):
     for user in data['users']:
         if user['token'] == token:
             #loop through all channels and their messages and add message dictionary to the list
-            for msg in data['channels']:
+            for msg in data['messages']:
                 #Check if the query_str is apart 
-                for msgdata in msg['messages']:
-                    #if TRUE for string inside string then append the message dictionary to list
-                    if query_str in msgdata['message']:
-                        messageslist.append(msg)
+                #if TRUE for string inside string then append the message dictionary to list
+                if query_str in msg['message']:
+                    messageslist.append(msg)
                 return messageslist
     raise error.AccessError("Token is not valid")
     
