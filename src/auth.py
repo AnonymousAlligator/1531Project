@@ -46,7 +46,6 @@ def auth_register(email, password, name_first, name_last):
     if len(password) < 6:
         raise InputError('Password entered is less than 6 characters long')
 
-
     email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
     if not re.search(email_match, email): # If it returns FALSE
         raise InputError('Entered email is not valid')
@@ -74,6 +73,10 @@ def auth_register(email, password, name_first, name_last):
             raise InputError('Email already taken by another registered user')
 
     u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
+    permission_id = 2
+    
+    if u_id == 0:
+        permission_id = 1
 
     initial_handle = (name_first + name_last).lower()
     if len(initial_handle) >= 20:
@@ -94,6 +97,7 @@ def auth_register(email, password, name_first, name_last):
 
     data['users'].append({
         'u_id': u_id,
+        'permission_id': permission_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 

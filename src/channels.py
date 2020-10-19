@@ -30,16 +30,16 @@ def channels_list(token):
 def channels_listall(token):
 
     # check for valid user
-    check_token(token)
-
+    check_token(token)   
+    
     channels_listall = []
 
     for channel in data['channels']:
         # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
         # current assumption is that listall lists all public & private channels
-            channel_info = {'channel_id': channel['id'],
-                            'name': channel['name']}
-            channels_listall.append(channel_info)
+        channel_info = {'channel_id': channel['id'],
+                        'name': channel['name']}
+        channels_listall.append(channel_info)
 
     return channels_listall
 
