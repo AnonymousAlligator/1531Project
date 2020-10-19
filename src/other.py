@@ -10,6 +10,13 @@ data = {
     #all_members: [{u_id, name_first, name_last},]
     #messages:[{message_id, u_id, message, time_created},]
     ],
+'messages': [
+    #message_id: the message id
+    #channel_id: the channel the message was sent to
+    #u_id: user id of the person who sent the message
+    #message: the message
+    #time_created: when the message was created
+    ],
 }
 
 
