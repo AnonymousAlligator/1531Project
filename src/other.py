@@ -81,4 +81,4 @@ def check_token(token):
             return user
 
     # If the token doesn't exist/user isn't logged in
-    raise AccessError("Token is not valid")
+    raise error.AccessError("Token is not valid")
