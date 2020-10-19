@@ -23,22 +23,29 @@ def user_profile(token, u_id):
 def user_profile_setname(token, name_first, name_last):
     
     caller = check_token(token)
+
+    # remove trailing and leading whitespaces
+    fname = name_first.strip()
+    lname = name_last.strip()
     
-    # check name_first is not between 1 and 50 characters
-    if len(name_first) < 1 or len(name_first) > 50:
+    # check name_first is between 1 and 50 characters
+    if len(fname) < 1 or len(fname) > 50:
         raise error.InputError('First name must be between 1 and 50 characters')
     
-    # check name_last is not between 1 and 50 characters
-    if len(name_last) < 1 or len(name_last) > 50:
+    # check name_last is between 1 and 50 characters
+    if len(lname) < 1 or len(lname) > 50:
         raise error.InputError('Last name must be between 1 and 50 characters')
     
-    caller["name_first"] = name_first
-    caller["name_last"] = name_last
+    caller["name_first"] = fname
+    caller["name_last"] = lname
 
 def user_profile_setemail(token, email):
     
     caller = check_token(token)
     
+    # remove trailing and leading whitespaces from input
+    email = email.strip()
+
     # check for valid email
     if not email_check(email):
         raise error.InputError('Entered email is not valid')
@@ -53,6 +60,9 @@ def user_profile_setemail(token, email):
 def user_profile_sethandle(token, handle_str):
     #Check that the token is valid
     caller = check_token(token)
+
+    # remove trailing and leading whitespaces from input
+    handle_str = handle_str.strip()
 
     handle_str_len = len(handle_str.strip())
     if handle_str_len > 20:
