@@ -7,7 +7,6 @@ import pytest
 from other import clear
 from test_helpers import create_one_test_user, create_two_test_users, create_three_test_users
 
-#@pytest.mark.skip(reason='function implementation not done yet')
 # check attempt to list all 1 with a valid token
 def test_users_all_1_valid_token():
 				
@@ -17,7 +16,6 @@ def test_users_all_1_valid_token():
 		# check all 1 user return same list
 		assert len(users_all(user0['token'])) == 1
 
-#@pytest.mark.skip(reason='function implementation not done yet')
 # check attempt to list all 2 users with a valid token
 def test_users_all_2_valid_token():
 		
@@ -28,7 +26,6 @@ def test_users_all_2_valid_token():
 		assert len(users_all(user0['token'])) == 2
 		assert len(users_all(user1['token'])) == 2
 
-#@pytest.mark.skip(reason='function implementation not done yet')
 # check attempt to list all 3 users with a valid token
 def test_users_all_3_valid_token():
 		
