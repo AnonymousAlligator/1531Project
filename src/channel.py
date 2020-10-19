@@ -204,11 +204,11 @@ def channel_join(token, channel_id):
 
     # If caller is flockr owner then add them to the channel and make them an owner
     if caller['u_id'] == 0:
-        target_channel['all_members'].append({'u_id': caller['u_id'], 
-                                                'name_first': caller['name_first'], 
-                                        '       name_last': caller['name_last'],})
-        target_channel['owner_members'].append({'u_id': caller['u_id'], 
-                                                'name_first': caller['name_first'], 
+        target_channel['all_members'].append({'u_id': caller['u_id'],
+                                                'name_first': caller['name_first'],
+                                                'name_last': caller['name_last'],})
+        target_channel['owner_members'].append({'u_id': caller['u_id'],
+                                                'name_first': caller['name_first'],
                                                 'name_last': caller['name_last'],})
         return {}
 
