@@ -203,7 +203,7 @@ def channel_join(token, channel_id):
         raise error.InputError('Channel does not exist')
 
     # If caller is flockr owner then add them to the channel and make them an owner
-    if caller['permission_id'] == 0:
+    if caller['permission_id'] == 1:
         target_channel['all_members'].append({'u_id': caller['u_id'], 
                                                 'name_first': caller['name_first'], 
                                         '       name_last': caller['name_last'],})
