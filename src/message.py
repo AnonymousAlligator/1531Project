@@ -31,11 +31,18 @@ def message_send(token, channel_id, message):
 
     # message gets added to the channel's message key
     message_id = len(data['messages'])
-    message_data = {message_id, caller['u_id'], message, (datetime.datetime.now()).timestamp(),}
+    message_data = {'message_id': message_id,
+                    'u_id': caller['u_id'],
+                    'message': message,
+                    'time_created': (datetime.datetime.now()).timestamp(),}
     target_channel['messages'].insert(0, message_data)
 
-    # message id, channel id and u_id get added to the messages key (used in removal)
-    data['messages'].insert(0, {'u_id': caller['u_id'], 'message_id': message_id, 'channel_id': channel_id})
+    # adding data to messages for easier searching
+    data['messages'].insert(0, {'u_id': caller['u_id'],
+                                'message_id': message_id,
+                                'channel_id': channel_id,
+                                'message': message,
+                                'time_created': (datetime.datetime.now()).timestamp(),})
     return {
         'message_id': message_id
     }
@@ -58,7 +65,7 @@ def message_remove(token, message_id):
     for channel in data['channels']:
         if target_message['channel_id'] == channel['id']:
             target_channel = channel
-    
+
     # Check to see if the caller has the right to remove the message
     is_allowed = False
     # 1) Caller u_id == target_message u_id
@@ -70,9 +77,12 @@ def message_remove(token, message_id):
         for owner in target_channel['owner_members']:
             if owner['u_id'] == caller['u_id']:
                 is_allowed = True
-    
+
     # 3) Caller is flockr owner
-    
+    if not is_allowed:
+        if caller['permission_id'] == 1:
+            is_allowed = True
+
     # If permission is found then remove the message, else access error
     if is_allowed:
         for message in target_channel['messages']:
