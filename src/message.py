@@ -96,14 +96,14 @@ def message_remove(token, message_id):
     raise error.AccessError('You are not allowed to remove the message')
 
 def message_edit(token, message_id, message):
-    
+
     user = check_token(token)
 
     # Find the message in the message field of data
     target_message = {}
-    for messages in data['messages']:
-        if message_id == messages['message_id']:
-            target_message = messages
+    for message_value in data['messages']:
+        if message_id == message_value['message_id']:
+            target_message = message_value
     # If no target is returned then the message no longer exits, InputError
     if target_message == {}:
         raise error.InputError('Message does not exist')
@@ -146,6 +146,6 @@ def message_edit(token, message_id, message):
         channel['messages'][channel_index]['message'] = message
 
     for messages in data['messages']:
-        if message_id == message['message_id']:
+        if message_id == messages['message_id']:
             messages['message'] = message
             return {}

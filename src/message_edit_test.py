@@ -23,7 +23,7 @@ def test_message_edit():
     message0 = "inital message"
     message0_id = message_send(test_user0['token'], channel_id, message0)
 
-    assert message_edit(test_user0['token'], message0_id, 'edited message') == {}
+    assert message_edit(test_user0['token'], message0_id['message_id'], 'edited message') == {}
 
 # check that user1 cannot edit user0's message
 def test_message_edit_notusermsg():
@@ -43,5 +43,5 @@ def test_message_edit_notusermsg():
     
     # raise error if user1 tries to edit user0's message
     with pytest.raises(AccessError):
-        message_edit(test_user1['token'], message0_id, 'edited message')
+        message_edit(test_user1['token'], message0_id['message_id'], 'edited message')
     
