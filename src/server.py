@@ -45,5 +45,16 @@ def http_user_profile_sethandle():
     return dumps(user.user_profile_sethandle(data['token'], data['handle_str']))
 
 
+@APP.route('/user/profile/setemail', methods=['PUT'])
+def http_user_profile_setemail():
+    data = request.get_json()
+    return dumps(user.user_profile_setemail(data['token'], data['email']))
+
+@APP.route('/user/profile/setname', methods=['PUT'])
+def http_user_profile_setname():
+    data = request.get_json()
+    return dumps(user.user_profile_setname(data['token'], data['name_first'], data['name_last']))
+
+
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
