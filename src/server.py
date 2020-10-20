@@ -4,6 +4,10 @@ from flask import Flask, request
 from flask_cors import CORS
 from error import InputError
 import other
+import auth
+import message
+import channel
+import channels
 
 
 def defaultHandler(err):
@@ -23,20 +27,6 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
-@APP.route("/users/all", methods=['GET'])
-def http_users_all():
-    data = request.get_json()
-    return dumps(other.users_all(data['token']))
-
-@APP.route("/admin/userpermission/change", methods = ['POST']) 
-def http_admin_userpermission_change():
-    data = request.get_json()
-    return dumps(other.admin_userpermission_change(data['token'], data['u_id'], data['permission_id']))
-
-@APP.route("/search", methods=['GET'])
-def http_search():
-    data = request.get_json()
-    return dumps(other.search(data['token'], data['query_str']))
 
 # Example
 @APP.route("/echo", methods=['GET'])
@@ -47,7 +37,7 @@ def echo():
     return dumps({
         'data': data
     })
-    
+
 @APP.route('/auth/login', methods = ['POST']) 
 def http_auth_login():
     data = request.get_json
@@ -96,7 +86,7 @@ def http_channel_jaddowner():
 @APP.route("channel/removeowner", methods=['POST'])
 def http_channel_removeowner():
     data = request.get_json()
-    return dumps(channel.removeowner(data['token'], data['channel_id'], data['u_id']))
+    return dumps(channel.channel_removeowner(data['token'], data['channel_id'], data['u_id']))
 
 @APP.route("channels/list", methods=['GET'])    
 def http_channels_list():
@@ -122,7 +112,26 @@ def http_message_send():
 def http_message_remove():
     data = request.get_json()
     return dumps(message.message_remove(data['token'], data['message_id']))
->>>>>>> src/server.py
+
+@APP.route("message/edit", methods=['PUT'])
+def http_message_edit():
+    data = request.get_json()
+    return dumps(message.message_edit(data['token'], data['message_id'], data['message']))
+
+@APP.route("/users/all", methods=['GET'])
+def http_users_all():
+    data = request.get_json()
+    return dumps(other.users_all(data['token']))
+
+@APP.route("/admin/userpermission/change", methods = ['POST']) 
+def http_admin_userpermission_change():
+    data = request.get_json()
+    return dumps(other.admin_userpermission_change(data['token'], data['u_id'], data['permission_id']))
+
+@APP.route("/search", methods=['GET'])
+def http_search():
+    data = request.get_json()
+    return dumps(other.search(data['token'], data['query_str']))
 
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
