@@ -30,11 +30,7 @@ def echo():
     return dumps({
         'data': data
     })
-
-if __name__ == "__main__":
-    APP.run(port=0) # Do not edit this port
-
-
+    
 @APP.route('/auth/login', methods = ['POST']) 
 def http_auth_login():
     data = request.get_json
@@ -49,4 +45,9 @@ def http_auth_logout():
 def http_auth_register():
     data = request.get_json
     return dumps(auth.auth_register(data['email'], data['password'], data['name_first'], data['name_last']))
+
+if __name__ == "__main__":
+    APP.run(port=0) # Do not edit this port
+
+
 
