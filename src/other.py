@@ -65,7 +65,7 @@ def admin_userpermission_change(token, u_id, permission_id):
     if permission_id == 1:
         called['permission_id'] = 1
     elif permission_id == 2:
-        called['permission_id'] == 2
+        called['permission_id'] = 2
     else:
         raise error.InputError('Incorrect value permission entered')
 
