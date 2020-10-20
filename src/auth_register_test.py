@@ -11,11 +11,9 @@ def test_auth_register1():
     # Register new user
     valid_user = auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user['u_id'] == 0
-    assert valid_user['token'] == "registered@valid.com"
 
     valid_user2 = auth_register("registered2@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user2['u_id'] == 1
-    assert valid_user2['token'] == "registered2@valid.com"
     
 
 def test_valid_but_already_registered():
