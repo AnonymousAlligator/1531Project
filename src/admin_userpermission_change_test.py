@@ -19,7 +19,7 @@ def test_admin_userpermission_change_successtodefault():
 
 def test_admin_userpermission_change_invalidtoken():
     clear()
-    user_0 = create_one_test_users()
+    user_0 = create_one_test_user()
     with pytest.raises(error.AccessError):
         assert admin_userpermission_change('hello', user_0['u_id'], 1) == {}
 
@@ -31,7 +31,7 @@ def test_admin_userpermission_change_notflockrowner():
 
 def test_admin_userpermission_change_userdoesnotexist():
     clear()
-    user_0 = create_one_test_users()
+    user_0 = create_one_test_user()
     with pytest.raises(error.InputError):
         assert admin_userpermission_change(user_0['token'], 2, 1) == {}
 
