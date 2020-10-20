@@ -63,7 +63,7 @@ def test_message_remove_works_more_people_channel():
     assert message_remove(test_user1['token'], message0_id['message_id']) == {}
 
 # check channel owner can remove messages
-def test_message_remove_works_more_people_channel():
+def test_message_remove_channel_owner():
 
     clear()
     test_user0, test_user1 = create_two_test_users()
@@ -82,7 +82,7 @@ def test_message_remove_works_more_people_channel():
     assert message_remove(test_user0['token'], message0_id['message_id']) == {}
 
 # check flockr owner can remove messages
-def test_message_remove_works_more_people_channel():
+def test_message_remove_flockr_owner():
 
     clear()
     test_user0, test_user1, test_user2 = create_three_test_users()
