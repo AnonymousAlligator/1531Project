@@ -24,6 +24,7 @@ data = {
 def clear():
     for value in data.values():
         del value[:]
+    return {}
 
 #Returns a list of all users and their associated details
 def users_all(token):
