@@ -24,8 +24,7 @@ def test_user_profile_setemail_works():
 def test_user_profile_setemail_existing():
     
     clear()    
-    test_user0, test_user1 = create_two_test_users()
-    user_profile(test_user1["token"], ["u_id"])
+    test_user0 = create_two_test_users()[0]
     with pytest.raises(InputError):
         user_profile_setemail(test_user0['token'], "testemail1@email.com")
     
