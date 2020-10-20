@@ -97,6 +97,16 @@ def http_channels_create():
     data = request.get_json()
     return dumps(channels.channels_create(data['token'], data['name'], data['is_public']))
 
+@APP.route("message/send", methods=['POST'])
+def http_message_send():
+    data = request.get_json()
+    return dumps(message.message_send(data['token'], data['channel_id'], data['message']))
+
+@APP.route("message/remove", methods=['DELETE'])
+def http_message_remove():
+    data = request.get_json()
+    return dumps(message.message_remove(data['token'], data['message_id']))
+
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
 
