@@ -102,10 +102,16 @@ def auth_register(email, password, name_first, name_last):
         handle = ''.join(random.choice(string.ascii_lowercase) for _ in range(20))   
 
     password = hashlib.sha256(password.encode()).hexdigest()
-    token = jwt.encode({'u_id': u_id}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')          
+    token = jwt.encode({'u_id': u_id}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')    
+
+    permission_id = 2
+    if u_id == 0:
+        permission_id = 1
+      
 
     data['users'].append({
         'u_id': u_id,
+        'permission_id': permission_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 
