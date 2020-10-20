@@ -30,19 +30,20 @@ def message_send(token, channel_id, message):
         raise error.InputError('The message you are sending is over 1000 characters')
 
     # message gets added to the channel's message key
-    message_id = len(data['messages'])
+    if len(data['messages']) == 0:
+        message_id = 0
+    else:
+        message_id = data['messages'][0]['message_id'] + 1
+    time_created = round((datetime.datetime.now()).timestamp())
     message_data = {'message_id': message_id,
                     'u_id': caller['u_id'],
                     'message': message,
-                    'time_created': (datetime.datetime.now()).timestamp(),}
+                    'time_created': time_created,}
     target_channel['messages'].insert(0, message_data)
 
     # adding data to messages for easier searching
-    data['messages'].insert(0, {'u_id': caller['u_id'],
-                                'message_id': message_id,
-                                'channel_id': channel_id,
-                                'message': message,
-                                'time_created': (datetime.datetime.now()).timestamp(),})
+    message_data.update({'channel_id': channel_id})
+    data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
     }
@@ -50,7 +51,7 @@ def message_send(token, channel_id, message):
 def message_remove(token, message_id):
     # Check that the token is valid
     caller = check_token(token)
-
+    
     # Find the message in the message field of data
     target_message = {}
     for message in data['messages']:
@@ -85,12 +86,12 @@ def message_remove(token, message_id):
 
     # If permission is found then remove the message, else access error
     if is_allowed:
-        for message in target_channel['messages']:
-            if message['message_id'] == target_message['message_id']:
-                message.clear()
-        for message in data['messages']:
-            if message_id == message['message_id']:
-                message.clear()
+        for message in range(len(target_channel['messages'])):
+            if target_channel['messages'][message]['message_id'] == target_message['message_id']:
+                del target_channel['messages'][message]
+        for message in range(len(data['messages'])):
+            if message_id == data['messages'][message]['message_id']:
+                del data['messages'][message]
         return {}
     raise error.AccessError('You are not allowed to remove the message')
 
