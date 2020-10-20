@@ -1,19 +1,17 @@
-from other import data, check_token
+from other import data, check_token, find_with_uid
 import error
 
 def channels_list(token):
         
-    #TODO: add in taimoor's user check
-    # check for valid user
     user = check_token(token)   
     
     for user in data['users']:
         if token == user['token']:
             u_id = user['u_id']
 
-    # list of channels the authorised user is part of
-    channels_list = []                
-
+    channels = {}             
+    channel_list = []
+    channel_info = {}
     # get all channels info
     for channel in data['channels']: 
         for member_id in channel['all_members']:
@@ -22,9 +20,10 @@ def channels_list(token):
                                 'channel_id': channel['id'],
                                 'name': channel['name']
                                 }
-                channels_list.append(channel_info)
-
-    return channels_list
+                channel_list.append(channel_info)
+    
+    channels['channels'] = channel_list
+    return channels
 
 '''Provide a list of all channels (and their associated details)'''
 def channels_listall(token):
