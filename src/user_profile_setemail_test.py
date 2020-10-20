@@ -16,9 +16,7 @@ def test_user_profile_setemail_works():
     clear()
     test_user0 = create_one_test_user()
 
-    user_profile_setemail(test_user0['token'], "testemail9@email.com")
-    test_user0_updated = user_profile(test_user0['token'], test_user0['u_id'])
-    assert test_user0_updated['user']['email'] == "testemail9@email.com"
+    assert user_profile_setemail(test_user0['token'], "testemail9@email.com") == {}
     
 
 # check for invalid email - setting an existing user's email
@@ -27,10 +25,8 @@ def test_user_profile_setemail_existing():
     clear()    
     test_user0, test_user1 = create_two_test_users()
 
-    test_user1_profile = user_profile(test_user1['token'], test_user1['u_id'])
-
     with pytest.raises(InputError):
-        user_profile_setemail(test_user0['token'], test_user1_profile['user']['email'])
+        user_profile_setemail(test_user0['token'], "testemail1@email.com")
     
 
 # check for invalid email address input - no '@' character		
