@@ -9,11 +9,11 @@ def channels_list(token):
         if token == user['token']:
             u_id = user['u_id']
 
-    channels = {}             
+    channels = {}
     channel_list = []
     channel_info = {}
     # get all channels info
-    for channel in data['channels']: 
+    for channel in data['channels']:
         for member_id in channel['all_members']:
             if member_id['u_id'] == u_id:
                 channel_info = {
