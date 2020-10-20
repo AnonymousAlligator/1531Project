@@ -1,4 +1,4 @@
-from other import data, check_token, find_with_uid
+from other import data, check_token
 import error
 
 def channels_list(token):
@@ -25,22 +25,24 @@ def channels_list(token):
     channels['channels'] = channel_list
     return channels
 
-'''Provide a list of all channels (and their associated details)'''
+#Provide a list of all channels (and their associated details)
 def channels_listall(token):
 
     # check for valid user
-    check_token(token)   
-    
-    channels_listall = []
+    check_token(token)
+
+    channels_listalls = {}        
+    channel_list = []
+    channel_info = {}    
 
     for channel in data['channels']:
         # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
         # current assumption is that listall lists all public & private channels
         channel_info = {'channel_id': channel['id'],
                         'name': channel['name']}
-        channels_listall.append(channel_info)
-
-    return channels_listall
+        channel_list.append(channel_info)
+    channels_listalls['channels'] = channel_list
+    return channels_listalls
 
 def channels_create(token, name, is_public):
     if len(name) > 20:
