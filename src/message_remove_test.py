@@ -3,7 +3,7 @@ InputError when message does not exist
 AccessError when message_id was not sent by the user or when the user is not owner of the channel
 '''
 
-from channel import channel_invite, channel_addowner, channel_join
+from channel import channel_join
 from channels import channels_create
 from message import message_send, message_remove
 from test_helpers import create_one_test_user, create_two_test_users, create_three_test_users
