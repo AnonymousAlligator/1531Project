@@ -3,11 +3,13 @@ from json import dumps
 from flask import Flask, request
 from flask_cors import CORS
 from error import InputError
+import user
 import other
 import auth
 import message
 import channel
 import channels
+
 
 
 def defaultHandler(err):
@@ -33,10 +35,31 @@ APP.register_error_handler(Exception, defaultHandler)
 def echo():
     data = request.args.get('data')
     if data == 'echo':
-   	    raise InputError(description='Cannot echo "echo"')
+        raise InputError(description='Cannot echo "echo"')
     return dumps({
         'data': data
     })
+
+@APP.route("user/profile", methods=['GET'])
+def http_user_profile():
+    data = request.get_json()
+    return dumps(user.user_profile(data['token'], data['u_id']))
+
+@APP.route("user/profile/sethandle", methods = ['PUT']) 
+def http_user_profile_sethandle():
+    data = request.get_json()
+    return dumps(user.user_profile_sethandle(data['token'], data['handle_str']))
+
+
+@APP.route('/user/profile/setemail', methods=['PUT'])
+def http_user_profile_setemail():
+    data = request.get_json()
+    return dumps(user.user_profile_setemail(data['token'], data['email']))
+
+@APP.route('/user/profile/setname', methods=['PUT'])
+def http_user_profile_setname():
+    data = request.get_json()
+    return dumps(user.user_profile_setname(data['token'], data['name_first'], data['name_last']))
 
 @APP.route('/auth/login', methods = ['POST']) 
 def http_auth_login():
@@ -132,6 +155,7 @@ def http_admin_userpermission_change():
 def http_search():
     data = request.get_json()
     return dumps(other.search(data['token'], data['query_str']))
+
 
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
