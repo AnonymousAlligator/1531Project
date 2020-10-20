@@ -53,9 +53,6 @@ def test_user_profile_sethandle_already_exists():
     
     clear()
     test_user_0, test_user_1 = create_two_test_users()
-    
 
-
-    
     with pytest.raises(InputError):
         user_profile_sethandle(test_user_0['token'], "jaydenhaycobs")
