@@ -183,11 +183,11 @@ def channel_leave(token, channel_id):
     for user in target_channel['all_members']:
         if user['u_id'] == caller['u_id']:
             target_channel['all_members'].remove(user)
-    # If there is now no one in the channel, delete the channel
-    if len(target_channel['all_members']) == 0:
-        for channel in range(len(data['channels'])):
-            if data['channels'][channel]['channel_id'] == channel_id:
-                del data['channels'][channel]
+            # If there is now no one in the channel, delete the channel
+            if len(target_channel['all_members']) == 0:
+                for channel in range(len(data['channels'])):
+                    if data['channels'][channel]['id'] == channel_id:
+                        del data['channels'][channel]
         return {}
 
 def channel_join(token, channel_id):
