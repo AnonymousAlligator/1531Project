@@ -15,13 +15,9 @@ import pytest
 def test_profile_setname():
     
     clear()    
-
     test_user0 = create_one_test_user()
 
-    user_profile_setname(test_user0['token'], "Nick", "Smith")    
-    updated_test_user0 = user_profile(test_user0['token'], test_user0['u_id'])    
-    assert updated_test_user0['user']['name_first'] == "Nick"
-    assert updated_test_user0['user']['name_last'] == "Smith"
+    assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
 
 # check for invalid token
 def test_profile_setname_invalid_token():
@@ -32,11 +28,10 @@ def test_profile_setname_invalid_token():
     with pytest.raises(AccessError):
         user_profile_setname('invalid_token', "Jayden", "Haycob")
 
-    with pytest.raises(AccessError):
-        user_profile_setname(123456, "Jayden", "Haycob")
+
 
 # check for invalid first name input 
-def test_profile_setname_invalid_fname():    
+def test_profile_setname_fname_long():    
     
     clear()
     test_user0 = create_one_test_user()
@@ -44,16 +39,18 @@ def test_profile_setname_invalid_fname():
     # Invalid firstname input - more than 50 characters
     with pytest.raises(InputError):
         user_profile_setname(test_user0['token'], "A" * 51, "valid_new_lname")
-    
-    with pytest.raises(InputError):
-        user_profile_setname(test_user0['token'], "A" * 100, "valid_new_lname")
+
+def test_profile_setname_fname_short():
+    clear()
+    test_user0 = create_one_test_user()
     
     # Invalid first name input - input is space
     with pytest.raises(InputError):
         user_profile_setname(test_user0['token'], " ", "valid_new_lname")
     
+
 # check for invalid last name input 
-def test_profile_setname_invalid_lname():        
+def test_profile_setname_invalid_lname_long():        
     
     clear()
     test_user0 = create_one_test_user()
@@ -61,10 +58,11 @@ def test_profile_setname_invalid_lname():
     # Invalid last name input - more than 50 characters
     with pytest.raises(InputError):
         user_profile_setname(test_user0['token'], "valid_new_fname", "A" * 51)
-    
-    with pytest.raises(InputError):
-        user_profile_setname(test_user0['token'], "valid_new_fname", "A" * 100)
-    
+
+def test_profile_setname_invalid_lname_short():    
+    clear()
+    test_user0 = create_one_test_user()
     # Invalid last name input - input is space
     with pytest.raises(InputError):
         user_profile_setname(test_user0['token'], "valid_new_fname", " " )
+
