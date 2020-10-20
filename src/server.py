@@ -31,5 +31,15 @@ def echo():
         'data': data
     })
 
+@APP.route("/admin/userpermission/change", methods = ['POST']) 
+def http_admin_userpermission_change():
+    data = request.get_json()
+    return dumps(other.admin_userpermission_change(data['token'], data['u_id'], data['permission_id']))
+
+@APP.route("/search", methods=['GET'])
+def http_search():
+    data = request.get_json()
+    return dumps(channel.search(data['token'], data['query_str']))
+
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
