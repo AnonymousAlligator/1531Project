@@ -56,5 +56,15 @@ def http_channel_join():
     data = request.get_json()
     return dumps(channel.channel_join(data['token'], data['channel_id']))
 
+@APP.route("channel/addowner", methods=['POST'])
+def http_channel_jaddowner():
+    data = request.get_json()
+    return dumps(channel.channel_addowner(data['token'], data['channel_id'], data['u_id']))
+
+@APP.route("channel/removeowner", methods=['POST'])
+def http_channel_removeowner():
+    data = request.get_json()
+    return dumps(channel.removeowner(data['token'], data['channel_id'], data['u_id']))
+
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
