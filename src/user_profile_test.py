@@ -16,13 +16,15 @@ def test_user_profile():
     test_user0 = create_one_test_user()
     
     assert(user_profile(test_user0['token'], test_user0['u_id']) == {
-        'user': {
+        'user': [
+            {
             'u_id': test_user0['u_id'], 
             'email': 'testemail0@email.com', 
             'name_first': 'Hayden', 
             'name_last': 'Jacobs', 
             'handle': 'haydenjacobs',
-        }
+            },
+        ]
     })
 
 # check for invalid token with a valid u_id
