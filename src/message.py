@@ -99,36 +99,33 @@ def message_edit(token, message_id, message):
     
     user = check_token(token)
 
-    info_message = None
-    # Searches through all the messages in all the existing channels channel by channel
+    # Find the message in the message field of data
+    target_message = {}
+    for messages in data['messages']:
+        if message_id == messages['message_id']:
+            target_message = messages
+    # If no target is returned then the message no longer exits, InputError
+    if target_message == {}:
+        raise error.InputError('Message does not exist')
+
+    # Find the channel the message is in
+    target_channel = {}
+    channel_index = 0
     for channel in data['channels']:
-        total_messages = len(channel['messages'])
-        for nth_message in range(0, total_messages):
-            # If the message is found inside current channel 
-            if channel['messages'][nth_message]['message_id'] == message_id:
-                info_message = {'nth_message': nth_message,
-                                'message': channel['messages'][nth_message],
-                                'channel_id': channel['channel_id']}
-
-    # If the message cannot be found across all the channels, info_message stays equal to none
-    
-    returned_channel = None
-    for channel in data['channel']:
-        if channel['channel_id'] == info_message['channel_id']:
-            returned_channel = channel # All channel info stored in here
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
             break
-
-    message_sender_uid = info_message['message']['u_id']
+        channel_index += 1
 
     # Check to see if the caller has the right to remove the message
     is_allowed = False
     # 1) Caller u_id == target_message u_id
-    if user['u_id'] == message_sender_uid:
+    if user['u_id'] == target_message['u_id']:
         is_allowed = True
 
     # 2) Caller is channel owner
     if not is_allowed:
-        for owner in returned_channel['owner_members']:
+        for owner in target_channel['owner_members']:
             if owner['u_id'] == user['u_id']:
                 is_allowed = True
 
@@ -146,7 +143,7 @@ def message_edit(token, message_id, message):
         message_remove(token, message_id)
         return {}
     else:
-        channel['messages'][nth_message]['message'] = message
+        channel['messages'][channel_index]['message'] = message
 
     for messages in data['messages']:
         if message_id == message['message_id']:
