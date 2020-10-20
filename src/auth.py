@@ -24,7 +24,7 @@ def auth_login(email, password):
     if password != found_user['password']:
         raise InputError('Password entered is not correct')
     
-    token = jwt.encode({found_user['u_id']:'u_id'}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')
+    token = jwt.encode({'u_id': found_user['u_id']}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')
 
     user['token'] = token
     return {
