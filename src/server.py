@@ -31,6 +31,11 @@ def echo():
         'data': data
     })
 
+@APP.route("channel/invite", methods=['POST'])
+def http_channel_invite():
+    data = request.get_json()
+    return dumps(channel.channel_invite(data['token'], data['channel_id'], data['u_id']))
+
 @APP.route("channel/details", methods=['GET'])
 def http_channel_details():
     data = request.get_json()
