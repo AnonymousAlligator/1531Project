@@ -33,3 +33,20 @@ def echo():
 
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
+
+
+@APP.route('/auth/login', methods = ['POST']) 
+def http_auth_login():
+    data = request.get_json
+    return dumps(auth.auth_login(data['email'], data['password']))
+
+@APP.route('/auth/logout', methods = ['POST']) 
+def http_auth_logout():
+    data = request.get_json
+    return dumps(auth.auth_logout(data['token']))
+
+@APP.route('/auth/register', methods = ['POST']) 
+def http_auth_register():
+    data = request.get_json
+    return dumps(auth.auth_register(data['email'], data['password'], data['name_first'], data['name_last']))
+
