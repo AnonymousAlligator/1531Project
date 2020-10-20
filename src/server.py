@@ -10,8 +10,6 @@ import message
 import channel
 import channels
 
-
-
 def defaultHandler(err):
     response = err.get_response()
     print('response', err, err.get_response())
@@ -29,7 +27,6 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
-
 # Example
 @APP.route("/echo", methods=['GET'])
 def echo():
@@ -39,7 +36,6 @@ def echo():
     return dumps({
         'data': data
     })
-
 
 @APP.route('/auth/login', methods = ['POST']) 
 def http_auth_login():
@@ -162,6 +158,3 @@ def http_clear():
 
 if __name__ == "__main__":
     APP.run(port=0) # Do not edit this port
-
-
-
