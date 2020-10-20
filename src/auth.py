@@ -123,14 +123,4 @@ def auth_register(email, password, name_first, name_last):
     return {
         'u_id': u_id,
         'token': token,
-        'handle': handle,
-        'password': password
     }
-
-
-valid_user = auth_register("1st_email@valid.com", "potato321", "abcdefghij", "klmnopqrst")
-valid_user2 = auth_register("2nd_email@valid.com", "wdnqwiu1", "abcdefghij", "klmnopqrst")
-valid_user3 = auth_register("3rd_email@valid.com", "123445678", "abcdefghij", "klmnopqrst")
-print(valid_user)
-print(valid_user2)
-print(valid_user3)
