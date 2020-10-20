@@ -3,9 +3,8 @@ Returns a list of all users and their associated details
 
 '''
 from other import users_all
-import pytest
 from other import clear
-from test_helpers import create_one_test_user, create_two_test_users, create_three_test_users
+from test_helpers import create_one_test_user, create_two_test_users
 
 # check attempt to list all 1 with a valid token
 def test_users_all_1_valid_token():
@@ -29,7 +28,8 @@ def test_users_all_1_valid_token():
 def test_users_all_2_user1_valid_token():
         
     clear()
-    user0, user1 = create_two_test_users()
+    user0 = create_two_test_users()[0]
+    
     assert(users_all(user0['token']) == {
         'users': [
             {
@@ -54,7 +54,7 @@ def test_users_all_2_user1_valid_token():
 def test_users_all_user2_valid_token():
 
     clear()
-    user0, user1 = create_two_test_users()
+    user1 = create_two_test_users()[1]
 
     assert(users_all(user1['token']) == {
         'users': [
@@ -80,7 +80,7 @@ def test_users_all_user2_valid_token():
 def test_users_all_valid_order():
 
     clear()
-    user0, user1 = create_two_test_users()
+    user1 = create_two_test_users()[1]
 
     assert(users_all(user1['token']) != {
         'users': [

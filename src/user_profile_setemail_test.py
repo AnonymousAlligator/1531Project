@@ -1,6 +1,7 @@
 '''
 InputError when any of:
-Email entered is not a valid email using the method provided here (unless you feel you have a better method).
+Email entered is not a valid email using the method provided here 
+(unless you feel you have a better method).
 Email address is already being used by another user
 '''
 from user import user_profile, user_profile_setemail
@@ -24,7 +25,7 @@ def test_user_profile_setemail_existing():
     
     clear()    
     test_user0, test_user1 = create_two_test_users()
-
+    user_profile(test_user1["token"], ["u_id"])
     with pytest.raises(InputError):
         user_profile_setemail(test_user0['token'], "testemail1@email.com")
     

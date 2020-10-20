@@ -4,7 +4,7 @@ InputError when any of:
   handle is already used by another user
 
 '''
-from user import user_profile, user_profile_sethandle
+from user import user_profile_sethandle
 from error import InputError
 from other import clear
 from test_helpers import create_one_test_user, create_two_test_users
@@ -24,7 +24,7 @@ def test_user_profile_sethandle_20():
     clear()
     test_user_0 = create_one_test_user()
     new_handle = "A" * 20
-    assert user_profile_sethandle(test_user_0['token'], "A" * 20) == {}
+    assert user_profile_sethandle(test_user_0['token'], new_handle) == {}
 
 
 
@@ -52,7 +52,6 @@ def test_user_profile_sethandle_long():
 def test_user_profile_sethandle_already_exists():
     
     clear()
-    test_user_0, test_user_1 = create_two_test_users()
-
+    test_user_0 = create_two_test_users()[0]
     with pytest.raises(InputError):
         user_profile_sethandle(test_user_0['token'], "jaydenhaycobs")
