@@ -42,7 +42,7 @@ def http_channels_listall():
     return dumps(channels.channels_listall(data['token']))
 
 @APP.route("channels/create", methods=['GET'])    
-def http_channels_listall():
+def http_channels_create():
     data = request.get_json()
     return dumps(channels.channels_create(data['token'], data['name'], data['is_public']))
 
