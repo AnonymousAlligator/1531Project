@@ -63,9 +63,9 @@ def admin_userpermission_change(token, u_id, permission_id):
 
     #Check if permssion_id is a value permission, then change the permission_id of the user and add them to owner_list for channel
     if permission_id == 1:
-        called['permission_id'] == 1
+        called['permission_id'] = 1
     elif permission_id == 2:
-        called['[permission_id'] == 2
+        called['[permission_id'] = 2
     else:
         raise error.InputError('Incorrect value permission entered')
 
