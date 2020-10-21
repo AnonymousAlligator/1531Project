@@ -6,16 +6,6 @@ from url_fixture import url
 import pytest
 import requests
 
-# Register users
-def test_initialisation(url):
-    user0 = requests.post(f'{url}/auth/register', json={
-        'email' : 'Benjamin@email.com',
-        'password' : 'password',
-        'name_first' : 'Benjamin',
-        'name_last' : 'Long',
-    })
-    benjamin = user0.json()
-    assert print(benjamin) == 0
 @pytest.fixture
 def initialisation(url):
     # Clear data space
@@ -66,7 +56,7 @@ def initialisation(url):
     })
     requests.post(f'{url}/channel/invite', json={
         'token' : benjamin['token'],
-        'channel_id' : channel1_id['channel_id'],
+        'channel_id' : channel0_id['channel_id'],
         'u_id' : alex['u_id'],
     })
     requests.post(f'{url}/channel/invite', json={
@@ -74,9 +64,10 @@ def initialisation(url):
         'channel_id' : channel1_id['channel_id'],
         'u_id' : alex['u_id'],
     })
+    return benjamin, ross, alex, channel0_id, channel1_id
 
 def test_http_channel_details_public(url, initialisation):
-    initialisation
+    benjamin,_,_,channel0_id,_ = initialisation
     r = requests.get(f'{url}/channel/details', json={
         'token' : benjamin['token'],
         'channel_id' : channel0_id['channel_id'],
@@ -97,7 +88,7 @@ def test_http_channel_details_public(url, initialisation):
                                         'name_last': "Smith",}]
 
 def test_http_channel_details_private(url, initialisation):
-    initialisation
+    _,ross,_,_,channel1_id = initialisation
     r = requests.get(f'{url}/channel/details', json={
         'token' : ross['token'],
         'channel_id' : channel1_id['channel_id'],
@@ -117,28 +108,32 @@ def test_http_channel_details_private(url, initialisation):
 def test_http_channel_details_invalid_channel(url, initialisation):
     #The channel doesn't exist
     #This should throw InputError
-    initialisation
-    with pytest.raises(InputError):
-        assert requests.get(f'{url}/channel/details', json={
-            'token' : benjamin['token'],
-            'channel_id' : 2,
-        })
+    benjamin,_,_,_,_ = initialisation
+    r = requests.get(f'{url}/channel/details', json={
+        'token' : benjamin['token'],
+        'channel_id' : 2,
+    })
+    details = r.json()
+    assert details['code'] == 400
 
 def test_http_channel_details_not_a_member(url, initialisation):
     #User not a member of the channel
     #This should throw AccessError
-    initialisation
-    with pytest.raises(AccessError):
-        assert requests.get(f'{url}/channel/details', json={
-            'token' : benjamin['token'],
-            'channel_id' : channel1_id['channel_id'],
-        })
+    benjamin,_,_,_,channel1_id = initialisation
+    r = requests.get(f'{url}/channel/details', json={
+        'token' : benjamin['token'],
+        'channel_id' : channel1_id['channel_id'],
+    })
+    details = r.json()
+    assert details['code'] == 400
 
 def test_http_invalid_token(url, initialisation):
     #Token parsed in is invalid
     #This should throw AccessError
-    with pytest.raises(AccessError):
-        assert requests.get(f'{url}/channel/details', json={
-            'token' : 'boooop',
-            'channel_id' : channel1_id['channel_id'],
-        })
+    _,_,_,_,channel1_id = initialisation
+    r = requests.get(f'{url}/channel/details', json={
+        'token' : 'boooop',
+        'channel_id' : channel1_id['channel_id'],
+    })
+    details = r.json()
+    assert details['code'] == 400
