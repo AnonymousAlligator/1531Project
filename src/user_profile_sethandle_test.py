@@ -4,7 +4,7 @@ InputError when any of:
   handle is already used by another user
 
 '''
-from user import user_profile, user_profile_sethandle
+from user import user_profile_sethandle
 from error import InputError
 from other import clear
 from test_helpers import create_one_test_user, create_two_test_users
@@ -16,10 +16,7 @@ def test_user_profile_sethandle_works():
     clear()
     test_user_0 = create_one_test_user()
     # update the test_user0's handle
-    user_profile_sethandle(test_user_0['token'], '1531_admin')
-    # get test_user0's profile
-    test_user0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
-    assert test_user0_updated['user']['handle'] == "1531_admin"
+    assert user_profile_sethandle(test_user_0['token'], '1531_admin') == {}
 
 # check for valid handle string - str = 20 char in length
 def test_user_profile_sethandle_20():
@@ -27,47 +24,34 @@ def test_user_profile_sethandle_20():
     clear()
     test_user_0 = create_one_test_user()
     new_handle = "A" * 20
-    user_profile_sethandle(test_user_0['token'], "A" * 20)
-    test_user0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
-    assert test_user0_updated['user']['handle'] == new_handle
+    assert user_profile_sethandle(test_user_0['token'], new_handle) == {}
 
 
-# check for invalid handle string - str => 20 char in length
+
+# check for invalid handle string - str > 20 char in length
 def test_user_profile_sethandle_short():
 
     clear()
-    test_user_0, test_user_1 = create_two_test_users()
+    test_user_0 = create_one_test_user()
 
     with pytest.raises(InputError):
         user_profile_sethandle(test_user_0['token'], "A" * 21)
 
-    with pytest.raises(InputError):
-        user_profile_sethandle(test_user_1['token'], "A" * 200)
-    
 
 # check for invalid handle string - str < 3 char in length
 def test_user_profile_sethandle_long():
     
     clear()
-    test_user_0, test_user_1 = create_two_test_users()
+    test_user_0 = create_one_test_user()
 
     with pytest.raises(InputError):
         user_profile_sethandle(test_user_0['token'], "A")
-
-    with pytest.raises(InputError):
-        user_profile_sethandle(test_user_1['token'], "aa")
 
  
 # check for invalid handle string - handle already exists
 def test_user_profile_sethandle_already_exists():
     
     clear()
-    test_user_0, test_user_1 = create_two_test_users()
-    
-    # get test_user1's profile
-    test_user_0_updated = user_profile(test_user_0['token'], test_user_0['u_id'])
-
-    existing_handle = test_user_0_updated['user']['handle']
-
+    test_user_0 = create_two_test_users()[0]
     with pytest.raises(InputError):
-        user_profile_sethandle(test_user_1['token'], existing_handle)
+        user_profile_sethandle(test_user_0['token'], "jaydenhaycobs")

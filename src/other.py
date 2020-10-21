@@ -29,21 +29,21 @@ def clear():
 #Returns a list of all users and their associated details
 def users_all(token):
     check_token(token)
-
+    user_all_dict = {}
     users_list = []
+    user_info = {}
 
     for user in data['users']:
         user_info = {
             'u_id' : user['u_id'],
-            'email': user['email'], 
-            'name_first':user['name_first'], 
-            'name_last': user['name_last'], 
-            'password': user['password'], 
+            'email': user['email'],
+            'name_first':user['name_first'],
+            'name_last': user['name_last'],
             'handle': user['handle'],
-            'token': user['token']
             }
         users_list.append(user_info)
-    return users_list
+    user_all_dict ['users'] = users_list
+    return user_all_dict
 
 def admin_userpermission_change(token, u_id, permission_id):
     #Check if token is valid and record user

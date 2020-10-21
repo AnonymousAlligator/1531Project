@@ -5,21 +5,21 @@ import error
 def user_profile(token, u_id):
 
     check_token(token)
-    user_prof = {}
-
+    user_profile_dict = {}
     user = find_with_uid(u_id)
 
-    user_prof = {
+    user_list = []
+    user_info = {
         'u_id' : user['u_id'],
         'email': user['email'],
         'name_first':user['name_first'],
         'name_last': user['name_last'],
         'handle': user['handle'],
         }
-    user_info = {}
-    user_info['user'] = user_prof
+    user_list.append(user_info)
 
-    return user_info
+    user_profile_dict['user'] = user_list
+    return user_profile_dict
 
 
 def user_profile_setname(token, name_first, name_last):
@@ -40,6 +40,7 @@ def user_profile_setname(token, name_first, name_last):
     
     caller["name_first"] = fname
     caller["name_last"] = lname
+    return {}
 
 def user_profile_setemail(token, email):
     
@@ -59,6 +60,7 @@ def user_profile_setemail(token, email):
             raise error.InputError("Email already taken by another registered user")
 
     caller["email"] = email
+    return {}
 
 def user_profile_sethandle(token, handle_str):
     #Check that the token is valid
