@@ -17,7 +17,7 @@ def test_channels_listall_public():
     assert(channels_listall(test_user0['token']) == {
         'channels' : [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0",
             },
         ]
@@ -36,7 +36,7 @@ def test_channels_listsall_private():
     assert(channels_listall(test_user0['token']) == {
         'channels': [
             {
-                "channel_id": priv_channel0,
+                "channel_id": priv_channel0['channel_id'],
                 "name": "Private Channel 0",
             },
         ]
@@ -57,11 +57,11 @@ def test_channels_listsall_both():
     assert(channels_listall(test_user0['token']) == {
         'channels' : [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0",
             },
             {
-                "channel_id": priv_channel0,
+                "channel_id": priv_channel0['channel_id'],
                 "name": "Private Channel 0",
             },
         ]
@@ -89,19 +89,19 @@ def test_channels_listsall_many():
     assert(channels_listall(test_user0['token']) == {
         'channels' : [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0",
             },
             {
-                "channel_id": priv_channel0,
+                "channel_id": priv_channel0['channel_id'],
                 "name": "Private Channel 0",
             },
             {
-                "channel_id": pub_channel1,
+                "channel_id": pub_channel1['channel_id'],
                 "name": "Public Channel 1",
             },
             {
-                "channel_id": priv_channel1,
+                "channel_id": priv_channel1['channel_id'],
                 "name": "Private Channel 1",
             },
         ]

@@ -15,16 +15,16 @@ def test_channel_addowner_sucess():
     clear()
     user_0, user_1 = create_two_test_users() 
     public_channel = channels_create(user_0['token'], "name", True) #returns channel ID_0
-    channel_join(user_1['token'], public_channel) 
-    assert channel_addowner(user_0['token'], public_channel, user_1['u_id']) == {}
+    channel_join(user_1['token'], public_channel['channel_id']) 
+    assert channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id']) == {}
 
 #Channel is private, user is part of private channel 
 def test_channel_addowner_invited():
     clear()
     user_0, user_1 = create_two_test_users() 
     private_channel = channels_create(user_0['token'], "name", False)
-    channel_invite(user_0['token'], private_channel, user_1['u_id'])
-    assert channel_addowner(user_0['token'], private_channel, user_1['u_id']) == {}
+    channel_invite(user_0['token'], private_channel['channel_id'], user_1['u_id'])
+    assert channel_addowner(user_0['token'], private_channel['channel_id'], user_1['u_id']) == {}
 
 
 #Channel exists, token is NOT an owner, u_id is a member
@@ -32,29 +32,29 @@ def test_channel_addowner_not_owner():
     clear()
     user_0, user_1, user_2 = create_three_test_users() 
     public_channel = channels_create(user_0['token'], "name", True)
-    channel_join(user_1['token'], public_channel) 
-    channel_join(user_1['token'], public_channel) 
+    channel_join(user_1['token'], public_channel['channel_id']) 
+    channel_join(user_1['token'], public_channel['channel_id']) 
     with pytest.raises(error.AccessError):
-        assert channel_addowner(user_1['token'], public_channel, user_2['u_id']) == {}
+        assert channel_addowner(user_1['token'], public_channel['channel_id'], user_2['u_id']) == {}
 
 #Channel exists, token is NOT a member, u_id is a member
 def test_adder_not_member():
     clear()
     user_0, user_1, user_2 = create_three_test_users() 
     public_channel = channels_create(user_0['token'], "name", True)
-    channel_join(user_2['token'], public_channel) 
+    channel_join(user_2['token'], public_channel['channel_id']) 
     with pytest.raises(error.AccessError):
-        assert channel_addowner(user_1['token'], public_channel, user_2['u_id']) == {}
+        assert channel_addowner(user_1['token'], public_channel['channel_id'], user_2['u_id']) == {}
 
 #Channel exists, token is owner adding someone who is already a owner
 def test_channel_addowner_already_owner():
     clear()
     user_0, user_1, user_2 = create_three_test_users() 
     public_channel = channels_create(user_0['token'], "name", True)
-    channel_join(user_2['token'], public_channel) 
+    channel_join(user_2['token'], public_channel['channel_id']) 
     with pytest.raises(error.InputError):
-        assert channel_addowner(user_0['token'], public_channel, user_1['u_id'])
-        assert channel_addowner(user_0['token'], public_channel, user_1['u_id'])   
+        assert channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id'])
+        assert channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id'])   
 
 
 #Channel exists, token is adding themselves.
@@ -63,7 +63,7 @@ def test_channel_addowner_self():
     user_0 = create_one_test_user() 
     public_channel = channels_create(user_0['token'], "name", True)
     with pytest.raises(error.InputError):
-        assert channel_addowner(user_0['token'], public_channel, user_0['u_id']) == {}
+        assert channel_addowner(user_0['token'], public_channel['channel_id'], user_0['u_id']) == {}
 
 #Channel does NOT exist, throw input error
 def test_channel_addowner_invalid_channel(): 
@@ -80,4 +80,4 @@ def test_channel_addowner_not_invited():
     user_0, user_1 = create_two_test_users() 
     private_channel = channels_create(user_0['token'], "name", False)
     with pytest.raises(error.InputError):
-        assert channel_addowner(user_0['token'], private_channel, user_1['u_id']) == {}
+        assert channel_addowner(user_0['token'], private_channel['channel_id'], user_1['u_id']) == {}
