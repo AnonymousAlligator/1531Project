@@ -29,9 +29,9 @@ def test_http_user_profile(url, initialisation):
         'u_id' : benjamin['u_id'],        
     })
     r = requests.get(f'{url}/user/profile?{query_string}')
-    profile = r.json()
+    payload = r.json()
 
-    assert(profile(benjamin['token'], benjamin['u_id']) == {
+    assert(payload(benjamin['token'], benjamin['u_id']) == {
         'user': [
             {
             'u_id': benjamin['u_id'], 

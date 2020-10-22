@@ -38,9 +38,9 @@ def test_http_user_profile_sethandle_works(url, initialisation):
         'name_last': 'Lon'
     })
     r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
-    update = r.json()
+    payload = r.json()
 
-    # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
+    assert payload == {}
 
 # check for valid handle string - str = 20 char in length
 def test_http_user_profile_sethandle_20(url, initialisation):    
@@ -51,9 +51,9 @@ def test_http_user_profile_sethandle_20(url, initialisation):
         'handle_str': 'b' * 20,
     })
     r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
-    update = r.json()
+    payload = r.json()
 
-    # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
+    assert payload == {}
 
 # check for invalid handle string - str > 20 char in length
 def test_http_user_profile_sethandle_short(url, initialisation):
@@ -65,8 +65,8 @@ def test_http_user_profile_sethandle_short(url, initialisation):
     })
 
     r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
 
 # check for invalid handle string - str < 3 char in length
 def test_http_user_profile_sethandle_long(url, initialisation):
@@ -78,8 +78,8 @@ def test_http_user_profile_sethandle_long(url, initialisation):
     })
 
     r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
 
  
 # check for invalid handle string - handle already exists
@@ -92,5 +92,5 @@ def test_http_user_profile_sethandle_already_exists(url, initialisation):
     })
 
     r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400

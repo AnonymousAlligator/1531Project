@@ -38,9 +38,9 @@ def test_http_user_profile_setemail_works(url, initialisation):
     })
 
     r = requests.get(f'{url}/user/profile/setemail?{query_string}')
-    update = r.json()
+    payload = r.json()
 
-    # assert user_profile_setemail(test_user0['token'], "testemail9@email.com") == {}
+    assert payload == {}
     
 
 # check for invalid email - setting an existing user's email
@@ -53,8 +53,8 @@ def test_http_user_profile_setemail_existing(url, initialisation):
     })
 
     r = requests.get(f'{url}/user/profile/setemail?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
     
 
 # check for invalid email address input - no '@' character		
@@ -67,5 +67,5 @@ def test_http_user_profile_setemail_invalid_check(url, initialisation):
     })
 
     r = requests.get(f'{url}/user/profile/setemail?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400

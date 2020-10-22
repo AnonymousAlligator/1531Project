@@ -20,7 +20,7 @@ def initialisation(url):
 
     return benjamin, 
 
-# check for correct name update
+# check for correct name payload
 def test_http_profile_setname(url, initialisation):
     
     benjamin = initialisation
@@ -30,9 +30,9 @@ def test_http_profile_setname(url, initialisation):
         'name_last': 'Lon'
     })
     r = requests.get(f'{url}/user/profile/setname?{query_string}')
-    update = r.json()
+    payload = r.json()
 
-    # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
+    assert payload == {}
 
 # check for invalid token
 def test_http_profile_setname_invalid_token(url):
@@ -42,8 +42,8 @@ def test_http_profile_setname_invalid_token(url):
         'name_first': 'Ben',
         'name_last': 'Lon'
     })
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
 
 
 
@@ -59,8 +59,8 @@ def test_http_profile_setname_fname_long(url, initialisation):
         'name_last': 'Lon'
     })
     r = requests.get(f'{url}/user/profile/setname?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
     
 
 def test_http_profile_setname_fname_short(url, initialisation):
@@ -74,8 +74,8 @@ def test_http_profile_setname_fname_short(url, initialisation):
         'name_last': 'Lon',
     })
     r = requests.get(f'{url}/user/profile/setname?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
     
 
 # check for invalid last name input 
@@ -90,8 +90,8 @@ def test_http_profile_setname_invalid_lname_long(url, initialisation):
         'name_last': 'L' * 51,
     })
     r = requests.get(f'{url}/user/profile/setname?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
 
 def test_http_profile_setname_invalid_lname_short(url, initialisation):    
 
@@ -104,6 +104,6 @@ def test_http_profile_setname_invalid_lname_short(url, initialisation):
         'name_last': ' '
     })
     r = requests.get(f'{url}/user/profile/setname?{query_string}')
-    update = r.json()
-    assert update['code'] == 400
+    payload = r.json()
+    assert payload['code'] == 400
 
