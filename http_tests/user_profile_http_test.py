@@ -29,14 +29,14 @@ def initialisation(url):
     return benjamin, ross, 
 
 # check that a valid token and valid u_id returns the correct profile data
-def test_user_profile(url, initialisation):	
+def test_http_user_profile(url, initialisation):	
     
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'u_id' : benjamin['u_id'],        
     })
-    r = requests.get(f'{url}/channel/details?{query_string}')
+    r = requests.get(f'{url}/user/profile?{query_string}')
     profile = r.json()
 
     assert(profile(benjamin['token'], benjamin['u_id']) == {
@@ -52,20 +52,20 @@ def test_user_profile(url, initialisation):
     })
 
 # check for invalid token with a valid u_id
-def test_user_profile_invalid_token(url, initialisation):
+def test_http_user_profile_invalid_token(url):
     
-    clear()	
-    test_user0 = create_one_test_user()
-
-    with pytest.raises(error.AccessError):
-        user_profile('invalid_token', test_user0['u_id'])
+    r = requests.post(f'{url}/user/profile', json={
+        'token' : 'invalid_token',
+    })
+    payload = r.json()
+    assert payload['code'] == 400
 
 # check for invalid u_id with a token
-def test_user_profile_invalid_uid(url, initialisation):
+def test_http_user_profile_invalid_uid(url):
     
-    clear()	    
-    test_user0 = create_one_test_user()
-
-    with pytest.raises(error.InputError):
-        user_profile(test_user0['token'], 100)
+    r = requests.post(f'{url}/user/profile', json={
+        'token' : 123456,
+    })
+    payload = r.json()
+    assert payload['code'] == 400
 
