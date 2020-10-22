@@ -72,7 +72,7 @@ def test_channels_create_private(url, initialisation):
     payload = r.json()
     assert payload == {}
 
-def test_channels_create_private(url, initialisation):
+def test_channels_create_invalidtoken(url, initialisation):
     _, channel_name1, _, _, = initialisation
     r = requests.post(f'{url}/channels/create', json={
         'token' : 'Hello',
