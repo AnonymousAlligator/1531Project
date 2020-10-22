@@ -1,7 +1,3 @@
-from src.error import (
-    AccessError,
-    InputError,
-)
 from url_fixture import url
 import pytest
 import requests
