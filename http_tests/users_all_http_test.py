@@ -81,7 +81,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
 # check all 2 users return same list
 def test_http_users_all_user2_valid_token(url, initialisation):
 
-    benjamin = initialisation
+    benjamin, ross = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })

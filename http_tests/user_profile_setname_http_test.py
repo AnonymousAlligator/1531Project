@@ -29,7 +29,7 @@ def test_http_profile_setname(url, initialisation):
         'name_first': 'Ben',
         'name_last': 'Lon'
     })
-    r = requests.get(f'{url}/user/profile/setname?{query_string}')
+    r = requests.put(f'{url}/user/profile/setname?{query_string}')
     payload = r.json()
 
     assert payload == {}
@@ -58,7 +58,7 @@ def test_http_profile_setname_fname_long(url, initialisation):
         'name_first': 'B' * 51,
         'name_last': 'Lon'
     })
-    r = requests.get(f'{url}/user/profile/setname?{query_string}')
+    r = requests.put(f'{url}/user/profile/setname?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
     
@@ -73,7 +73,7 @@ def test_http_profile_setname_fname_short(url, initialisation):
         'name_first': ' ',
         'name_last': 'Lon',
     })
-    r = requests.get(f'{url}/user/profile/setname?{query_string}')
+    r = requests.put(f'{url}/user/profile/setname?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
     
@@ -89,7 +89,7 @@ def test_http_profile_setname_invalid_lname_long(url, initialisation):
         'name_first': 'Bens',
         'name_last': 'L' * 51,
     })
-    r = requests.get(f'{url}/user/profile/setname?{query_string}')
+    r = requests.put(f'{url}/user/profile/setname?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
 
@@ -103,7 +103,7 @@ def test_http_profile_setname_invalid_lname_short(url, initialisation):
         'name_first': 'B',
         'name_last': ' '
     })
-    r = requests.get(f'{url}/user/profile/setname?{query_string}')
+    r = requests.put(f'{url}/user/profile/setname?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
 

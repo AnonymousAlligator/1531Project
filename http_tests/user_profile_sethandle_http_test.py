@@ -37,7 +37,7 @@ def test_http_user_profile_sethandle_works(url, initialisation):
         'name_first': 'Ben',
         'name_last': 'Lon'
     })
-    r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
+    r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
 
     assert payload == {}
@@ -50,7 +50,7 @@ def test_http_user_profile_sethandle_20(url, initialisation):
         'token' : benjamin['token'],
         'handle_str': 'b' * 20,
     })
-    r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
+    r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
 
     assert payload == {}
@@ -64,7 +64,7 @@ def test_http_user_profile_sethandle_short(url, initialisation):
         'handle_str': 'b' * 21,
     })
 
-    r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
+    r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
 
@@ -77,7 +77,7 @@ def test_http_user_profile_sethandle_long(url, initialisation):
         'handle_str': 'BL',
     })
 
-    r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
+    r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
 
@@ -91,6 +91,6 @@ def test_http_user_profile_sethandle_already_exists(url, initialisation):
         'handle_str': ross['handle_str'],
     })
 
-    r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
+    r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
     assert payload['code'] == 400

@@ -37,7 +37,7 @@ def test_http_user_profile_setemail_works(url, initialisation):
         'email': 'benjamin2@email.com',
     })
 
-    r = requests.get(f'{url}/user/profile/setemail?{query_string}')
+    r = requests.put(f'{url}/user/profile/setemail?{query_string}')
     payload = r.json()
 
     assert payload == {}
@@ -52,7 +52,7 @@ def test_http_user_profile_setemail_existing(url, initialisation):
         'email': 'Ross@email.com',
     })
 
-    r = requests.get(f'{url}/user/profile/setemail?{query_string}')
+    r = requests.put(f'{url}/user/profile/setemail?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
     
@@ -66,6 +66,6 @@ def test_http_user_profile_setemail_invalid_check(url, initialisation):
         'email': 'invalid_email.com',
     })
 
-    r = requests.get(f'{url}/user/profile/setemail?{query_string}')
+    r = requests.put(f'{url}/user/profile/setemail?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
