@@ -6,10 +6,10 @@ import urllib
 @pytest.fixture
 def initialisation(url):
 
-    # clear data space
+    # clear data
     requests.delete(f'{url}/clear')
 
-    # register 3 users
+    # register 2 users
     user0 = requests.post(f'{url}/auth/register', json={
         'email' : 'Benjamin@email.com',
         'password' : 'password',
@@ -26,15 +26,7 @@ def initialisation(url):
     })
     ross = user1.json()
 
-    user2 = requests.post(f'{url}/auth/register', json={
-        'email' : 'Alex@email.com',
-        'password' : 'password',
-        'name_first' : 'Alex',
-        'name_last' : 'Smith',
-    })
-    alex = user2.json()
-
-    return benjamin, ross, alex, 
+    return benjamin, ross, 
 
 # check attempt to list all 1 with a valid token
 def test_http_users_all_1_valid_token(url, initialisation):
