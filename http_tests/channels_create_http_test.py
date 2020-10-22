@@ -20,7 +20,7 @@ def initialisation(url):
     channel_name2 = "abcdefhijklmnopqrst"
     channel_name3 = "abcdefhijklmnopqrstuvwxyz"
 
-    return user0
+    return user0, channel_name1, channel_name2, channel_name3
 
 def test_channels_create_lessthan20(url, initialisation):
     user0, channel_name1, _, _, = initialisation
