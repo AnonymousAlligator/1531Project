@@ -58,7 +58,7 @@ def test_register_after_clear(url, initialisation):
     requests.delete(f'{url}/clear')
 
     # When registered with same email after data is cleared
-    benjamin, ross = initialisation
+    benjamin,_ = initialisation
     
     assert benjamin['u_id'] == 0
 def test_invalid_format_1(url, initialisation):
