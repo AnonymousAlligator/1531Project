@@ -30,7 +30,7 @@ def test_channels_create_lessthan20(url, initialisation):
         'is_public' : True,      
     })
     payload = r.json()
-    assert payload == {}
+    assert payload == {'channel_id': 0}
 
 def test_channels_create_exactly20(url, initialisation):
     user0, _, channel_name2, _, = initialisation
@@ -40,7 +40,7 @@ def test_channels_create_exactly20(url, initialisation):
         'is_public' : True,      
     })
     payload = r.json()
-    assert payload == {}
+    assert payload == {'channel_id': 0}
 
 def test_channels_create_morethan20(url, initialisation):
     user0, _, _, channel_name3, = initialisation
@@ -50,7 +50,7 @@ def test_channels_create_morethan20(url, initialisation):
         'is_public' : True,      
     })
     payload = r.json()
-    assert payload == {}
+    assert payload['code'] == 400
 
 def test_channels_create_public(url, initialisation):
     user0, _, channel_name2, _, = initialisation
@@ -60,7 +60,7 @@ def test_channels_create_public(url, initialisation):
         'is_public' : True,      
     })
     payload = r.json()
-    assert payload == {}
+    assert payload == {'channel_id': 0}
 
 def test_channels_create_private(url, initialisation):
     user0, channel_name1, _, _, = initialisation
@@ -70,7 +70,7 @@ def test_channels_create_private(url, initialisation):
         'is_public' : False,      
     })
     payload = r.json()
-    assert payload == {}
+    assert payload == {'channel_id': 0}
 
 def test_channels_create_invalidtoken(url, initialisation):
     _, channel_name1, _, _, = initialisation
@@ -80,4 +80,4 @@ def test_channels_create_invalidtoken(url, initialisation):
         'is_public' : True,      
     })
     payload = r.json()
-    assert payload == {}
+    assert payload['code'] == 400
