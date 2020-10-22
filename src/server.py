@@ -60,14 +60,14 @@ def http_channel_invite():
 @APP.route("/channel/details", methods=['GET'])
 def http_channel_details():
     token = request.args.get('token')
-    channel_id = request.args.get('channel_id')
+    channel_id = request.args.get('channel_id',type=int)
     return dumps(channel.channel_details(token, channel_id))
 
 @APP.route("/channel/messages", methods=['GET'])
 def http_channel_messages():
     token = request.args.get('token')
-    channel_id = request.args.get('channel_id')
-    start = request.args.get('start')
+    channel_id = request.args.get('channel_id',type=int)
+    start = request.args.get('start',type=int)
     return dumps(channel.channel_messages(token, channel_id, start))
 
 @APP.route("/channel/leave", methods=['POST'])
@@ -123,7 +123,7 @@ def http_message_edit():
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():
     token = request.args.get('token')
-    u_id = request.args.get('u_id')
+    u_id = request.args.get('u_id',type=int)
     return dumps(user.user_profile(token, u_id))
 
 @APP.route("/user/profile/sethandle", methods = ['PUT']) 
