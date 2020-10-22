@@ -55,8 +55,6 @@ def test_user_profile_sethandle_20(url, initialisation):
 
     # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
 
-
-
 # check for invalid handle string - str > 20 char in length
 def test_user_profile_sethandle_short(url, initialisation):
 
@@ -69,7 +67,6 @@ def test_user_profile_sethandle_short(url, initialisation):
     r = requests.get(f'{url}/user/profile/sethandle?{query_string}')
     update = r.json()
     assert update['code'] == 400
-
 
 # check for invalid handle string - str < 3 char in length
 def test_user_profile_sethandle_long(url, initialisation):
