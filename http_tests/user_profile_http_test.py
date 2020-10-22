@@ -9,7 +9,7 @@ def initialisation(url):
     # clear data
     requests.delete(f'{url}/clear')
 
-    # register 2 users
+    # register 1 users
     user0 = requests.post(f'{url}/auth/register', json={
         'email' : 'Benjamin@email.com',
         'password' : 'password',
@@ -18,15 +18,7 @@ def initialisation(url):
     })
     benjamin = user0.json()
 
-    user1 = requests.post(f'{url}/auth/register', json={
-        'email' : 'Ross@email.com',
-        'password' : 'password',
-        'name_first' : 'Ross',
-        'name_last' : 'Short',
-    })
-    ross = user1.json()
-
-    return benjamin, ross, 
+    return benjamin
 
 # check that a valid token and valid u_id returns the correct profile data
 def test_http_user_profile(url, initialisation):	
@@ -54,7 +46,7 @@ def test_http_user_profile(url, initialisation):
 # check for invalid token with a valid u_id
 def test_http_user_profile_invalid_token(url):
     
-    r = requests.post(f'{url}/user/profile', json={
+    r = requests.get(f'{url}/user/profile', json={
         'token' : 'invalid_token',
     })
     payload = r.json()
@@ -63,7 +55,7 @@ def test_http_user_profile_invalid_token(url):
 # check for invalid u_id with a token
 def test_http_user_profile_invalid_uid(url):
     
-    r = requests.post(f'{url}/user/profile', json={
+    r = requests.get(f'{url}/user/profile', json={
         'token' : 123456,
     })
     payload = r.json()
