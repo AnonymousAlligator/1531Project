@@ -18,15 +18,7 @@ def initialisation(url):
     })
     benjamin = user0.json()
 
-    user1 = requests.post(f'{url}/auth/register', json={
-        'email' : 'Ross@email.com',
-        'password' : 'password',
-        'name_first' : 'Ross',
-        'name_last' : 'Short',
-    })
-    ross = user1.json()
-
-    return benjamin, ross, 
+    return benjamin, 
 
 # check for correct name update
 def test_profile_setname(url, initialisation):
