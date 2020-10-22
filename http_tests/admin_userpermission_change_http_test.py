@@ -33,7 +33,7 @@ def test_admin_userpermission_change_successtoowner(url):
 
     assert payload == {}
 
-def test_admin_userpermission_change_successtodefault():
+def test_admin_userpermission_change_successtodefault(url):
     #clear data
     requests.delete(f'{url}/clear')
     
@@ -68,7 +68,7 @@ def test_admin_userpermission_change_successtodefault():
 
     assert payload == {}
 
-def test_admin_userpermission_change_invalidtoken():
+def test_admin_userpermission_change_invalidtoken(url):
     #clear data
     requests.delete(f'{url}/clear')
 
