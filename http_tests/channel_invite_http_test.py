@@ -88,9 +88,9 @@ def test_channel_invite_invalid_u_id(url, initialisation):
     assert payload['code'] == 400
 
 def test_channel_invite_invalid_caller(url, initialisation):
-    _, user1, _, channel0_id, _ = initialisation
+    user0, user1, _, channel0_id, _ = initialisation
     r = requests.post(f'{url}/channel/invite', json={
-        'token' : user0['token'],
+        'token' : user0['u_id'],
         'channel_id' : channel0_id['channel_id'],
         'u_id' : user1['u_id'],
     })
