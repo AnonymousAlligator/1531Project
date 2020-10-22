@@ -23,7 +23,7 @@ def test_auth_login_and_register(url):
     
     reg_token = benjamin['token']
     
-    logout = requests.post(f'{url}/auth/logout', json={
+    requests.post(f'{url}/auth/logout', json={
         'token' : reg_token
     })
       
@@ -53,11 +53,11 @@ def test_auth_login_twice(url):
     })
     benjamin = user0.json()
 
-    logout_return = requests.post(f'{url}/auth/logout', json={
+    requests.post(f'{url}/auth/logout', json={
         'token' : benjamin['token']
     })
 
-    login = requests.post(f'{url}/auth/login', json={
+    requests.post(f'{url}/auth/login', json={
         'email' : 'Benjamin@email.com',
         'password' : 'password',
     }) # logged in for the first time
@@ -85,7 +85,7 @@ def test_auth_login_invalid_password(url):
     })
     benjamin = user0.json()
 
-    logout_return = requests.post(f'{url}/auth/logout', json={
+    requests.post(f'{url}/auth/logout', json={
         'token' : benjamin['token']
     })
 
