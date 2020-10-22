@@ -59,13 +59,16 @@ def http_channel_invite():
 
 @APP.route("/channel/details", methods=['GET'])
 def http_channel_details():
-    data = request.json
-    return dumps(channel.channel_details(data['token'], data['channel_id']))
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    return dumps(channel.channel_details(token, channel_id))
 
 @APP.route("/channel/messages", methods=['GET'])
 def http_channel_messages():
-    data = request.json
-    return dumps(channel.channel_messages(data['token'], data['channel_id'], data['start']))
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    start = request.args.get('start')
+    return dumps(channel.channel_messages(token, channel_id, start))
 
 @APP.route("/channel/leave", methods=['POST'])
 def http_channel_leave():
@@ -89,13 +92,13 @@ def http_channel_removeowner():
 
 @APP.route("/channels/list", methods=['GET'])    
 def http_channels_list():
-    data = request.json
-    return dumps(channels.channels_list(data['token']))
+    token = request.args.get('token')
+    return dumps(channels.channels_list(token))
 
 @APP.route("/channels/listall", methods=['GET'])    
 def http_channels_listall():
-    data = request.json
-    return dumps(channels.channels_listall(data['token']))
+    token = request.args.get('token')
+    return dumps(channels.channels_listall(token))
 
 @APP.route("/channels/create", methods=['POST'])    
 def http_channels_create():
@@ -119,8 +122,9 @@ def http_message_edit():
 
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():
-    data = request.json
-    return dumps(user.user_profile(data['token'], data['u_id']))
+    token = request.args.get('token')
+    u_id = request.args.get('u_id')
+    return dumps(user.user_profile(token, u_id))
 
 @APP.route("/user/profile/sethandle", methods = ['PUT']) 
 def http_user_profile_sethandle():
@@ -139,8 +143,8 @@ def http_user_profile_setname():
 
 @APP.route("/users/all", methods=['GET'])
 def http_users_all():
-    data = request.json
-    return dumps(other.users_all(data['token']))
+    token = request.args.get('token')
+    return dumps(other.users_all(token))
 
 @APP.route("/admin/userpermission/change", methods = ['POST']) 
 def http_admin_userpermission_change():
@@ -149,8 +153,9 @@ def http_admin_userpermission_change():
 
 @APP.route("/search", methods=['GET'])
 def http_search():
-    data = request.json
-    return dumps(other.search(data['token'], data['query_str']))
+    token = request.args.get('token')
+    query_str = request.args.get('query_str')
+    return dumps(other.search(token, query_str))
 
 @APP.route("/clear", methods=['DELETE'])
 def http_clear():
