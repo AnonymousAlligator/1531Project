@@ -29,7 +29,7 @@ def initialisation(url):
     return benjamin, ross, 
 
 # assert handle updates correctly
-def test_user_profile_sethandle_works(url, initialisation):
+def test_http_user_profile_sethandle_works(url, initialisation):
 
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
@@ -43,7 +43,7 @@ def test_user_profile_sethandle_works(url, initialisation):
     # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
 
 # check for valid handle string - str = 20 char in length
-def test_user_profile_sethandle_20(url, initialisation):    
+def test_http_user_profile_sethandle_20(url, initialisation):    
 
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
@@ -56,7 +56,7 @@ def test_user_profile_sethandle_20(url, initialisation):
     # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
 
 # check for invalid handle string - str > 20 char in length
-def test_user_profile_sethandle_short(url, initialisation):
+def test_http_user_profile_sethandle_short(url, initialisation):
 
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
@@ -69,7 +69,7 @@ def test_user_profile_sethandle_short(url, initialisation):
     assert update['code'] == 400
 
 # check for invalid handle string - str < 3 char in length
-def test_user_profile_sethandle_long(url, initialisation):
+def test_http_user_profile_sethandle_long(url, initialisation):
     
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
@@ -83,7 +83,7 @@ def test_user_profile_sethandle_long(url, initialisation):
 
  
 # check for invalid handle string - handle already exists
-def test_user_profile_sethandle_already_exists(url, initialisation):
+def test_http_user_profile_sethandle_already_exists(url, initialisation):
     
     benjamin, ross = initialisation
     query_string = urllib.parse.urlencode({

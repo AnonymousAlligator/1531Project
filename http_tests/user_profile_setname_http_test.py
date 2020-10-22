@@ -21,7 +21,7 @@ def initialisation(url):
     return benjamin, 
 
 # check for correct name update
-def test_profile_setname(url, initialisation):
+def test_http_profile_setname(url, initialisation):
     
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
@@ -35,7 +35,7 @@ def test_profile_setname(url, initialisation):
     # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
 
 # check for invalid token
-def test_profile_setname_invalid_token(url):
+def test_http_profile_setname_invalid_token(url):
 
     r = requests.put(f'{url}/user/profile/setname?', json={
         'token' : 'invalid_token',
@@ -48,7 +48,7 @@ def test_profile_setname_invalid_token(url):
 
 
 # check for invalid first name input 
-def test_profile_setname_fname_long(url, initialisation):    
+def test_http_profile_setname_fname_long(url, initialisation):    
     
     benjamin = initialisation
     
@@ -63,7 +63,7 @@ def test_profile_setname_fname_long(url, initialisation):
     assert update['code'] == 400
     
 
-def test_profile_setname_fname_short(url, initialisation):
+def test_http_profile_setname_fname_short(url, initialisation):
     
     benjamin = initialisation
     
@@ -79,7 +79,7 @@ def test_profile_setname_fname_short(url, initialisation):
     
 
 # check for invalid last name input 
-def test_profile_setname_invalid_lname_long(url, initialisation):        
+def test_http_profile_setname_invalid_lname_long(url, initialisation):        
     
     benjamin = initialisation
     
@@ -93,7 +93,7 @@ def test_profile_setname_invalid_lname_long(url, initialisation):
     update = r.json()
     assert update['code'] == 400
 
-def test_profile_setname_invalid_lname_short(url, initialisation):    
+def test_http_profile_setname_invalid_lname_short(url, initialisation):    
 
     benjamin = initialisation
     
