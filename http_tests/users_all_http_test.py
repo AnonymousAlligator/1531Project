@@ -35,7 +35,7 @@ def test_http_users_all_1_valid_token(url, initialisation):
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
-    r = requests.get(f'{url}/channel/details?{query_string}')
+    r = requests.get(f'{url}/users/all?{query_string}')
     users_all = r.json()
     assert(users_all(benjamin['token']) == {
         'users': [
@@ -56,7 +56,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
-    r = requests.get(f'{url}/channel/details?{query_string}')
+    r = requests.get(f'{url}/users/all?{query_string}')
     users_all = r.json()
     
     assert(users_all(benjamin['token']) == {
@@ -85,7 +85,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
-    r = requests.get(f'{url}/channel/details?{query_string}')
+    r = requests.get(f'{url}/users/all?{query_string}')
     users_all = r.json()
     
     assert(users_all(benjamin['token']) == {
@@ -133,7 +133,7 @@ def test_http_users_all_valid_order(url, initialisation):
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
-    r = requests.get(f'{url}/channel/details?{query_string}')
+    r = requests.get(f'{url}/users/all?{query_string}')
     users_all = r.json()
 
     assert(users_all(ross['token']) != {
