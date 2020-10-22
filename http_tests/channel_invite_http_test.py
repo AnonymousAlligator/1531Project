@@ -62,3 +62,16 @@ def test_channel_invite_owner_pass(url, initialisation):
 
 def test_channel_invite_member_pass(url, initialisation):
     user0, user1, user2, channel0_id, _ = initialisation
+    r = requests.post(f'{url}/channel/invite', json={
+        'token' : user0['token'],
+        'channel_id' : channel0_id['channel_id'],
+        'u_id' : user1['u_id']
+    })
+    r = requests.post(f'{url}/channel/invite', json={
+        'token' : user1['token'],
+        'channel_id' : channel0_id['channel_id'],
+        'u_id' : user2['u_id']
+    })
+    payload = r.json()
+    
+    assert payload == {}
