@@ -77,7 +77,7 @@ def test_channel_invite_member_pass(url, initialisation):
     assert payload == {}
 
 def test_channel_invite_invalid_u_id(url, initialisation):
-    user0, user1, _, channel0_id, _ = initialisation
+    user0, user1, _, _, _ = initialisation
     r = requests.post(f'{url}/channel/invite', json={
         'token' : user0['token'],
         'channel_id' : 4,
@@ -88,9 +88,9 @@ def test_channel_invite_invalid_u_id(url, initialisation):
     assert payload['code'] == 400
 
 def test_channel_invite_invalid_caller(url, initialisation):
-    user0, user1, _, channel0_id, _ = initialisation
+    _, user1, _, channel0_id, _ = initialisation
     r = requests.post(f'{url}/channel/invite', json={
-        'token' : 40,
+        'token' : user0['token'],
         'channel_id' : channel0_id['channel_id'],
         'u_id' : user1['u_id'],
     })
@@ -99,7 +99,7 @@ def test_channel_invite_invalid_caller(url, initialisation):
     assert payload['code'] == 400
 
 def test_channel_invite_inviter_not_member(url, initialisation):
-    user0, user1, user2, channel0_id, _ = initialisation
+    _, user1, user2, channel0_id, _ = initialisation
 
     r = requests.post(f'{url}/channel/invite', json={
         'token' : user1['token'],
