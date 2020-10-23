@@ -49,6 +49,7 @@ def test_http_user_profile_invalid_token(url):
     r = requests.get(f'{url}/user/profile', json={
         'token' : 'invalid_token',
     })
+    
     payload = r.json()
     assert payload['code'] == 400
 

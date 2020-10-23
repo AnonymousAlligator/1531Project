@@ -37,7 +37,7 @@ def test_http_users_all_1_valid_token(url, initialisation):
     })
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
-    assert(payload['users']) == {
+    assert(payload['users'] == {
         'users': [
             {
                 "u_id" : 0,
@@ -59,7 +59,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
     
-    assert(payload['users']) == {
+    assert(payload['users'] == {
         'users': [
             {
                 "u_id" : 0,
@@ -88,7 +88,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
     
-    assert(payload(['users']) == {
+    assert(payload['users'] == {
         'users': [
             {
                 "u_id" : 0,
@@ -117,7 +117,7 @@ def test_http_users_all_valid_order(url, initialisation):
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
 
-    assert(payload(['users']) != {
+    assert(payload['users'] != {
         'users': [
             {
                 "u_id" : 1,
