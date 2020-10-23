@@ -34,8 +34,7 @@ def test_http_user_profile_sethandle_works(url, initialisation):
     benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
-        'name_first': 'Ben',
-        'name_last': 'Lon'
+        'handle_str': 'blong',
     })
     r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
@@ -48,7 +47,8 @@ def test_http_user_profile_sethandle_20(url, initialisation):
     benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
-        'handle_str': 'b' * 20,
+        # 'handle_str': 'b' * 20,
+        'handle_str': '12345678901234567890',
     })
     r = requests.put(f'{url}/user/profile/sethandle?{query_string}')
     payload = r.json()
@@ -56,7 +56,7 @@ def test_http_user_profile_sethandle_20(url, initialisation):
     assert payload == {}
 
 # check for invalid handle string - str > 20 char in length
-def test_http_user_profile_sethandle_short(url, initialisation):
+def test_http_user_profile_sethandle_long(url, initialisation):
 
     benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
@@ -69,7 +69,7 @@ def test_http_user_profile_sethandle_short(url, initialisation):
     assert payload['code'] == 400
 
 # check for invalid handle string - str < 3 char in length
-def test_http_user_profile_sethandle_long(url, initialisation):
+def test_http_user_profile_sethandle_short(url, initialisation):
     
     benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
@@ -85,10 +85,10 @@ def test_http_user_profile_sethandle_long(url, initialisation):
 # check for invalid handle string - handle already exists
 def test_http_user_profile_sethandle_already_exists(url, initialisation):
     
-    benjamin, ross = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
-        'handle_str': ross['handle_str'],
+        'handle_str': 'rossshort',
     })
 
     r = requests.put(f'{url}/user/profile/sethandle?{query_string}')

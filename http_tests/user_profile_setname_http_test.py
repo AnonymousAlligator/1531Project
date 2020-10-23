@@ -18,21 +18,29 @@ def initialisation(url):
     })
     benjamin = user0.json()
 
+    user1 = requests.post(f'{url}/auth/register', json={
+        'email' : 'Ross@email.com',
+        'password' : 'password',
+        'name_first' : 'Ross',
+        'name_last' : 'Short',
+    })
+    ross = user1.json()
+
     return benjamin, 
 
 # check for correct name payload
 def test_http_profile_setname(url, initialisation):
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'name_first': 'Ben',
         'name_last': 'Lon'
     })
-    requests.put(f'{url}/user/profile/setname?{query_string}')
-    # payload = r.json()
+    r = requests.put(f'{url}/user/profile/setname?{query_string}')
+    payload = r.json()
 
-    # assert payload == {}
+    assert payload == {}
 
 # check for invalid token
 def test_http_profile_setname_invalid_token(url):
@@ -50,7 +58,7 @@ def test_http_profile_setname_invalid_token(url):
 # check for invalid first name input 
 def test_http_profile_setname_fname_long(url, initialisation):    
     
-    benjamin,_ = initialisation
+    benjamin, _ = initialisation
     
     # invalid firstname input - more than 50 characters
     query_string = urllib.parse.urlencode({
@@ -65,7 +73,7 @@ def test_http_profile_setname_fname_long(url, initialisation):
 
 def test_http_profile_setname_fname_short(url, initialisation):
     
-    benjamin,_ = initialisation
+    benjamin, _ = initialisation
     
     # Invalid first name input - input is space
     query_string = urllib.parse.urlencode({
@@ -81,7 +89,7 @@ def test_http_profile_setname_fname_short(url, initialisation):
 # check for invalid last name input 
 def test_http_profile_setname_invalid_lname_long(url, initialisation):        
     
-    benjamin,_ = initialisation
+    benjamin, _ = initialisation
     
     # Invalid last name input - more than 50 characters
     query_string = urllib.parse.urlencode({

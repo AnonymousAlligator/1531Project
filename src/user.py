@@ -40,6 +40,8 @@ def user_profile_setname(token, name_first, name_last):
     
     caller["name_first"] = fname
     caller["name_last"] = lname
+
+    return {}
     
 
 def user_profile_setemail(token, email):
@@ -60,7 +62,7 @@ def user_profile_setemail(token, email):
             raise error.InputError("Email already taken by another registered user")
 
     caller["email"] = email
-    # return {}
+    return {}
 
 def user_profile_sethandle(token, handle_str):
     #Check that the token is valid
