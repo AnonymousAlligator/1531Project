@@ -24,12 +24,12 @@ def initialisation(url):
 def test_http_profile_setname(url, initialisation):
     
     benjamin = initialisation
-    query_string = urllib.parse.urlencode({
+
+    r = requests.put(f'{url}/user/profile/setname',json={
         'token' : benjamin['token'],
         'name_first': 'Ben',
         'name_last': 'Lon'
     })
-    r = requests.put(f'{url}/user/profile/setname?{query_string}')
     payload = r.json()
 
     assert payload == {}
@@ -53,12 +53,11 @@ def test_http_profile_setname_fname_long(url, initialisation):
     benjamin = initialisation
     
     # invalid firstname input - more than 50 characters
-    query_string = urllib.parse.urlencode({
+    r = requests.put(f'{url}/user/profile/setname',json={
         'token' : benjamin['token'],
         'name_first': 'B' * 51,
         'name_last': 'Lon'
-    })
-    r = requests.put(f'{url}/user/profile/setname?{query_string}')
+    }) 
     payload = r.json()
     assert payload['code'] == 400
     
@@ -68,12 +67,11 @@ def test_http_profile_setname_fname_short(url, initialisation):
     benjamin = initialisation
     
     # Invalid first name input - input is space
-    query_string = urllib.parse.urlencode({
+    r = requests.put(f'{url}/user/profile/setname',json={
         'token' : benjamin['token'],
         'name_first': ' ',
         'name_last': 'Lon',
-    })
-    r = requests.put(f'{url}/user/profile/setname?{query_string}')
+    }) 
     payload = r.json()
     assert payload['code'] == 400
     
@@ -84,12 +82,11 @@ def test_http_profile_setname_invalid_lname_long(url, initialisation):
     benjamin = initialisation
     
     # Invalid last name input - more than 50 characters
-    query_string = urllib.parse.urlencode({
+    r = requests.put(f'{url}/user/profile/setname',json={
         'token' : benjamin['token'],
         'name_first': 'Bens',
         'name_last': 'L' * 51,
-    })
-    r = requests.put(f'{url}/user/profile/setname?{query_string}')
+    }) 
     payload = r.json()
     assert payload['code'] == 400
 
@@ -98,12 +95,11 @@ def test_http_profile_setname_invalid_lname_short(url, initialisation):
     benjamin = initialisation
     
     # Invalid last name input - input is space
-    query_string = urllib.parse.urlencode({
+    r = requests.put(f'{url}/user/profile/setname',json={
         'token' : benjamin['token'],
         'name_first': 'B',
         'name_last': ' '
-    })
-    r = requests.put(f'{url}/user/profile/setname?{query_string}')
+    }) 
     payload = r.json()
     assert payload['code'] == 400
 
