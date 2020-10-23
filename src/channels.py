@@ -61,5 +61,5 @@ def channels_create(token, name, is_public):
                                          'all_members': [{'u_id': user['u_id'],'name_first': user['name_first'],'name_last': user['name_last']}],
                                          'messages': [],
                                         })
-                return channel_id
+                return {'channel_id': channel_id}
         raise error.AccessError('Invalid token recieved')

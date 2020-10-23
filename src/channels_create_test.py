@@ -18,14 +18,14 @@ def test_channels_create_lessthan20():
     clear()
     test_user0 = create_one_test_user()
     # in assert, check for returned value
-    assert channels_create(test_user0['token'], channel_name1, True) == 0
+    assert channels_create(test_user0['token'], channel_name1, True) == {'channel_id': 0}
 
 
 def test_channels_create_exactly20():
     clear()
     test_user0 = create_one_test_user()
     # in assert, check for returned value
-    assert channels_create(test_user0['token'], channel_name2, True) == 0
+    assert channels_create(test_user0['token'], channel_name2, True) == {'channel_id': 0}
 
 def test_channels_create_morethan20():
     clear()
@@ -38,14 +38,14 @@ def test_channels_create_public():
     clear()
     test_user0 = create_one_test_user()
     # assert that public channel gets created - check channels_list_test
-    assert channels_create(test_user0['token'], channel_name2, True) == 0
+    assert channels_create(test_user0['token'], channel_name2, True) == {'channel_id': 0}
     
 
 def test_channels_create_private():
     clear()
     test_user0 = create_one_test_user()
     # assert that private channel gets created - check channels_list_test
-    assert channels_create(test_user0['token'], channel_name1, False) == 0
+    assert channels_create(test_user0['token'], channel_name1, False) == {'channel_id': 0}
 
 def test_channels_create_invalidtoken():
     clear()

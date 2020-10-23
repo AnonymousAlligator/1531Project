@@ -20,7 +20,7 @@ def test_channels_list_one_user_channel():
     assert(channels_list(test_user0['token']) == {
         'channels': [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0",
             },
         ]
@@ -32,11 +32,11 @@ def test_channels_list_one_user_channel():
     assert(channels_list(test_user0['token']) == {
         'channels': [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0",
             },
             {
-                "channel_id": priv_channel0,
+                "channel_id": priv_channel0['channel_id'],
                 "name": "Private Channel 0"
             },
         ]
@@ -57,13 +57,13 @@ def test_channels_list_authorised_pub_channel():
     _ = channels_create(test_user0['token'], "Private Channel 0", False)
 
     # test_user1 joins public channel
-    channel_join(test_user1['token'], pub_channel0)
+    channel_join(test_user1['token'], pub_channel0['channel_id'])
 
     # for test_user1, only lists the 1 public channel they are part of
     assert(channels_list(test_user1['token']) == {
         'channels' : [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0",
             },
         ]
@@ -83,13 +83,13 @@ def test_channels_list_authorised_priv_channel():
     priv_channel0 = channels_create(test_user0['token'], "Private Channel 0", False)
 
     # test_user1 is invited to join private channel
-    channel_invite(test_user0['token'], priv_channel0, test_user1['u_id'])
+    channel_invite(test_user0['token'], priv_channel0['channel_id'], test_user1['u_id'])
 
     # for test_user1, only lists the 1 private channel they are part of
     assert(channels_list(test_user1['token']) == {
         'channels' : [
             {
-                "channel_id": priv_channel0,
+                "channel_id": priv_channel0['channel_id'],
                 "name": "Private Channel 0",
             },
         ]
@@ -118,11 +118,11 @@ def test_channels_list_owner_channels():
     assert(channels_list(test_user1['token']) == {
         'channels' : [
             {
-                "channel_id": pub_channel1,
+                "channel_id": pub_channel1['channel_id'],
                 "name": "Public Channel 1",
             },
             {
-                "channel_id": priv_channel1,
+                "channel_id": priv_channel1['channel_id'],
                 "name": "Private Channel 1",
             },
         ]
@@ -149,26 +149,26 @@ def test_channels_list_joined_channels():
     priv_channel1 = channels_create(test_user1['token'], "Private Channel 1", False)
 
     # test_user1 joins the channels test_user0 created
-    channel_join(test_user1['token'], pub_channel0)
-    channel_invite(test_user0['token'], priv_channel0, test_user1['u_id'])
+    channel_join(test_user1['token'], pub_channel0['channel_id'])
+    channel_invite(test_user0['token'], priv_channel0['channel_id'], test_user1['u_id'])
 
     # check that for test_user1, return list of all channels
     assert(channels_list(test_user1['token']) == {
         'channels': [
             {
-                "channel_id": pub_channel0,
+                "channel_id": pub_channel0['channel_id'],
                 "name": "Public Channel 0"
             },
             {
-                "channel_id": priv_channel0,
+                "channel_id": priv_channel0['channel_id'],
                 "name": "Private Channel 0"
             },
             {
-                "channel_id": pub_channel1,
+                "channel_id": pub_channel1['channel_id'],
                 "name": "Public Channel 1"
             },
             {
-                "channel_id": priv_channel1,
+                "channel_id": priv_channel1['channel_id'],
                 "name": "Private Channel 1"
             },
         ]

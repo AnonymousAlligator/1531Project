@@ -22,7 +22,7 @@ def test_message_remove_works_public():
 
     # test_user0 sends 1 message to public channel
     message0 = "Let's geddit"
-    message0_id = message_send(test_user0['token'], public_channel_id, message0)
+    message0_id = message_send(test_user0['token'], public_channel_id['channel_id'], message0)
 
     # assert func works for public channel
     assert message_remove(test_user0['token'], message0_id['message_id']) == {}
@@ -38,7 +38,7 @@ def test_message_remove_works_private():
 
     # test_user0 sends 1 message to public channel
     message0 = "Let's geddit"
-    message0_id = message_send(test_user0['token'], private_channel_id, message0)
+    message0_id = message_send(test_user0['token'], private_channel_id['channel_id'], message0)
 
     # assert func works for private channel
     assert message_remove(test_user0['token'], message0_id['message_id']) == {}
@@ -53,11 +53,11 @@ def test_message_remove_works_more_people_channel():
     public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
 
     # test_user1 joins public channel
-    channel_join(test_user1['token'], public_channel_id)
+    channel_join(test_user1['token'], public_channel_id['channel_id'])
 
     # test_user1 sends 1 message
     message0 = "Let's geddit"
-    message0_id = message_send(test_user1['token'], public_channel_id, message0)
+    message0_id = message_send(test_user1['token'], public_channel_id['channel_id'], message0)
 
     # check test_user1 (member) removes their message
     assert message_remove(test_user1['token'], message0_id['message_id']) == {}
@@ -72,11 +72,11 @@ def test_message_remove_channel_owner():
     public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
 
     # test_user1 joins public channel
-    channel_join(test_user1['token'], public_channel_id)
+    channel_join(test_user1['token'], public_channel_id['channel_id'])
 
     # test_user1 sends 1 message
     message0 = "Let's geddit"
-    message0_id = message_send(test_user1['token'], public_channel_id, message0)
+    message0_id = message_send(test_user1['token'], public_channel_id['channel_id'], message0)
 
     # check test_user1 (channel owner) removes their message
     assert message_remove(test_user0['token'], message0_id['message_id']) == {}
@@ -91,11 +91,11 @@ def test_message_remove_flockr_owner():
     public_channel_id = channels_create(test_user1['token'], "Main Channel", True)
 
     # test_user2 joins public channel
-    channel_join(test_user2['token'], public_channel_id)
+    channel_join(test_user2['token'], public_channel_id['channel_id'])
 
     # test_user1 sends 1 message
     message0 = "Let's geddit"
-    message0_id = message_send(test_user1['token'], public_channel_id, message0)
+    message0_id = message_send(test_user1['token'], public_channel_id['channel_id'], message0)
 
     # check test_user0 (flockr owner) removes their message
     assert message_remove(test_user0['token'], message0_id['message_id']) == {}
@@ -111,7 +111,7 @@ def test_message_remove_already_deleted_msg():
 
     # test_user0 sends 1 message to public channel
     message0 = "Let's geddit"
-    message0_id = message_send(test_user0['token'], private_channel_id, message0)
+    message0_id = message_send(test_user0['token'], private_channel_id['channel_id'], message0)
 
     # test_user0 removes message
     assert message_remove(test_user0['token'], message0_id['message_id']) == {}
@@ -129,11 +129,11 @@ def test_message_remove_no_permission():
     public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
 
     # test_user1 joins public channel
-    channel_join(test_user1['token'], public_channel_id)
+    channel_join(test_user1['token'], public_channel_id['channel_id'])
 
     # test_user0 sends 1 message
     message0 = "Let's geddit"
-    message0_id = message_send(test_user0['token'], public_channel_id, message0)
+    message0_id = message_send(test_user0['token'], public_channel_id['channel_id'], message0)
 
     # test_user1 tries to remove test_user0's message
     with pytest.raises(AccessError):
