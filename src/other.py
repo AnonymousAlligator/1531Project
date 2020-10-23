@@ -73,20 +73,35 @@ def admin_userpermission_change(token, u_id, permission_id):
     return {}
 
 def search(token, query_str):
+    query_str.lower()
     messageslist = []
+    #if query_str is empty
     if query_str.isspace():
-        return messageslist
+        return {'messages': messageslist}
     #Check if token is correct
-    for user in data['users']:
-        if user['token'] == token:
-            #loop through all channels and their messages and add message dictionary to the list
-            for msg in data['messages']:
-                #Check if the query_str is apart 
-                #if TRUE for string inside string then append the message dictionary to list
-                if query_str in msg['message']:
-                    messageslist.append(msg)
-                return messageslist
-    raise error.AccessError("Token is not valid")
+    caller = check_token(token)
+
+    #loop through all channels and their messages and add message dictionary to the list
+    for msg in data['messages']:
+    #Check if the query_str is apart 
+    #if TRUE for string inside string then append the message dictionary to list
+        if query_str == msg['message'].lower():
+            channelcheck = msg['channel_id']
+            # Find the channel
+            target_channel = {}
+            for channel in data['channels']:
+                if channelcheck == channel['channel_id']:
+                    target_channel = channel
+            # Input Error if the channel doesn't exist
+                if target_channel == {}:
+                    #Input Error if the channel doesn't exist
+                    raise error.InputError('Channel does not exist')
+                                
+                for member in target_channel['all_members']:
+                    if caller['u_id'] == member['u_id']:
+                        messageslist.append(msg)
+
+    return {'messages': messageslist}
     
 
 def check_token(token):
