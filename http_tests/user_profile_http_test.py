@@ -23,7 +23,7 @@ def initialisation(url):
 # check that a valid token and valid u_id returns the correct profile data
 def test_http_user_profile(url, initialisation):	
     
-    benjamin,_ = initialisation
+    benjamin = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'u_id' : benjamin['u_id'],        
