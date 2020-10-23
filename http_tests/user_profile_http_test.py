@@ -31,7 +31,7 @@ def test_http_user_profile(url, initialisation):
     r = requests.get(f'{url}/user/profile?{query_string}')
     payload = r.json()
 
-    assert(payload(['user']) == {
+    assert(payload['user'] == {
         'user': [
             {
             'u_id': benjamin['u_id'], 
