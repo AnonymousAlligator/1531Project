@@ -49,7 +49,7 @@ def initialisation():
                           'u_id': 0,
                           'message': "Let's geddit"}]
 
-    return test_user0, test_user1, expectedmessages0, expectedmessages1
+    return test_user0, test_user1, expectedmessages0, expectedmessages1, channel_id0, channel_id1
 
 # check search for existing string
 def test_search_single():
