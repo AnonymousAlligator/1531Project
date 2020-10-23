@@ -32,7 +32,7 @@ def test_http_user_profile(url, initialisation):
     payload = r.json()
 
     assert payload['user'] == {
-        'user': [
+        # 'user': [
             {
             'u_id': benjamin['u_id'], 
             'email': 'Benjamin@email.com', 
@@ -40,7 +40,7 @@ def test_http_user_profile(url, initialisation):
             'name_last': 'Long', 
             'handle': 'benjaminlong',
             },
-        ]
+        # ]
     }
 
 # check for invalid token with a valid u_id
