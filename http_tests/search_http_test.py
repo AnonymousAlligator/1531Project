@@ -9,32 +9,38 @@ def initialisation(url):
 
     # Register users
     user0 = requests.post(f'{url}/auth/register', json={
-        'email' : 'Benjamin@email.com',
-        'password' : 'password',
-        'name_first' : 'Benjamin',
-        'name_last' : 'Long',
+        "email" : "testemail0@email.com",
+        "password" : "valid_pw0",
+        "name_first" : "Hayden",
+        "name_last" : "Jacobs",
     })
+
     user0 = user0.json()       
     user1 = requests.post(f'{url}/auth/register', json={
-        'email' : 'Ross@email.com',
-        'password' : 'password',
-        'name_first' : 'Ross',
-        'name_last' : 'Short',
+        "email" : "testemail1@email.com",
+        "password" : "valid_pw1",
+        "name_first" : "Jayden",
+        "name_last" : "Haycobs",
     })
+
     user1 = user1.json()
 
     # Create channels
     channel0 = requests.post(f'{url}/channels/create', json={
-        'token' : benjamin['token'],
+        'token' : user0['token'],
         'name' : 'channel0',
         'is_public' : True,
     })
     
+    channel0_id = channel0.json()
+    
     channel1 = requests.post(f'{url}/channels/create', json={
-        'token' : benjamin['token'],
+        'token' : user0['token'],
         'name' : 'channel1',
         'is_public' : True,
     })
+
+    channel1_id = channel1.json()
     # Send messages
     requests.post(f'{url}/message/send', json={
             'token' : user0['token'],
