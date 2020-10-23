@@ -2,6 +2,7 @@ from url_fixture import url
 import pytest
 import requests
 
+@pytest.fixture
 def initialisation(url):
     # Clear data space
     requests.delete(f'{url}/clear')
@@ -38,7 +39,7 @@ def initialisation(url):
 
     # Create channels
     channel0 = requests.post(f'{url}/channels/create', json={
-        'token' : ross['token'],
+        'token' : benjamin['token'],
         'name' : 'channel0',
         'is_public' : True,
     })
@@ -54,7 +55,7 @@ def initialisation(url):
 
     # Benjamin to join public channe
     requests.post(f'{url}/channel/join', json={
-        'token' : benjamin['token'],
+        'token' : ross['token'],
         'channel_id' : channel0_id['channel_id'],
     })
     # Alex to join public channe
