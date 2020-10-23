@@ -96,7 +96,7 @@ def test_channel_addowner_invited(url, initialisation):
 
 #Channel exists, token is NOT an owner, u_id is a member
 def test_channel_addowner_not_owner(url, initialisation):
-    Benjamin, Ross, Alex, _, channel_id0, _, = initialisation
+    Benjamin, _, Alex, _, channel_id0, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : Benjamin,
         'channel_id' : channel_id0['channel_id'],
@@ -107,7 +107,7 @@ def test_channel_addowner_not_owner(url, initialisation):
 
 #Channel exists, token is NOT a member, u_id is a member
 def test_adder_not_member(url, initialisation):
-    Benjamin, _, Alex, James, channel_id0, _, = initialisation
+    Benjamin, _, _, James, channel_id0, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : James,
         'channel_id' : channel_id0['channel_id'],
@@ -135,7 +135,7 @@ def test_channel_addowner_already_owner(url, initialisation):
 
 #Channel exists, token is adding themselves.
 def test_channel_addowner_self(url, initialisation):
-    Benjamin, Ross, _, _, channel_id0, _, = initialisation
+    _, Ross, _, _, channel_id0, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : Ross,
         'channel_id' : channel_id0['channel_id'],
@@ -146,7 +146,7 @@ def test_channel_addowner_self(url, initialisation):
 
 #Channel does NOT exist, throw input error
 def test_channel_addowner_invalid_channel(url, initialisation): 
-    Benjamin, Ross, _, _, channel_id0, _, = initialisation
+    Benjamin, Ross, _, _, _, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : Ross,
         'channel_id' : 4,
