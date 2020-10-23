@@ -72,31 +72,31 @@ def initialisation(url):
 
 # tests for listing one public channels
 def test_channels_list_one_user_channel(url, initialisation):
-    Benjamin, _, _, _, channel_id0, _ = initialisation
+    Benjamin, _, _, _, _, _ = initialisation
 
-    r = requests.get(f'{url}/channels/list', json={
-        'token' : Benjamin['token']
+    query_string = urllib.parse.urlencode({
+        'token' : Benjamin['token'],
     })
+    r = requests.get(f'{url}/channels/list?{query_string}')
 
     payload = r.json()
-    assert payload['channels'] == {
-        'channels' : [
+    assert payload['channels'] == [
             {
                 "channel_id": 0,
                 "name": "channel0",
             },
         ]
-    }
+
 # tests for listing 2 public channels
 def test_channels_list(url, initialisation):
-    _, Ross, _, _, channel_id0, channel_id1 = initialisation
+    _, Ross, _, _, _, _ = initialisation
 
-    r = requests.get(f'{url}/channels/list', json={
-        'token' : Benjamin['token']
+    query_string = urllib.parse.urlencode({
+        'token' : Ross['token'],
     })
+    r = requests.get(f'{url}/channels/list?{query_string}')
     payload = r.json()
-    assert payload['channels'] == {
-        'channels' : [
+    assert payload['channels'] == [
             {
                 "channel_id": 0,
                 "name": "channel0",
@@ -106,47 +106,28 @@ def test_channels_list(url, initialisation):
                 "name": "channel1",
             },
         ]
-    }
-
-# user0 creates 1 public, 1 private channel. user1 joins only 1 public channel.
-# check that for user1, only return the public channel they are part of
-def test_channels_list_authorised_pub_channel(url, initialisation):
-    Benjamin, Ross, _, _, channel_id0, channel_id1 = initialisation
-
-    r = requests.get(f'{url}/channels/list', json={
-        'token' : Benjamin['token']
-    })
-    payload = r.json()
-    assert payload['channels'] == {
-        'channels' : [
-            {
-                "channel_id": 0,
-                "name": "channel0",
-            },
-        ]
-    }    
 
 # user0 creates 1 public, 1 private channel. user1 joins only 1 private channel.
 # check that for user1, only return the private channel they are part of
 def test_channels_list_authorised_priv_channel(url, initialisation):
-    _, Ross, Alex, _, channel_id0, channel_id1 = initialisation
+    _, _, Alex, _, _, _ = initialisation
 
-    r = requests.get(f'{url}/channels/list', json={
-        'token' : Alex['token']
+    query_string = urllib.parse.urlencode({
+        'token' : Alex['token'],
     })
+    r = requests.get(f'{url}/channels/list?{query_string}')
     payload = r.json()
-    assert payload['channels'] == {
-        'channels' : [
+    assert payload['channels'] == [
             {
                 "channel_id": 1,
                 "name": "channel1",
             },
         ]
-    }    
+
 # user0 and user1 both create one of each public and private channels. user1 joins all 4 channels.
 # check that for user0, return only the 2 channels they created
 def test_channels_list_joined_channels(url, initialisation):
-    _, Ross, _, James, channel_id0, channel_id1 = initialisation
+    _, Ross, Alex, James, channel_id0, channel_id1 = initialisation
 
     channel_id2 = requests.post(f'{url}/channels/create', json={
         'token' : James['token'],
@@ -156,28 +137,28 @@ def test_channels_list_joined_channels(url, initialisation):
 
     channel_id3 = requests.post(f'{url}/channels/create', json={
         'token' : James['token'],
-        'name' : 'channel',
+        'name' : 'channel3',
         'is_public' : False,
     })
 
     requests.post(f'{url}/channel/invite', json={
         'token' : Ross['token'],
-        'channel_id' : channel1_id['channel_id'],
-        'u_id' : Alex['u_id'],
+        'channel_id' : channel_id1['channel_id'],
+        'u_id' : James['u_id'],
     })
 
     requests.post(f'{url}/channel/join', json={
         'token' : James['token'],
-        'channel_id' : channel0_id['channel_id'],
+        'channel_id' : channel_id0['channel_id'],
     })
 
 
-    r = requests.get(f'{url}/channels/list', json={
-        'token' : James['token']
+    query_string = urllib.parse.urlencode({
+        'token' : James['token'],
     })
+    r = requests.get(f'{url}/channels/list?{query_string}')
     payload = r.json()
-    assert payload['channels'] == {
-        'channels' : [
+    assert payload['channels'] ==[
             {
                 "channel_id": 0,
                 "name": "channel0",
@@ -195,7 +176,6 @@ def test_channels_list_joined_channels(url, initialisation):
                 "name": "channel3",
             },
         ]
-    }
 
 def test_channels_list_token_error(url, initialisation):
     _, _, _, _, _, _ = initialisation
