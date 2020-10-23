@@ -60,7 +60,7 @@ def user_profile_setemail(token, email):
             raise error.InputError("Email already taken by another registered user")
 
     caller["email"] = email
-    return {}
+    # return {}
 
 def user_profile_sethandle(token, handle_str):
     #Check that the token is valid
