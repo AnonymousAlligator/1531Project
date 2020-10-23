@@ -110,7 +110,7 @@ def test_search_single(url, initialisation):
 
     payload = r.json()
     messages = payload['messages']
-    for msg in messages
+    for msg in messages:
         assert messages['message_id'] == 0
         assert messages['channel_id'] == 0
         assert messages['u_id'] == 0
