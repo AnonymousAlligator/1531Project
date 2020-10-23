@@ -36,8 +36,8 @@ def test_http_users_all_1_valid_token(url, initialisation):
         'token' : benjamin['token'],
     })
     r = requests.get(f'{url}/users/all?{query_string}')
-    users_all = r.json()
-    assert(users_all(benjamin['token']) == {
+    payload = r.json()
+    assert(payload(benjamin['token']) == {
         'users': [
             {
                 "u_id" : 0,
@@ -57,9 +57,9 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
         'token' : benjamin['token'],
     })
     r = requests.get(f'{url}/users/all?{query_string}')
-    users_all = r.json()
+    payload = r.json()
     
-    assert(users_all(benjamin['token']) == {
+    assert(payload(benjamin['token']) == {
         'users': [
             {
                 "u_id" : 0,
@@ -86,9 +86,9 @@ def test_http_users_all_user2_valid_token(url, initialisation):
         'token' : benjamin['token'],
     })
     r = requests.get(f'{url}/users/all?{query_string}')
-    users_all = r.json()
+    payload = r.json()
     
-    assert(users_all(benjamin['token']) == {
+    assert(payload(benjamin['token']) == {
         'users': [
             {
                 "u_id" : 0,
@@ -107,7 +107,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
         ]
     })
 
-    assert(users_all(ross['token']) == {
+    assert(payload(ross['token']) == {
         'users': [
             {
                 "u_id" : 0,
@@ -134,9 +134,9 @@ def test_http_users_all_valid_order(url, initialisation):
         'token' : benjamin['token'],
     })
     r = requests.get(f'{url}/users/all?{query_string}')
-    users_all = r.json()
+    payload = r.json()
 
-    assert(users_all(ross['token']) != {
+    assert(payload(ross['token']) != {
         'users': [
             {
                 "u_id" : 1,
