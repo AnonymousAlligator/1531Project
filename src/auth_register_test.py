@@ -37,6 +37,28 @@ def test_register_after_clear():
     valid_user = auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user['u_id'] == 0
 
+def test_register_handle_length():
+
+    clear()
+    auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
+    auth_register("registered2@valid.com", "botato111", "Elena", "Fisher")
+    handle_length_0 = len(data['users'][0]['handle'])
+    handle_length_1 = len(data['users'][1]['handle'])
+
+    assert handle_length_0 == 11
+    assert data['users'][0]['handle'] == "elenafisher"
+    
+    assert handle_length_1 == 12
+    assert data['users'][1]['handle'] == "elenafisher1"
+
+    auth_register("registered3@valid.com", "botato111", "Elena"*3, "fivesss")
+    
+    handle_length_2 = len(data['users'][2]['handle'])
+    
+    assert handle_length_2 == 20
+    assert data['users'][2]['handle'] == "elenaelenaelenafives"
+
+
 def test_invalid_format_1():
     
     clear()
