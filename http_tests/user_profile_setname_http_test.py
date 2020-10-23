@@ -18,7 +18,7 @@ def initialisation(url):
     })
     benjamin = user0.json()
 
-    return benjamin, 
+    return benjamin
 
 # check for correct name payload
 def test_http_profile_setname(url, initialisation):
