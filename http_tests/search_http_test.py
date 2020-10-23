@@ -108,8 +108,9 @@ def test_search_single(url, initialisation):
     })
     r = requests.get(f'{url}/search?{query_string}')
     payload = r.json()
+    messages = payload['messages']
     
-    assert payload['message_id'] == 0
-    assert payload['channel_id'] == 0
-    assert payload['u_id'] == 0
-    assert payload['message'] == "Let's geddit"
+    assert messages['message_id'] == 0
+    assert messages['channel_id'] == 0
+    assert messages['u_id'] == 0
+    assert messages['message'] == "Let's geddit"
