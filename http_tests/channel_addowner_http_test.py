@@ -2,6 +2,7 @@ from url_fixture import url
 import pytest
 import requests
 
+@pytest.fixture
 def initialisation(url):
     # Clear data space
     requests.delete(f'{url}/clear')
@@ -38,7 +39,7 @@ def initialisation(url):
 
     # Create channels
     channel0 = requests.post(f'{url}/channels/create', json={
-        'token' : ross['token'],
+        'token' : benjamin['token'],
         'name' : 'channel0',
         'is_public' : True,
     })
@@ -51,10 +52,9 @@ def initialisation(url):
     })
     channel1_id = channel1.json()
 
-
-    # Benjamin to join public channe
+    # Ross to join public channe
     requests.post(f'{url}/channel/join', json={
-        'token' : benjamin['token'],
+        'token' : ross['token']
         'channel_id' : channel0_id['channel_id'],
     })
     # Alex to join public channe
@@ -75,9 +75,9 @@ def initialisation(url):
 def test_channel_addowner_success(url, initialisation):
     Benjamin, Ross, _, _, channel_id0, _ = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
-        'token' : Ross['token'],
+        'token' : Benjamin['token'],
         'channel_id' : channel_id0['channel_id'],
-        'u_id' : Benjamin['u_id'],
+        'u_id' : Ross['u_id'],
     })
     payload = r.json()
     assert payload == {}
@@ -95,7 +95,7 @@ def test_channel_addowner_invited(url, initialisation):
 
 #Channel exists, token is NOT an owner, u_id is a member
 def test_channel_addowner_not_owner(url, initialisation):
-    Benjamin, Ross, Alex, _, channel_id0, _, = initialisation
+    Benjamin, _, Alex, _, channel_id0, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : Benjamin,
         'channel_id' : channel_id0['channel_id'],
@@ -106,7 +106,7 @@ def test_channel_addowner_not_owner(url, initialisation):
 
 #Channel exists, token is NOT a member, u_id is a member
 def test_adder_not_member(url, initialisation):
-    Benjamin, _, Alex, James, channel_id0, _, = initialisation
+    Benjamin, _, _, James, channel_id0, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : James,
         'channel_id' : channel_id0['channel_id'],
@@ -134,7 +134,7 @@ def test_channel_addowner_already_owner(url, initialisation):
 
 #Channel exists, token is adding themselves.
 def test_channel_addowner_self(url, initialisation):
-    Benjamin, Ross, _, _, channel_id0, _, = initialisation
+    _, Ross, _, _, channel_id0, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : Ross,
         'channel_id' : channel_id0['channel_id'],
@@ -145,7 +145,7 @@ def test_channel_addowner_self(url, initialisation):
 
 #Channel does NOT exist, throw input error
 def test_channel_addowner_invalid_channel(url, initialisation): 
-    Benjamin, Ross, _, _, channel_id0, _, = initialisation
+    Benjamin, Ross, _, _, _, _, = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
         'token' : Ross,
         'channel_id' : 4,

@@ -2,6 +2,7 @@ from url_fixture import url
 import pytest
 import requests
 
+@pytest.fixture
 def initialisation(url):
     # Clear data space
     requests.delete(f'{url}/clear')
@@ -44,9 +45,6 @@ def initialisation(url):
     })
     channel0_id = channel0.json()
 
-
-    channel0_id = channel0.json()
-
     channel1 = requests.post(f'{url}/channels/create', json={
         'token' : ross['token'],
         'name' : 'channel1',
@@ -76,16 +74,10 @@ def initialisation(url):
         'token' : james['token'],
         'channel_id' : channel0_id['channel_id'],
     })
-    #Benjamin to join public channel
+    #alex to join public channel
     requests.post(f'{url}/channel/join', json={
-        'token' : benjamin['token'],
+        'token' : alex['token'],
         'channel_id' : channel2_id['channel_id'],
-    })    
-    #Makes Benjamin an owner
-    r = requests.post(f'{url}/channel/addowner', json={
-        'token' : ross['token'],
-        'channel_id' : channel0_id['channel_id'],
-        'u_id' : benjamin['u_id'],
     })
 
     # Invites Alex to private channel
@@ -96,9 +88,9 @@ def initialisation(url):
     })
 
     #Makes Alex an owner of private channel
-    r = requests.post(f'{url}/channel/addowner', json={
+    requests.post(f'{url}/channel/addowner', json={
         'token' : ross['token'],
-        'channel_id' : channel0_id['channel_id'],
+        'channel_id' : channel1_id['channel_id'],
         'u_id' : alex['u_id'],
     })
 
@@ -116,7 +108,7 @@ def test_channel_removeowner_success(url, initialisation):
 
 #Successfully removed themselves as owner
 def test_channel_removeowner_owner_success(url, initialisation):
-    Benjamin, Ross, _, _, channel_id0, _, _ = initialisation
+    Benjamin, _, _, _, channel_id0, _, _ = initialisation
     r = requests.post(f'{url}/channel/removeowner', json={
         'token' : Benjamin['token'],
         'channel_id' : channel_id0['channel_id'],
@@ -139,7 +131,7 @@ def test_channel_removeowner_invited(url, initialisation):
 
 #Channel does not exist
 def test_channel_removeowner_invalid_channel(url, initialisation):
-    Benjamin, Ross, _, _, channel_id0, _, _, = initialisation    
+    Benjamin, Ross, _, _, _, _, _, = initialisation    
     r = requests.post(f'{url}/channel/removeowner', json={
         'token' : Ross['token'],
         'channel_id' : 4,
@@ -173,7 +165,7 @@ def test_channel_removeowner_not_owner(url, initialisation):
 
 #Attempting to remove owner when neither caller or person called is owner.
 def test_channel_removeowner_neither_owner(url, initialisation):
-    _, Ross, Alex, James, channel_id0, _, _, = initialisation
+    _, _, Alex, James, channel_id0, _, _, = initialisation
     r = requests.post(f'{url}/channel/removeowner', json={
         'token' : James['token'],
         'channel_id' : channel_id0['channel_id'],
@@ -184,18 +176,19 @@ def test_channel_removeowner_neither_owner(url, initialisation):
 
 #Owner removing themselves as owner when there is only one owner but other members
 def test_channel_removeowner_only_owner(url, initialisation):
-    Benjamin, Ross, _, _, _, _, channel_id2,= initialisation
+    _, Ross, _, _, _, _, channel_id2,= initialisation
     r = requests.post(f'{url}/channel/removeowner', json={
         'token' : Ross['token'],
         'channel_id' : channel_id2['channel_id'],
         'u_id' : Ross['u_id'],
     })
     payload = r.json()
+    print(payload)
     assert payload['code'] == 400
 
 #Owner removing themselves as owner when there is no other member in the channel and they are the only owner.
 def test_channel_removeowner_only_member(url, initialisation):
-    Benjamin, Ross, _, _, _, _, channel_id2,= initialisation
+    _, Ross, _, _, _, _, channel_id2,= initialisation
     requests.post(f'{url}/channel/leave', json={
         'token' : 'Benjamin',
         'channel_id' : channel_id2['channel_id'],
@@ -210,7 +203,7 @@ def test_channel_removeowner_only_member(url, initialisation):
     assert payload['code'] == 400    
 #Attempting to remove owner when the person called is NOT part of private channel
 def test_channel_removeowner_not_invited(url, initialisation):
-    Benjamin, Ross, Alex, _, _, channel_id1, _,= initialisation
+    Benjamin, Ross, _, _, _, channel_id1, _,= initialisation
     r = requests.post(f'{url}/channel/removeowner', json={
         'token' : Ross['token'],
         'channel_id' : channel_id1['channel_id'],

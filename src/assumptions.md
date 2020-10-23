@@ -104,3 +104,4 @@ search:
 
 - Messages returns with latest message at the front of the list
 
+- Members that are not apart of channel will not be able to search for messages
