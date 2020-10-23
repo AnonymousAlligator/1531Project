@@ -40,7 +40,9 @@ def user_profile_setname(token, name_first, name_last):
     
     caller["name_first"] = fname
     caller["name_last"] = lname
+
     return {}
+    
 
 def user_profile_setemail(token, email):
     
