@@ -28,7 +28,7 @@ def test_http_user_profile(url, initialisation):
         'token' : benjamin['token'],
         'u_id' : benjamin['u_id'],        
     })
-    r = requests.get(f'{url}/user/profile?{query_string}')
+    r = requests.get(f'{url}/user/profile{query_string}')
     payload = r.json()
 
     assert payload['user'] == [{
