@@ -96,7 +96,7 @@ def test_search_notaprtofchannel():
     assert search(user1['token'], "e") == {'messages': []}
 # check for invalid token
 def test_search_invalidtoken():
-    user0, _, _, _ = initialisation()
+    _, _, _, _ = initialisation()
 
     with pytest.raises(error.AccessError):
         search('hello', "hello")
