@@ -100,30 +100,15 @@ def initialisation(url):
     return test_user0, test_user1, expectedmessages0, expectedmessages1, channel_id0, channel_id1
 
 def test_search_single(url, initialisation):
-    user0, _, _, _, _, _ = initialisation
-
-    query_string = urllib.parse.urlencode({
-        'token' : user0['token'],
-        'query_str': "geddit"
-    })
-    r = requests.get(f'{url}/search?{query_string}')
-
-    payload = r.json()
-    messages = payload['messages']
-    for msg in messages:
-        assert msg['message_id'] == 0
-        assert msg['channel_id'] == 0
-        assert msg['u_id'] == 0
-        assert msg['message'] == "Let's geddit"
-    
-def test_search_single(url, initialisation):
-    user0, _, _, _, _, _ = initialisation
+    user0, _, _, _, _, _ = initialisation()
 
     query_string = urllib.parse.urlencode({
         'token' : user0['token'],
         'query_str': "geddit",
     })
-    r = requests.get(f'{url}/search?{query_string}')
+
+    r = requests.get(f'{url}/user/profile?{query_string}')
+
 
     payload = r.json()
     messages = payload['messages']
@@ -132,3 +117,52 @@ def test_search_single(url, initialisation):
         assert msg['channel_id'] == 0
         assert msg['u_id'] == 0
         assert msg['message'] == "Let's geddit"
+
+def test_search_multiplecase(url, initialisation):
+    user0, _, _, expectedmessages0, _, _ = initialisation()
+
+    query_string = urllib.parse.urlencode({
+        'token' : user0['token'],
+        'query_str': "let's",
+    })
+    r = requests.get(f'{url}/search?{query_string}')
+
+    payload = r.json()
+    messages = payload['messages']
+
+    for i, msg in enumerate(messages):
+        assert msg['message_id'] == expectedmessages0[i]['message_id']
+        assert msg['u_id'] == expectedmessages0[i]['u_id']
+        assert msg['message'] == expectedmessages0[i]['message']
+
+def test_search_multiplediffchannel(url, initialisation):
+    user0, _, _, expectedmessages1, _, _ = initialisation()
+
+    query_string = urllib.parse.urlencode({
+        'token' : user0['token'],
+        'query_str': "e",
+    })
+    r = requests.get(f'{url}/search?{query_string}')
+
+    payload = r.json()
+    messages = payload['messages']
+
+    for i, msg in enumerate(messages):
+        assert msg['message_id'] == expectedmessages1[i]['message_id']
+        assert msg['channel_id'] == expectedmessages1[i]['channel_id']
+        assert msg['u_id'] == expectedmessages1[i]['u_id']
+        assert msg['message'] == expectedmessages1[i]['message']
+
+def test_search_multiplestring(url, initialisation):
+    user0, _, _, _, _, _ = initialisation()
+
+    query_string = urllib.parse.urlencode({
+        'token' : user0['token'],
+        'query_str': "ahahhaaha",
+    })
+    r = requests.get(f'{url}/search?{query_string}')
+
+    payload = r.json()
+    messages = payload['messages']
+
+    assert messages == {'messages': []}
