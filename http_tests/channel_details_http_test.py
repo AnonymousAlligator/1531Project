@@ -1,6 +1,7 @@
 from url_fixture import url
 import pytest
 import requests
+import urllib
 
 @pytest.fixture
 def initialisation(url):
@@ -64,10 +65,11 @@ def initialisation(url):
 
 def test_http_channel_details_public(url, initialisation):
     benjamin,_,_,channel0_id,_ = initialisation
-    r = requests.get(f'{url}/channel/details', json={
+    query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'channel_id' : channel0_id['channel_id'],
     })
+    r = requests.get(f'{url}/channel/details?{query_string}')
     details = r.json()
     assert details['name'] == 'channel0'
     assert details['owner_members'] == [{'u_id': 0,
@@ -85,10 +87,11 @@ def test_http_channel_details_public(url, initialisation):
 
 def test_http_channel_details_private(url, initialisation):
     _,ross,_,_,channel1_id = initialisation
-    r = requests.get(f'{url}/channel/details', json={
+    query_string = urllib.parse.urlencode({
         'token' : ross['token'],
         'channel_id' : channel1_id['channel_id'],
     })
+    r = requests.get(f'{url}/channel/details?{query_string}')
     details = r.json()
     assert details['name'] == 'channel1'
     assert details['owner_members'] == [{'u_id': 1,
@@ -105,10 +108,11 @@ def test_http_channel_details_invalid_channel(url, initialisation):
     #The channel doesn't exist
     #This should throw InputError
     benjamin,_,_,_,_ = initialisation
-    r = requests.get(f'{url}/channel/details', json={
+    query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'channel_id' : 2,
     })
+    r = requests.get(f'{url}/channel/details?{query_string}')
     details = r.json()
     assert details['code'] == 400
 
@@ -116,10 +120,11 @@ def test_http_channel_details_not_a_member(url, initialisation):
     #User not a member of the channel
     #This should throw AccessError
     benjamin,_,_,_,channel1_id = initialisation
-    r = requests.get(f'{url}/channel/details', json={
+    query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'channel_id' : channel1_id['channel_id'],
     })
+    r = requests.get(f'{url}/channel/details?{query_string}')
     details = r.json()
     assert details['code'] == 400
 
@@ -127,9 +132,10 @@ def test_http_invalid_token(url, initialisation):
     #Token parsed in is invalid
     #This should throw AccessError
     _,_,_,_,channel1_id = initialisation
-    r = requests.get(f'{url}/channel/details', json={
-        'token' : 'boooop',
+    query_string = urllib.parse.urlencode({
+        'token' : 'boop',
         'channel_id' : channel1_id['channel_id'],
     })
+    r = requests.get(f'{url}/channel/details?{query_string}')
     details = r.json()
     assert details['code'] == 400
