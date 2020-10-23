@@ -1,7 +1,9 @@
 from url_fixture import url
 import pytest
 import requests
+import urllib
 
+@pytest.fixture
 def initialisation(url):
     # Clear data space
     requests.delete(f'{url}/clear')
@@ -31,51 +33,22 @@ def initialisation(url):
     channel0_id = channel0.json()
 
     channel1 = requests.post(f'{url}/channels/create', json={
-        'token' : ross['token'],
+        'token' : benjamin['token'],
         'name' : 'channel1',
         'is_public' : False,
     })
     channel1_id = channel1.json()
+    return benjamin, ross, channel0_id, channel1_id
 
-# tests for listing one public channels
+# tests for listing all channels
 def test_channels_listall_public(url, initialisation):
-    _, Ross, channel_id0, _ = initialisation
-    r = requests.get(f'{url}/channels/listall', json={
-        'token' : Ross['token']
+    _, Ross, _, _ = initialisation
+    query_string = urllib.parse.urlencode({
+        'token' : Ross['token'],
     })
-    assert payload['channels'] == {
-        'channels' : [
-            {
-                "channel_id": 0,
-                "name": "channel0",
-            },
-        ]
-    }
-
-
-# tests for listing one private channels
-def test_channels_listall_private(url, initialisation):
-    _, Ross, _, channel_id1 = initialisation
-    r = requests.get(f'{url}/channels/listall', json={
-        'token' : Ross['token']
-    })
-    assert payload['channels'] == {
-        'channels' : [
-            {
-                "channel_id": 0,
-                "name": "channe1",
-            },
-        ]
-    }
-
-# tests for listing one private channels
-def test_channels_listsall_both(url, initialisation):
-    _, Ross, channel_id0, channel_id1 = initialisation
-    r = requests.get(f'{url}/channels/listall', json={
-        'token' : Ross['token']
-    })
-    assert payload['channels'] == {
-        'channels' : [
+    r = requests.get(f'{url}/channels/listall?{query_string}')
+    payload = r.json()
+    assert payload['channels'] == [
             {
                 "channel_id": 0,
                 "name": "channel0",
@@ -85,39 +58,12 @@ def test_channels_listsall_both(url, initialisation):
                 "name": "channel1",
             },
         ]
-    }
-
-
-# tests for listing many of each public and private channels
-def test_channels_listsall_many():
-    _, Ross, channel_id0, channel_id1 = initialisation
-    channel2 = requests.post(f'{url}/channels/listall', json={
-        'token' : Ross['token'],
-        'name' : 'channel2',
-        'is_public' : True,
+# token error
+def test_channels_listall_token_error(url, initialisation):
+    _, _, _, _ = initialisation
+    query_string = urllib.parse.urlencode({
+        'token' : 'boop',
     })
-    channel3 = requests.post(f'{url}/channels/listall', json={
-        'token' : Ross['token'],
-        'name' : 'channel3',
-        'is_public' : False,
-    })
-    assert payload['channels'] == {
-        'channels' : [
-            {
-                "channel_id": 0,
-                "name": "channel0",
-            },
-            {
-                "channel_id": 1,
-                "name": "channel1",
-            },
-            {
-                "channel_id": 2,
-                "name": "channel2",
-            },
-            {
-                "channel_id": 3,
-                "name": "channel3",
-            },
-        ]
-    }
+    r = requests.get(f'{url}/channels/listall?{query_string}')
+    payload = r.json()
+    assert payload['code'] == 400
