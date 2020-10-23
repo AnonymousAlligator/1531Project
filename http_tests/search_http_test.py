@@ -26,7 +26,7 @@ def initialisation(url):
 
     # Create channels
     channel0 = requests.post(f'{url}/channels/create', json={
-        'token' : user0['token'],
+        'token' : test_user0['token'],
         'name' : 'channel0',
         'is_public' : True,
     })
@@ -34,7 +34,7 @@ def initialisation(url):
     channel_id0 = channel0.json()
     
     channel1 = requests.post(f'{url}/channels/create', json={
-        'token' : user0['token'],
+        'token' : test_user0['token'],
         'name' : 'channel1',
         'is_public' : True,
     })
@@ -42,31 +42,31 @@ def initialisation(url):
     channel_id1 = channel1.json()
     # Send messages
     requests.post(f'{url}/message/send', json={
-            'token' : user0['token'],
+            'token' : test_user0['token'],
             'channel_id' : channel_id0['channel_id'],
             'message' : "Let's geddit",
     })
     
     requests.post(f'{url}/message/send', json={
-            'token' : user0['token'],
+            'token' : test_user0['token'],
             'channel_id' : channel_id0['channel_id'],
             'message' : "Let's go",
     })
 
     requests.post(f'{url}/message/send', json={
-            'token' : user0['token'],
+            'token' : test_user0['token'],
             'channel_id' : channel_id1['channel_id'],
             'message' : "Hello",
     })
 
     requests.post(f'{url}/message/send', json={
-        'token' : user0['token'],
+        'token' : test_user0['token'],
         'channel_id' : channel_id1['channel_id'],
         'message' : "Hi",
     })
 
     requests.post(f'{url}/message/send', json={
-            'token' : user0['token'],
+            'token' : test_user0['token'],
             'channel_id' : channel_id1['channel_id'],
             'message' : "Hey",
     })
