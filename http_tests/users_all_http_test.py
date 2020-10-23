@@ -26,28 +26,7 @@ def initialisation(url):
     })
     ross = user1.json()
 
-    return benjamin, ross, 
-
-# check attempt to list all 1 with a valid token
-def test_http_users_all_1_valid_token(url, initialisation):
-
-    benjamin,_ = initialisation
-    query_string = urllib.parse.urlencode({
-        'token' : benjamin['token'],
-    })
-    r = requests.get(f'{url}/users/all?{query_string}')
-    payload = r.json()
-    assert payload['users'] == [{
-        'users': [
-            {
-                "u_id" : 0,
-                "email": "Benjamin@email.com",
-                "name_first": "Benjamin",
-                "name_last": "Long",
-                "handle": "benjaminlong",
-            },
-        ]
-    }]
+    return benjamin, ross
 
 # check attempt to list all 2 users with a valid token
 def test_http_users_all_2_user1_valid_token(url, initialisation):
