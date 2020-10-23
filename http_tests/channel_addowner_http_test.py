@@ -75,9 +75,9 @@ def initialisation(url):
 def test_channel_addowner_success(url, initialisation):
     Benjamin, Ross, _, _, channel_id0, _ = initialisation
     r = requests.post(f'{url}/channel/addowner', json={
-        'token' : Benjamin['token'],
+        'token' : Ross['token'],
         'channel_id' : channel_id0['channel_id'],
-        'u_id' : Ross['u_id'],
+        'u_id' : Benjamin['u_id'],
     })
     payload = r.json()
     assert payload == {}
