@@ -115,3 +115,20 @@ def test_search_single(url, initialisation):
         assert msg['channel_id'] == 0
         assert msg['u_id'] == 0
         assert msg['message'] == "Let's geddit"
+    
+def test_search_single(url, initialisation):
+    user0, _, _, _, _, _ = initialisation
+
+    query_string = urllib.parse.urlencode({
+        'token' : user0['token'],
+        'query_str': "geddit",
+    })
+    r = requests.get(f'{url}/search?{query_string}')
+
+    payload = r.json()
+    messages = payload['messages']
+    for msg in messages:
+        assert msg['message_id'] == 0
+        assert msg['channel_id'] == 0
+        assert msg['u_id'] == 0
+        assert msg['message'] == "Let's geddit"
