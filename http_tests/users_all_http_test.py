@@ -51,7 +51,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
                 'email' : 'Ross@email.com',
                 'name_first' : 'Ross',
                 'name_last' : 'Short',
-                'password' : 'rossshort',
+                'handle' : 'rossshort',
             },
         ]
     
