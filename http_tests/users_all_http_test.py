@@ -38,8 +38,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
     
-    assert payload['users'] == [{
-        'users': [
+    assert payload['users'] == [
             {
                 "u_id" : 0,
                 "email": "Benjamin@email.com",
@@ -55,7 +54,6 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
                 'password' : 'rossshort',
             },
         ]
-    }]
     
 # check all 2 users return same list
 def test_http_users_all_user2_valid_token(url, initialisation):
@@ -67,8 +65,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
     
-    assert payload['users'] == [{
-        'users': [
+    assert payload['users'] == [
             {
                 "u_id" : 0,
                 "email": "Benjamin@email.com",
@@ -84,7 +81,6 @@ def test_http_users_all_user2_valid_token(url, initialisation):
                 'password' : 'rossshort',
             },
         ]
-    }]
 
 # checks the order of list returned is in chronological u_id order
 def test_http_users_all_valid_order(url, initialisation):
@@ -96,8 +92,7 @@ def test_http_users_all_valid_order(url, initialisation):
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
 
-    assert payload['users'] != [{
-        'users': [
+    assert payload['users'] != [
             {
                 "u_id" : 1,
                 "email": "testemail1@email.com",
@@ -112,5 +107,4 @@ def test_http_users_all_valid_order(url, initialisation):
                 "name_last": "Jacobs",
                 "handle": "haydenjacobs",
             },
-        ]
-    }]
+        ]    
