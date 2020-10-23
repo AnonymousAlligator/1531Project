@@ -32,17 +32,14 @@ def test_http_user_profile(url, initialisation):
     r = requests.get(f'{url}/user/profile?{query_string}')
     payload = r.json()
 
-    assert payload['user'] == {
-        # 'user': [
-            {
+    assert payload['user'] == [{
             'u_id': benjamin['u_id'], 
             'email': 'Benjamin@email.com', 
             'name_first': 'Benjamin', 
             'name_last': 'Long', 
             'handle': 'benjaminlong',
-            },
-        # ]
-    }
+            }]
+
 
 # check for invalid token with a valid u_id
 def test_http_user_profile_invalid_token(url, initialisation):
