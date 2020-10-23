@@ -43,14 +43,14 @@ def test_channels_listall_public(url, initialisation):
     r = requests.get(f'{url}/channels/listall', json={
         'token' : Ross['token']
     })
-        assert payload['channels'] == {
+    assert payload['channels'] == {
         'channels' : [
             {
                 "channel_id": 0,
                 "name": "channel0",
             },
         ]
-    })
+    }
 
 
 # tests for listing one private channels
@@ -59,14 +59,14 @@ def test_channels_listall_private(url, initialisation):
     r = requests.get(f'{url}/channels/listall', json={
         'token' : Ross['token']
     })
-        assert payload['channels'] == {
+    assert payload['channels'] == {
         'channels' : [
             {
                 "channel_id": 0,
                 "name": "channe1",
             },
         ]
-    })
+    }
 
 # tests for listing one private channels
 def test_channels_listsall_both(url, initialisation):
@@ -74,7 +74,7 @@ def test_channels_listsall_both(url, initialisation):
     r = requests.get(f'{url}/channels/listall', json={
         'token' : Ross['token']
     })
-        assert payload['channels'] == {
+    assert payload['channels'] == {
         'channels' : [
             {
                 "channel_id": 0,
@@ -85,22 +85,23 @@ def test_channels_listsall_both(url, initialisation):
                 "name": "channel1",
             },
         ]
-    })
+    }
 
 
 # tests for listing many of each public and private channels
 def test_channels_listsall_many():
+    _, Ross, channel_id0, channel_id1 = initialisation
     channel2 = requests.post(f'{url}/channels/listall', json={
-        'token' : ross['token'],
+        'token' : Ross['token'],
         'name' : 'channel2',
         'is_public' : True,
     })
     channel3 = requests.post(f'{url}/channels/listall', json={
-        'token' : ross['token'],
+        'token' : Ross['token'],
         'name' : 'channel3',
         'is_public' : False,
     })
-        assert payload['channels'] == {
+    assert payload['channels'] == {
         'channels' : [
             {
                 "channel_id": 0,
@@ -119,4 +120,4 @@ def test_channels_listsall_many():
                 "name": "channel3",
             },
         ]
-    })
+    }
