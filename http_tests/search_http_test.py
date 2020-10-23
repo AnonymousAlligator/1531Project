@@ -33,7 +33,7 @@ def initialisation(url):
         'is_public' : True,
     })
 
-    channel0_id = channel0.json()
+    channel_id0 = channel0.json()
     
     channel1 = requests.post(f'{url}/channels/create', json={
         'token' : user0['token'],
@@ -41,7 +41,7 @@ def initialisation(url):
         'is_public' : True,
     })
 
-    channel1_id = channel1.json()
+    channel_id1 = channel1.json()
     # Send messages
     requests.post(f'{url}/message/send', json={
             'token' : user0['token'],
@@ -57,19 +57,19 @@ def initialisation(url):
 
     requests.post(f'{url}/message/send', json={
             'token' : user0['token'],
-            'channel_id' : channel_id0['channel_id'],
+            'channel_id' : channel_id1['channel_id'],
             'message' : "Hello",
         })
 
     requests.post(f'{url}/message/send', json={
         'token' : user0['token'],
-        'channel_id' : channel_id0['channel_id'],
+        'channel_id' : channel_id1['channel_id'],
         'message' : "Hi",
     })
 
     requests.post(f'{url}/message/send', json={
             'token' : user0['token'],
-            'channel_id' : channel_id0['channel_id'],
+            'channel_id' : channel_id1['channel_id'],
             'message' : "Hey",
         })
     # Set up lists of expected messages
@@ -108,7 +108,7 @@ def test_search_single(url, initialisation):
         'token' : user0['token'],
         'query_str': "geddit"
     })
-    r = requests.get(f'{url}/search?{query_str}')
+    r = requests.get(f'{url}/search?{query_string}')
     payload = r.json()
     for msg in payload['messages']:
         assert msg['message_id'] == 0
