@@ -21,7 +21,7 @@ def test_channel_invite_member_pass():
     user_0, user_1, user_2 = create_three_test_users()
     channel = channels_create(user_0['token'], "name", True)
     channel_join(user_1['token'], channel['channel_id'])
-    assert channel_invite(user_0['token'], channel['channel_id'], user_2['u_id']) == {}
+    assert channel_invite(user_1['token'], channel['channel_id'], user_2['u_id']) == {}
 
 # Test invalid channel
 def test_channel_invite_invalid_channel():
