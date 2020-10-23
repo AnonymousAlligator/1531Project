@@ -81,33 +81,14 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
 # check all 2 users return same list
 def test_http_users_all_user2_valid_token(url, initialisation):
 
-    benjamin, ross = initialisation
+    _,ross  = initialisation
     query_string = urllib.parse.urlencode({
-        'token' : benjamin['token'],
+        'token' : ross['token'],
     })
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
     
-    assert(payload(benjamin['token']) == {
-        'users': [
-            {
-                "u_id" : 0,
-                "email": "Benjamin@email.com",
-                "name_first": "Benjamin",
-                "name_last": "Long",
-                "handle": "benjaminlong",
-            },
-            {
-                "u_id" : 1,
-                'email' : 'Ross@email.com',
-                'name_first' : 'Ross',
-                'name_last' : 'Short',
-                'password' : 'rossshort',
-            },
-        ]
-    })
-
-    assert(payload(ross['token']) == {
+    assert(payload(['users']) == {
         'users': [
             {
                 "u_id" : 0,
@@ -129,14 +110,14 @@ def test_http_users_all_user2_valid_token(url, initialisation):
 # checks the order of list returned is in chronological u_id order
 def test_http_users_all_valid_order(url, initialisation):
 
-    benjamin, ross = initialisation
+    benjamin = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
     r = requests.get(f'{url}/users/all?{query_string}')
     payload = r.json()
 
-    assert(payload(ross['token']) != {
+    assert(payload(['users']) != {
         'users': [
             {
                 "u_id" : 1,
