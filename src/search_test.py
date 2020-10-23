@@ -1,13 +1,10 @@
 '''
 Given a query string, return a collection of messages in all of the channels that the user has joined that match the query
 '''
-
-from channel import channel_invite
 from channels import channels_create
-from auth import auth_register
 from message import message_send
 from test_helpers import create_two_test_users
-import error 
+import error
 from other import clear, search
 import pytest
 
@@ -22,13 +19,13 @@ def initialisation():
     message_send(test_user0['token'], 0, "Let's go")
 
     expectedmessages0 = [{'message_id': 1,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's go"},
-                    {'message_id': 0,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's geddit"},]
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's go"},
+                         {'message_id': 0,
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's geddit"},]
 
 
     message_send(test_user0['token'], 1, "Hello")
@@ -36,21 +33,21 @@ def initialisation():
     message_send(test_user0['token'], 1, "Hey")
 
     expectedmessages1 = [{'message_id': 4,
-                    'channel_id': 1,
-                    'u_id': 0,
-                    'message': "Hey"},
-                    {'message_id': 2,
-                    'channel_id': 1,
-                    'u_id': 0,
-                    'message': "Hello"},
-                    {'message_id': 1,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's go"},
-                    {'message_id': 0,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's geddit"}]
+                          'channel_id': 1,
+                          'u_id': 0,
+                          'message': "Hey"},
+                         {'message_id': 2,
+                          'channel_id': 1,
+                          'u_id': 0,
+                          'message': "Hello"},
+                         {'message_id': 1,
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's go"},
+                         {'message_id': 0,
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's geddit"}]
 
     return test_user0, test_user1, expectedmessages0, expectedmessages1
 
