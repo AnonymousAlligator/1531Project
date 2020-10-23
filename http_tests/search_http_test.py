@@ -9,20 +9,20 @@ def initialisation(url):
     requests.delete(f'{url}/clear')
 
     # Register users
-    user0 = requests.post(f'{url}/auth/register', json={
+    test_user0 = requests.post(f'{url}/auth/register', json={
         "email" : "testemail0@email.com",
         "password" : "valid_pw0",
         "name_first" : "Hayden",
         "name_last" : "Jacobs",
     })
-    user0 = user0.json()       
-    user1 = requests.post(f'{url}/auth/register', json={
+    test_user0 = test_user0.json()       
+    test_user1 = requests.post(f'{url}/auth/register', json={
         "email" : "testemail1@email.com",
         "password" : "valid_pw1",
         "name_first" : "Jayden",
         "name_last" : "Haycobs",
     })
-    user1 = user1.json()
+    test_user1 = test_user1.json()
 
     # Create channels
     channel0 = requests.post(f'{url}/channels/create', json={
@@ -45,19 +45,19 @@ def initialisation(url):
             'token' : user0['token'],
             'channel_id' : channel_id0['channel_id'],
             'message' : "Let's geddit",
-        })
+    })
     
     requests.post(f'{url}/message/send', json={
             'token' : user0['token'],
             'channel_id' : channel_id0['channel_id'],
             'message' : "Let's go",
-        })
+    })
 
     requests.post(f'{url}/message/send', json={
             'token' : user0['token'],
             'channel_id' : channel_id1['channel_id'],
             'message' : "Hello",
-        })
+    })
 
     requests.post(f'{url}/message/send', json={
         'token' : user0['token'],
@@ -69,35 +69,35 @@ def initialisation(url):
             'token' : user0['token'],
             'channel_id' : channel_id1['channel_id'],
             'message' : "Hey",
-        })
+    })
     # Set up lists of expected messages
     expectedmessages0 = [{'message_id': 1,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's go"},
-                    {'message_id': 0,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's geddit"},]
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's go"},
+                         {'message_id': 0,
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's geddit"},]
 
     expectedmessages1 = [{'message_id': 4,
-                    'channel_id': 1,
-                    'u_id': 0,
-                    'message': "Hey"},
-                    {'message_id': 2,
-                    'channel_id': 1,
-                    'u_id': 0,
-                    'message': "Hello"},
-                    {'message_id': 1,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's go"},
-                    {'message_id': 0,
-                    'channel_id': 0,
-                    'u_id': 0,
-                    'message': "Let's geddit"}]
+                          'channel_id': 1,
+                          'u_id': 0,
+                          'message': "Hey"},
+                         {'message_id': 2,
+                          'channel_id': 1,
+                          'u_id': 0,
+                          'message': "Hello"},
+                         {'message_id': 1,
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's go"},
+                         {'message_id': 0,
+                          'channel_id': 0,
+                          'u_id': 0,
+                          'message': "Let's geddit"}]
 
-    return user0, user1, expectedmessages0, expectedmessages1
+    return test_user0, test_user1, expectedmessages0, expectedmessages1
 
 def test_search_single(url, initialisation):
     user0, _, _, _ = initialisation()
