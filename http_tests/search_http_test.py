@@ -100,8 +100,8 @@ def initialisation(url):
     return test_user0, test_user1, expectedmessages0, expectedmessages1
 
 def test_search_single(url, initialisation):
-    user0, _, _, _ = initialisation()
-
+    user0, _, _, _ = initialisation
+    
     query_string = urllib.parse.urlencode({
         'token' : user0['token'],
         'query_str': "geddit"
