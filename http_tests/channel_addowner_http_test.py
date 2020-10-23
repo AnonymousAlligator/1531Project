@@ -54,7 +54,7 @@ def initialisation(url):
 
     # Ross to join public channe
     requests.post(f'{url}/channel/join', json={
-        'token' : ross['token']
+        'token' : ross['token'],
         'channel_id' : channel0_id['channel_id'],
     })
     # Alex to join public channe

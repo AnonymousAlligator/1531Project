@@ -127,15 +127,15 @@ def test_channels_list_authorised_priv_channel(url, initialisation):
 # user0 and user1 both create one of each public and private channels. user1 joins all 4 channels.
 # check that for user0, return only the 2 channels they created
 def test_channels_list_joined_channels(url, initialisation):
-    _, Ross, Alex, James, channel_id0, channel_id1 = initialisation
+    _, Ross, _, James, channel_id0, channel_id1 = initialisation
 
-    channel_id2 = requests.post(f'{url}/channels/create', json={
+    requests.post(f'{url}/channels/create', json={
         'token' : James['token'],
         'name' : 'channel2',
         'is_public' : True,
     })
 
-    channel_id3 = requests.post(f'{url}/channels/create', json={
+    requests.post(f'{url}/channels/create', json={
         'token' : James['token'],
         'name' : 'channel3',
         'is_public' : False,
