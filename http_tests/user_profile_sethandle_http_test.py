@@ -31,7 +31,7 @@ def initialisation(url):
 # assert handle updates correctly
 def test_http_user_profile_sethandle_works(url, initialisation):
 
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'name_first': 'Ben',
@@ -45,7 +45,7 @@ def test_http_user_profile_sethandle_works(url, initialisation):
 # check for valid handle string - str = 20 char in length
 def test_http_user_profile_sethandle_20(url, initialisation):    
 
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'handle_str': 'b' * 20,
@@ -58,7 +58,7 @@ def test_http_user_profile_sethandle_20(url, initialisation):
 # check for invalid handle string - str > 20 char in length
 def test_http_user_profile_sethandle_short(url, initialisation):
 
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'handle_str': 'b' * 21,
@@ -71,7 +71,7 @@ def test_http_user_profile_sethandle_short(url, initialisation):
 # check for invalid handle string - str < 3 char in length
 def test_http_user_profile_sethandle_long(url, initialisation):
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'handle_str': 'BL',

@@ -18,7 +18,7 @@ def test_profile_setname():
     test_user0 = create_one_test_user()
 
     # TODO: update
-    # assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
+    assert user_profile_setname(test_user0['token'], "Nick", "Smith") == {}
 
 # check for invalid token
 def test_profile_setname_invalid_token():

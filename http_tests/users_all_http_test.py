@@ -31,7 +31,7 @@ def initialisation(url):
 # check attempt to list all 1 with a valid token
 def test_http_users_all_1_valid_token(url, initialisation):
 
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
@@ -52,7 +52,7 @@ def test_http_users_all_1_valid_token(url, initialisation):
 # check attempt to list all 2 users with a valid token
 def test_http_users_all_2_user1_valid_token(url, initialisation):
         
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })
@@ -110,7 +110,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
 # checks the order of list returned is in chronological u_id order
 def test_http_users_all_valid_order(url, initialisation):
 
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
     })

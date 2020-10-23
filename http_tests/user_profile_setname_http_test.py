@@ -50,7 +50,7 @@ def test_http_profile_setname_invalid_token(url):
 # check for invalid first name input 
 def test_http_profile_setname_fname_long(url, initialisation):    
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     
     # invalid firstname input - more than 50 characters
     query_string = urllib.parse.urlencode({
@@ -65,7 +65,7 @@ def test_http_profile_setname_fname_long(url, initialisation):
 
 def test_http_profile_setname_fname_short(url, initialisation):
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     
     # Invalid first name input - input is space
     query_string = urllib.parse.urlencode({
@@ -81,7 +81,7 @@ def test_http_profile_setname_fname_short(url, initialisation):
 # check for invalid last name input 
 def test_http_profile_setname_invalid_lname_long(url, initialisation):        
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     
     # Invalid last name input - more than 50 characters
     query_string = urllib.parse.urlencode({
@@ -95,7 +95,7 @@ def test_http_profile_setname_invalid_lname_long(url, initialisation):
 
 def test_http_profile_setname_invalid_lname_short(url, initialisation):    
 
-    benjamin = initialisation
+    benjamin,_ = initialisation
     
     # Invalid last name input - input is space
     query_string = urllib.parse.urlencode({

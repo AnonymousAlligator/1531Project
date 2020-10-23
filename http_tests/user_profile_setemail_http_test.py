@@ -31,7 +31,7 @@ def initialisation(url):
 # assert that email set works
 def test_http_user_profile_setemail_works(url, initialisation):
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     # query_string = urllib.parse.urlencode({
     #     'token' : benjamin['token'],
     #     'email': 'benjamin2@email.com',
@@ -50,7 +50,7 @@ def test_http_user_profile_setemail_works(url, initialisation):
 # check for invalid email - setting an existing user's email
 def test_http_user_profile_setemail_existing(url, initialisation):
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     # query_string = urllib.parse.urlencode({
     #     'token' : benjamin['token'],
     #     'email': 'Ross@email.com',
@@ -67,7 +67,7 @@ def test_http_user_profile_setemail_existing(url, initialisation):
 # check for invalid email address input - no '@' character		
 def test_http_user_profile_setemail_invalid_check(url, initialisation):
     
-    benjamin = initialisation
+    benjamin,_ = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
         'email': 'invalid_email.com',
