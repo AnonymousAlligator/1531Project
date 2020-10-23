@@ -97,20 +97,21 @@ def initialisation(url):
                           'u_id': 0,
                           'message': "Let's geddit"}]
 
-    return test_user0, test_user1, expectedmessages0, expectedmessages1
+    return test_user0, test_user1, expectedmessages0, expectedmessages1, channel_id0, channel_id1
 
 def test_search_single(url, initialisation):
-    user0, _, _, _ = initialisation
+    user0, _, _, _, _, _ = initialisation
 
     query_string = urllib.parse.urlencode({
         'token' : user0['token'],
         'query_str': "geddit"
     })
     r = requests.get(f'{url}/search?{query_string}')
+
     payload = r.json()
     messages = payload['messages']
-    
-    assert messages['message_id'] == 0
-    assert messages['channel_id'] == 0
-    assert messages['u_id'] == 0
-    assert messages['message'] == "Let's geddit"
+    for msg in messages
+        assert messages['message_id'] == 0
+        assert messages['channel_id'] == 0
+        assert messages['u_id'] == 0
+        assert messages['message'] == "Let's geddit"
