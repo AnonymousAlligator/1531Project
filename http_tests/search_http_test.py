@@ -165,3 +165,30 @@ def test_search_multiplestring(url, initialisation):
     messages = payload['messages']
 
     assert messages == []
+
+def test_search_notapartofchannel(url, initialisation):
+    _, user1, _, _, _, _ = initialisation
+
+    query_string = urllib.parse.urlencode({
+        'token' : user1['token'],
+        'query_str': "e",
+    })
+    r = requests.get(f'{url}/search?{query_string}')
+
+    payload = r.json()
+    messages = payload['messages']
+
+    assert messages == []
+
+def test_search_notapartofchannel(url, initialisation):
+    _, _, _, _, _, _ = initialisation
+
+    query_string = urllib.parse.urlencode({
+        'token' : 'hello',
+        'query_str': "hello",
+    })
+    r = requests.get(f'{url}/search?{query_string}')
+    
+    details = r.json()
+    assert details['code'] == 400
+
