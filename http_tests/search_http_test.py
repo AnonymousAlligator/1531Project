@@ -180,7 +180,7 @@ def test_search_notapartofchannel(url, initialisation):
 
     assert messages == []
 
-def test_search_notapartofchannel(url, initialisation):
+def test_search_invalidtoken(url, initialisation):
     _, _, _, _, _, _ = initialisation
 
     query_string = urllib.parse.urlencode({
