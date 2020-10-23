@@ -1,6 +1,7 @@
 from url_fixture import url
 import pytest
 import requests
+import urllib
 
 @pytest.fixture
 def initialisation(url):
@@ -31,7 +32,7 @@ def initialisation(url):
         'name' : 'channel0',
         'is_public' : True,
     })
-    
+
     channel0_id = channel0.json()
     
     channel1 = requests.post(f'{url}/channels/create', json={
