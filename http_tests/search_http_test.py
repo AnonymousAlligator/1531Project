@@ -15,7 +15,6 @@ def initialisation(url):
         "name_first" : "Hayden",
         "name_last" : "Jacobs",
     })
-
     user0 = user0.json()       
     user1 = requests.post(f'{url}/auth/register', json={
         "email" : "testemail1@email.com",
@@ -23,7 +22,6 @@ def initialisation(url):
         "name_first" : "Jayden",
         "name_last" : "Haycobs",
     })
-
     user1 = user1.json()
 
     # Create channels
