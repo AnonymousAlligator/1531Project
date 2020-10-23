@@ -53,7 +53,7 @@ def initialisation():
 
 # check search for existing string
 def test_search_single():
-    user0, _, _, _ = initialisation()
+    user0, _, _, _, _, _ = initialisation()
     searchdict = search(user0['token'], "geddit")
     for msg in searchdict['messages']:
         assert msg['message_id'] == 0
@@ -63,7 +63,7 @@ def test_search_single():
 
 # check for returning multiple strings that are not case sensitive
 def test_search_multiplecase():
-    user0, _, _, expectedmessages0 = initialisation()
+    user0, _, _, expectedmessages0, _, _ = initialisation()
 
     searchdict = search(user0['token'], "let's")
     messages = searchdict['messages']
@@ -74,7 +74,7 @@ def test_search_multiplecase():
 
 # check for returning multiple strings over different channels
 def test_search_multiplediffchannel():
-    user0, _, _, expectedmessages1 = initialisation()
+    user0, _, _, expectedmessages1, _, _ = initialisation()
 
     searchdict = search(user0['token'], "e")
     messages = searchdict['messages']
@@ -86,17 +86,17 @@ def test_search_multiplediffchannel():
 
 # return empty for string that doesn't exist
 def test_search_multiplestring():
-    user0, _, _, _ = initialisation()
+    user0, _, _, _, _, _ = initialisation()
 
     assert search(user0['token'], "ahahhaaha") == {'messages': []}
 # return empty for channel caller is not apart of
 def test_search_notaprtofchannel():
-    _, user1, _, _ = initialisation()
+    _, user1, _, _, _, _ = initialisation()
 
     assert search(user1['token'], "e") == {'messages': []}
 # check for invalid token
 def test_search_invalidtoken():
-    _, _, _, _ = initialisation()
+    _, _, _, _, _, _ = initialisation()
 
     with pytest.raises(error.AccessError):
         search('hello', "hello")
