@@ -26,12 +26,13 @@ def test_http_user_profile(url, initialisation):
     benjamin = initialisation
     query_string = urllib.parse.urlencode({
         'token' : benjamin['token'],
-        'u_id' : benjamin['u_id'],        
+        'u_id': benjamin['u_id'],
     })
-    r = requests.get(f'{url}/user/profile{query_string}')
+
+    r = requests.get(f'{url}/user/profile?{query_string}')
     payload = r.json()
 
-    assert payload['user'] == [{
+    assert payload['user'] == {
         # 'user': [
             {
             'u_id': benjamin['u_id'], 
@@ -41,24 +42,32 @@ def test_http_user_profile(url, initialisation):
             'handle': 'benjaminlong',
             },
         # ]
-    }]
+    }
 
 # check for invalid token with a valid u_id
-def test_http_user_profile_invalid_token(url):
+def test_http_user_profile_invalid_token(url, initialisation):
     
-    r = requests.get(f'{url}/user/profile', json={
-        'token' : 'invalid_token',
+    benjamin = initialisation
+    query_string = urllib.parse.urlencode({
+        'token' : 'asdfgh',
+        'u_id': benjamin['u_id'],
     })
+
+    r = requests.get(f'{url}/user/profile?{query_string}')
 
     payload = r.json()
     assert payload['code'] == 400
 
 # check for invalid u_id with a token
-def test_http_user_profile_invalid_uid(url):
+def test_http_user_profile_invalid_uid(url, initialisation):
     
-    r = requests.get(f'{url}/user/profile', json={
+    benjamin = initialisation
+    query_string = urllib.parse.urlencode({
         'token' : 123456,
+        'u_id': benjamin['u_id'],
     })
+
+    r = requests.get(f'{url}/user/profile?{query_string}')
     payload = r.json()
     assert payload['code'] == 400
 
