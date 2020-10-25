@@ -37,7 +37,8 @@ def message_send(token, channel_id, message):
     time_created = round((datetime.datetime.now()).timestamp())
     channel_message = {'message_id': message_id,
                     'u_id': caller['u_id'],
-                    'message': message,}
+                    'message': message,
+                    'time_created': time_created}
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching

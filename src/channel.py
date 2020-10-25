@@ -128,7 +128,7 @@ def channel_messages(token, channel_id, start):
     message_number = start
     end = 0
     # Check if start is beyond range of messages
-    if start >= number_of_messages:
+    if start > number_of_messages:
         raise error.InputError('The start value entered is older than all messages')
     # Check to see if start is the least recent message
     elif start == (number_of_messages - 1):

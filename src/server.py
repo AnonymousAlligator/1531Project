@@ -55,40 +55,40 @@ def http_auth_register():
 @APP.route("/channel/invite", methods=['POST'])
 def http_channel_invite():
     data = request.json
-    return dumps(channel.channel_invite(data['token'], data['channel_id'], data['u_id']))
+    return dumps(channel.channel_invite(data['token'], int(data['channel_id']), int(data['u_id'])))
 
 @APP.route("/channel/details", methods=['GET'])
 def http_channel_details():
     token = request.args.get('token')
-    channel_id = request.args.get('channel_id',type=int)
-    return dumps(channel.channel_details(token, channel_id))
+    channel_id = request.args.get('channel_id')
+    return dumps(channel.channel_details(token, int(channel_id)))
 
 @APP.route("/channel/messages", methods=['GET'])
 def http_channel_messages():
     token = request.args.get('token')
-    channel_id = request.args.get('channel_id',type=int)
-    start = request.args.get('start',type=int)
-    return dumps(channel.channel_messages(token, channel_id, start))
+    channel_id = request.args.get('channel_id')
+    start = request.args.get('start')
+    return dumps(channel.channel_messages(token, int(channel_id), int(start)))
 
 @APP.route("/channel/leave", methods=['POST'])
 def http_channel_leave():
     data = request.json
-    return dumps(channel.channel_leave(data['token'], data['channel_id']))
+    return dumps(channel.channel_leave(data['token'], int(data['channel_id'])))
 
 @APP.route("/channel/join", methods=['POST'])
 def http_channel_join():
     data = request.json
-    return dumps(channel.channel_join(data['token'], data['channel_id']))
+    return dumps(channel.channel_join(data['token'], int(data['channel_id'])))
 
 @APP.route("/channel/addowner", methods=['POST'])
 def http_channel_jaddowner():
     data = request.json
-    return dumps(channel.channel_addowner(data['token'], data['channel_id'], data['u_id']))
+    return dumps(channel.channel_addowner(data['token'], int(data['channel_id']), int(data['u_id'])))
 
 @APP.route("/channel/removeowner", methods=['POST'])
 def http_channel_removeowner():
     data = request.json
-    return dumps(channel.channel_removeowner(data['token'], data['channel_id'], data['u_id']))
+    return dumps(channel.channel_removeowner(data['token'], int(data['channel_id']), int(data['u_id'])))
 
 @APP.route("/channels/list", methods=['GET'])    
 def http_channels_list():
@@ -108,23 +108,23 @@ def http_channels_create():
 @APP.route("/message/send", methods=['POST'])
 def http_message_send():
     data = request.json
-    return dumps(message.message_send(data['token'], data['channel_id'], data['message']))
+    return dumps(message.message_send(data['token'], int(data['channel_id']), data['message']))
 
 @APP.route("/message/remove", methods=['DELETE'])
 def http_message_remove():
     data = request.json
-    return dumps(message.message_remove(data['token'], data['message_id']))
+    return dumps(message.message_remove(data['token'], int(data['message_id'])))
 
 @APP.route("/message/edit", methods=['PUT'])
 def http_message_edit():
     data = request.json
-    return dumps(message.message_edit(data['token'], data['message_id'], data['message']))
+    return dumps(message.message_edit(data['token'], int(data['message_id']), data['message']))
 
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():
     token = request.args.get('token')
-    u_id = request.args.get('u_id',type=int)
-    return dumps(user.user_profile(token, u_id))
+    u_id = request.args.get('u_id')
+    return dumps(user.user_profile(token, int(u_id)))
 
 @APP.route("/user/profile/sethandle", methods = ['PUT']) 
 def http_user_profile_sethandle():
@@ -149,7 +149,7 @@ def http_users_all():
 @APP.route("/admin/userpermission/change", methods = ['POST']) 
 def http_admin_userpermission_change():
     data = request.json
-    return dumps(other.admin_userpermission_change(data['token'], data['u_id'], data['permission_id']))
+    return dumps(other.admin_userpermission_change(data['token'], int(data['u_id']), int(data['permission_id'])))
 
 @APP.route("/search", methods=['GET'])
 def http_search():

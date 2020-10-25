@@ -93,9 +93,9 @@ def search(token, query_str):
                 if channelcheck == channel['channel_id']:
                     target_channel = channel
             # Input Error if the channel doesn't exist
-                if target_channel == {}:
-                    #Input Error if the channel doesn't exist
-                    raise error.InputError('Channel does not exist')
+            if target_channel == {}:
+                #Input Error if the channel doesn't exist
+                raise error.InputError('Channel does not exist')
                                 
                 for member in target_channel['all_members']:
                     if caller['u_id'] == member['u_id']:
