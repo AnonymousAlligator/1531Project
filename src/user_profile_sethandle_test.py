@@ -1,7 +1,7 @@
 '''
 InputError when any of:
   handle_str must be between 3 and 20 characters
-  handle is already used by another user
+  handle_str is already used by another user
 
 '''
 from user import user_profile_sethandle

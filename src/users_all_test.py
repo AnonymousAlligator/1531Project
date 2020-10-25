@@ -19,7 +19,7 @@ def test_users_all_1_valid_token():
                 "email": "testemail0@email.com",
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
-                "handle": "haydenjacobs",
+                "handle_str": "haydenjacobs",
             },
         ]
     })
@@ -37,14 +37,14 @@ def test_users_all_2_user1_valid_token():
                 "email": "testemail0@email.com",
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
-                "handle": "haydenjacobs",
+                "handle_str": "haydenjacobs",
             },
             {
                 "u_id" : 1,
                 "email": "testemail1@email.com",
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
-                "handle": "jaydenhaycobs",
+                "handle_str": "jaydenhaycobs",
             },
         ]
     })
@@ -63,14 +63,14 @@ def test_users_all_user2_valid_token():
                 "email": "testemail0@email.com",
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
-                "handle": "haydenjacobs",
+                "handle_str": "haydenjacobs",
             },            
             {
                 "u_id" : 1,
                 "email": "testemail1@email.com",
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
-                "handle": "jaydenhaycobs",
+                "handle_str": "jaydenhaycobs",
             },
 
         ]
@@ -89,14 +89,14 @@ def test_users_all_valid_order():
                 "email": "testemail1@email.com",
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
-                "handle": "jaydenhaycobs",
+                "handle_str": "jaydenhaycobs",
             },
             {
                 "u_id" : 0,
                 "email": "testemail0@email.com",
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
-                "handle": "haydenjacobs",
+                "handle_str": "haydenjacobs",
             },
         ]
     })

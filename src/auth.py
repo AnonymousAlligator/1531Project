@@ -88,18 +88,18 @@ def auth_register(email, password, name_first, name_last):
     middle_handle = initial_handle
     
     for user in data['users']:
-        if user['handle'] == initial_handle:
+        if user['handle_str'] == initial_handle:
             middle_handle = initial_handle
             num_suffix = 1
             for user in data['users']:
-                if user['handle'] == middle_handle:
+                if user['handle_str'] == middle_handle:
                     middle_handle = initial_handle + str(num_suffix)
                     num_suffix = num_suffix + 1
             
-    handle = middle_handle  
+    handle_str = middle_handle  
 
-    if len(handle) > 20:
-        handle = ''.join(random.choice(string.ascii_lowercase) for _ in range(20))   
+    if len(handle_str) > 20:
+        handle_str = ''.join(random.choice(string.ascii_lowercase) for _ in range(20))   
 
     password = hashlib.sha256(password.encode()).hexdigest()
     token = jwt.encode({'u_id': u_id}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')    
@@ -116,7 +116,7 @@ def auth_register(email, password, name_first, name_last):
         'name_first':name_first, 
         'name_last': name_last, 
         'password': password, 
-        'handle': handle, 
+        'handle_str': handle_str, 
         'token': token,
     })
 

@@ -5,21 +5,15 @@ import error
 def user_profile(token, u_id):
 
     check_token(token)
-    user_profile_dict = {}
     user = find_with_uid(u_id)
-
-    user_list = []
     user_info = {
         'u_id' : user['u_id'],
         'email': user['email'],
         'name_first':user['name_first'],
         'name_last': user['name_last'],
-        'handle': user['handle'],
+        'handle_str': user['handle_str'],
         }
-    user_list.append(user_info)
-
-    user_profile_dict['user'] = user_list
-    return user_profile_dict
+    return {'user': user_info}
 
 
 def user_profile_setname(token, name_first, name_last):
@@ -80,12 +74,12 @@ def user_profile_sethandle(token, handle_str):
     #check that the handle is not already used
     handle_used = False
     for user in data['users']:
-        if handle_str == user['handle']:
+        if handle_str == user['handle_str']:
             handle_used = True
     if handle_used:
         raise error.InputError('User handle is already used by another user')
 
     #Sets handle
-    caller['handle'] = handle_str
+    caller['handle_str'] = handle_str
 
     return {}

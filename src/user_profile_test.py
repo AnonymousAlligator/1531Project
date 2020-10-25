@@ -1,6 +1,6 @@
 '''
 InputError when any of user with u_id is not a valid user
-For a valid user, returns information about their email, first name, last name, and handle
+For a valid user, returns information about their email, first name, last name, and handle_str
 '''
 from user import user_profile
 import error
@@ -15,17 +15,16 @@ def test_user_profile():
     clear()	
     test_user0 = create_one_test_user()
     
-    assert(user_profile(test_user0['token'], test_user0['u_id']) == {
-        'user': [
+    assert user_profile(test_user0['token'], test_user0['u_id']) == {
+        'user':
             {
             'u_id': test_user0['u_id'], 
             'email': 'testemail0@email.com', 
             'name_first': 'Hayden', 
             'name_last': 'Jacobs', 
-            'handle': 'haydenjacobs',
+            'handle_str': 'haydenjacobs',
             },
-        ]
-    })
+    }
 
 # check for invalid token with a valid u_id
 def test_user_profile_invalid_token():

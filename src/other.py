@@ -39,7 +39,7 @@ def users_all(token):
             'email': user['email'],
             'name_first':user['name_first'],
             'name_last': user['name_last'],
-            'handle': user['handle'],
+            'handle_str': user['handle_str'],
             }
         users_list.append(user_info)
     user_all_dict ['users'] = users_list
