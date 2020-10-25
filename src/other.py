@@ -97,9 +97,9 @@ def search(token, query_str):
                 #Input Error if the channel doesn't exist
                 raise error.InputError('Channel does not exist')
                                 
-                for member in target_channel['all_members']:
-                    if caller['u_id'] == member['u_id']:
-                        messageslist.append(msg)
+            for member in target_channel['all_members']:
+                if caller['u_id'] == member['u_id']:
+                    messageslist.append(msg)
 
     return {'messages': messageslist}
     
