@@ -52,8 +52,11 @@ def channels_create(token, name, is_public):
         for user in data['users']:
             # Found the user, now making the channel
             if token == user['token']:
-                # Channel id is equivalent to the size of channels field before making the channel
-                channel_id = len(data['channels'])
+                # Channel id is equivalent to last channel's id plus 1 or 0 if empty
+                if len(data['channels']) == 0:
+                    channel_id = 0
+                else:
+                    channel_id = data['channels'][-1]['id'] + 1
                 data['channels'].append({'id': channel_id,
                                          'name': name,
                                          'is_public': is_public,
