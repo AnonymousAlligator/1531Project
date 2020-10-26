@@ -74,40 +74,29 @@ def admin_userpermission_change(token, u_id, permission_id):
 
 def search(token, query_str):
     query_str.lower()
-    messageslist = []
+    messages_list = []
+    channel_list = []
     #if query_str is empty
     if query_str.isspace():
-        return {'messages': messageslist}
+        return {'messages': messages_list}
     #Check if token is correct
     caller = check_token(token)
-
-    #loop through all channels and their messages and add message dictionary to the list
-    for msg in data['messages']:
-    #Check if the query_str is apart 
-    #if TRUE for string inside string then append the message dictionary to list
-        if query_str == msg['message'].lower():
-            channelcheck = msg['channel_id']
-            # Find the channel
-            target_channel = {}
-            for channel in data['channels']:
-                if channelcheck == channel['channel_id']:
-                    target_channel = channel
-            # Input Error if the channel doesn't exist
-            if target_channel == {}:
-                #Input Error if the channel doesn't exist
-                raise error.InputError('Channel does not exist')
-                                
-            for member in target_channel['all_members']:
-                if caller['u_id'] == member['u_id']:
-                    messageslist.append(msg)
-
-    return {'messages': messageslist}
-    
+    # Find all channels the caller is in
+    for channel in data['channels']:
+        for member in channel['all_members']:
+            if caller['u_id'] == member['u_id']:
+                channel_list.append(channel['id'])
+    # go through dictionary of all messages and find messages that contain the query string
+    for message in data['messages']:
+        if query_str in message['message'].lower():
+            # We found the message, now check if the user is part of the channel message was sent in
+            if message['channel_id'] in channel_list:
+                messages_list.append(message)
+    return {'messages': messages_list}
 
 def check_token(token):
 
     # Searches for a logged in user through a token
-
     for user in data['users']:
         if user['token'] == token: # get() returns a value for the given key (token)
             return user

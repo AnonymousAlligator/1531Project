@@ -63,7 +63,7 @@ def test_search_single():
 
 # check for returning multiple strings that are not case sensitive
 def test_search_multiplecase():
-    user0, _, _, expectedmessages0, _, _ = initialisation()
+    user0, _, expectedmessages0, _, _, _ = initialisation()
 
     searchdict = search(user0['token'], "let's")
     messages = searchdict['messages']

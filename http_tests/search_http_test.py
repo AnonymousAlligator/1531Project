@@ -118,7 +118,7 @@ def test_search_single(url, initialisation):
         assert msg['message'] == "Let's geddit"
 
 def test_search_multiplecase(url, initialisation):
-    user0, _, _, expectedmessages0, _, _ = initialisation
+    user0, _, expectedmessages0, _, _, _ = initialisation
 
     query_string = urllib.parse.urlencode({
         'token' : user0['token'],
