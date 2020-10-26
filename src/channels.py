@@ -3,45 +3,46 @@ import error
 
 def channels_list(token):
         
-    #TODO: add in taimoor's user check
-    # check for valid user
     user = check_token(token)   
     
     for user in data['users']:
         if token == user['token']:
             u_id = user['u_id']
 
-    # list of channels the authorised user is part of
-    channels_list = []                
-
+    channels = {}
+    channel_list = []
+    channel_info = {}
     # get all channels info
-    for channel in data['channels']: 
+    for channel in data['channels']:
         for member_id in channel['all_members']:
             if member_id['u_id'] == u_id:
                 channel_info = {
                                 'channel_id': channel['id'],
                                 'name': channel['name']
                                 }
-                channels_list.append(channel_info)
+                channel_list.append(channel_info)
+    
+    channels['channels'] = channel_list
+    return channels
 
-    return channels_list
-
-'''Provide a list of all channels (and their associated details)'''
+#Provide a list of all channels (and their associated details)
 def channels_listall(token):
 
     # check for valid user
-    check_token(token)   
-    
-    channels_listall = []
+    check_token(token)
+
+    channels_listalls = {}        
+    channel_list = []
+    channel_info = {}    
 
     for channel in data['channels']:
         # if channel['is_public'] is True or user['u_id'] in channel['all_members']:
         # current assumption is that listall lists all public & private channels
         channel_info = {'channel_id': channel['id'],
                         'name': channel['name']}
-        channels_listall.append(channel_info)
-
-    return channels_listall
+        channel_list.append(channel_info)
+    channels_listalls['channels'] = channel_list
+    return channels_listalls
 
 def channels_create(token, name, is_public):
     if len(name) > 20:
@@ -51,8 +52,11 @@ def channels_create(token, name, is_public):
         for user in data['users']:
             # Found the user, now making the channel
             if token == user['token']:
-                # Channel id is equivalent to the size of channels field before making the channel
-                channel_id = len(data['channels'])
+                # Channel id is equivalent to last channel's id plus 1 or 0 if empty
+                if len(data['channels']) == 0:
+                    channel_id = 0
+                else:
+                    channel_id = data['channels'][-1]['id'] + 1
                 data['channels'].append({'id': channel_id,
                                          'name': name,
                                          'is_public': is_public,
@@ -60,5 +64,5 @@ def channels_create(token, name, is_public):
                                          'all_members': [{'u_id': user['u_id'],'name_first': user['name_first'],'name_last': user['name_last']}],
                                          'messages': [],
                                         })
-                return channel_id
+                return {'channel_id': channel_id}
         raise error.AccessError('Invalid token recieved')

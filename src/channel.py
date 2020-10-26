@@ -1,5 +1,5 @@
 from other import data, check_token
-from remove_owner_helper import *
+from remove_owner_helper import remove_helper_func, find_with_uid, check_member_of_channel
 import error
 
 def channel_invite(token, channel_id, u_id):
@@ -31,7 +31,7 @@ def channel_invite(token, channel_id, u_id):
         if member['u_id'] == inviter['u_id']:
             is_member = True
     # Access Error if the person inviting is not within the server
-    if is_member == False:
+    if not is_member:
         raise error.AccessError('You can only invite people to channels you are apart of')  
     
     # Check to see if invitee is part of that channel
@@ -40,15 +40,15 @@ def channel_invite(token, channel_id, u_id):
         if member['u_id'] == invitee['u_id']:
             is_member = True
     # Input Error if the person you are inviting is in the channel already
-    if is_member == True:
+    if is_member:
         raise error.InputError('The person you are trying to invite is already in the channel')
 
     # Made it through all the checks so now we can add the invitee
     target_channel['all_members'].append({'u_id': invitee['u_id'], 
                                             'name_first': invitee['name_first'], 
                                             'name_last': invitee['name_last'],})
-    # Also if u_id is 0, then make them an owner
-    if u_id == 0:
+    # Also if permission_id is 1, then make them an owner
+    if invitee['permission_id'] == 1:
         target_channel['owner_members'].append({'u_id': invitee['u_id'],
                                                 'name_first': invitee['name_first'],
                                                 'name_last': invitee['name_last'],})
@@ -74,7 +74,7 @@ def channel_details(token, channel_id):
         if member['u_id'] == caller['u_id']:
             is_member = True
     # Access Error if the person inviting is not within the server
-    if is_member == False:
+    if not is_member:
         raise error.AccessError('You are not part of the channel you want details about') 
 
     # Made it through all checks so now we start building the return
@@ -118,7 +118,7 @@ def channel_messages(token, channel_id, start):
         if member['u_id'] == caller['u_id']:
             is_member = True
     # Access Error if the person inviting is not within the server
-    if is_member == False:
+    if not is_member:
         raise error.AccessError('You are not part of the channel you want details about')
     
     # Made it through all checks so now we start building the return
@@ -128,7 +128,7 @@ def channel_messages(token, channel_id, start):
     message_number = start
     end = 0
     # Check if start is beyond range of messages
-    if start >= number_of_messages:
+    if start > number_of_messages:
         raise error.InputError('The start value entered is older than all messages')
     # Check to see if start is the least recent message
     elif start == (number_of_messages - 1):
@@ -168,30 +168,37 @@ def channel_leave(token, channel_id):
         if member['u_id'] == caller['u_id']:
             is_member = True
     # Access Error if the person inviting is not within the server
-    if is_member == False:
+    if not is_member:
         raise error.AccessError('You are not a member of the channel you are trying to leave')
 
-    # Check if the user is an owner
+    # Check if the user is the only owner but other members exist, input error if so
+    is_owner = False
     for owner in target_channel['owner_members']:
         if owner['u_id'] == caller['u_id']:
-            if len(target_channel['owner_members']) == 1 and len(target_channel['all_members']) == 1:
-                target_channel['owner_members'].remove(owner)
-            elif len(target_channel['owner_members']) == 1:   
+            is_owner = True
+            if len(target_channel['owner_members']) == 1 and len(target_channel['all_members']) != 1:
                 raise error.InputError('Please make another member an owner before leaving')
-    
-    # Navigate to the user entry and remove it
-    for user in channel['all_members']:
-        if user['u_id'] == caller['u_id']: 
+
+    # If the user is an owner, remove them from the owner list
+    if is_owner:
+        for owner in target_channel['owner_members']:
+            if owner['u_id'] == caller['u_id']:
+                target_channel['owner_members'].remove(owner)
+    # Navigate to the user entry in all members and remove them
+    for user in target_channel['all_members']:
+        if user['u_id'] == caller['u_id']:
             target_channel['all_members'].remove(user)
-            # If there is now no one in the channel, delete the channel
-            if len(target_channel['all_members']) == 0:
-                data['channels'].remove(target_channel)
-        return {}
+    # If there is now no one in the channel, delete the channel
+    if len(target_channel['all_members']) == 0:
+        for i, channel in enumerate(data['channels']):
+            if channel['id'] == channel_id:
+                del data['channels'][i]
+    return {}
 
 def channel_join(token, channel_id):
     # Check that the token is valid
     caller = check_token(token)
-    
+
     # Find the channel
     target_channel = {}
     for channel in data['channels']:
@@ -203,10 +210,10 @@ def channel_join(token, channel_id):
         raise error.InputError('Channel does not exist')
 
     # If caller is flockr owner then add them to the channel and make them an owner
-    if caller['u_id'] == 0:
+    if caller['permission_id'] == 1:
         target_channel['all_members'].append({'u_id': caller['u_id'], 
                                                 'name_first': caller['name_first'], 
-                                        '       name_last': caller['name_last'],})
+                                                'name_last': caller['name_last'],})
         target_channel['owner_members'].append({'u_id': caller['u_id'], 
                                                 'name_first': caller['name_first'], 
                                                 'name_last': caller['name_last'],})
@@ -217,8 +224,8 @@ def channel_join(token, channel_id):
         raise error.AccessError('The channel you are trying to join is private')
     else:
         # Channel is public so we add their details into the channel list
-        target_channel['all_members'].append({'u_id': caller['u_id'], 
-                                                'name_first': caller['name_first'], 
+        target_channel['all_members'].append({'u_id': caller['u_id'],
+                                                'name_first': caller['name_first'],
                                                 'name_last': caller['name_last'],})
         return {}
 
@@ -244,7 +251,7 @@ def channel_addowner(token, channel_id, u_id):
         if owner['u_id'] == caller['u_id']:
             is_owner = True
     # Access Error if the person inviting is not within the server
-    if is_owner == False:
+    if not is_owner:
         raise error.AccessError('You are not an owner of the channel and cannot add owners')
 
     # We know the caller is an owner, now we see if they are adding themselves as owner
@@ -257,7 +264,7 @@ def channel_addowner(token, channel_id, u_id):
         if added_person['u_id'] == member['u_id']:
             is_member = True
     # Input Error if the user doesn't exist
-    if is_member == False:
+    if not is_member:
         raise error.InputError('The member you are trying to add is not a member of the channel')
     
     # We now check if the person to be promoted is already and owner
@@ -265,7 +272,7 @@ def channel_addowner(token, channel_id, u_id):
     for owner in target_channel['owner_members']:
         if added_person['u_id'] == owner['u_id']:
             is_already_owner = True
-    if is_already_owner == True:
+    if is_already_owner:
         raise error.InputError('The person you are trying to make owner is already an owner')
 
     # We can now promote the user to owner
@@ -297,8 +304,11 @@ def channel_removeowner(token, channel_id, u_id):
     for owner in target_channel['owner_members']:
         if owner['u_id'] == caller['u_id']:
             is_owner = True
+    # Check to see if caller is a flockr owner
+    if caller['permission_id'] == 1:
+        is_owner = True
     # Access Error if the caller is not an owner
-    if is_owner == False:
+    if not is_owner:
         raise error.AccessError('You are not an owner of the channel and cannot remove owners')
     
     # Check to see if removed person is an owner
@@ -307,7 +317,7 @@ def channel_removeowner(token, channel_id, u_id):
         if owner['u_id'] == removed_person['u_id']:
             is_owner = True
     # Input Error if the person inviting is not within the server
-    if is_owner == False:
+    if not is_owner:
         raise error.InputError('The member you are trying to remove is not an owner of the channel')
 
     # Check to see if we are removing ourselves as owner

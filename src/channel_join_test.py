@@ -18,13 +18,13 @@ def initialisation():
     channel_id1 = channels_create(Ross['token'], "Channel1", False)     # ID = 1
 
     # Ross and Alex are in channel 1 but not Benjamin
-    channel_invite(Ross['token'], channel_id1, Alex['u_id'])
+    channel_invite(Ross['token'], channel_id1['channel_id'], Alex['u_id'])
     return Benjamin, Ross, Alex, James, channel_id0, channel_id1
 ##################################################################################################
 
 def test_channel_join_success():
     _, Ross, _, _, channel_id0, _ = initialisation()
-    assert channel_join(Ross['token'], channel_id0) == {}
+    assert channel_join(Ross['token'], channel_id0['channel_id']) == {}
 
 def test_channel_join_invalid_channel():
     Benjamin, _, _, _, _, _ = initialisation()
@@ -38,12 +38,12 @@ def test_channel_join_not_a_member():
     #Channel is private i.e. user is not admin
     #This should throw AccessError
     with pytest.raises(error.AccessError):
-        assert channel_join(James['token'], channel_id1)
+        assert channel_join(James['token'], channel_id1['channel_id'])
 
 def test_channel_join_flockr_owner():
     Benjamin, _, _, _, _, channel_id1 = initialisation()
     #U_id is 0 so person can join private channels and added as an owner
-    assert channel_join(Benjamin['token'], channel_id1) == {}
+    assert channel_join(Benjamin['token'], channel_id1['channel_id']) == {}
 
 def test_invalid_token():
     _, _, _, _, _, _ = initialisation()

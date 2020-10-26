@@ -1,9 +1,15 @@
 import re 
 from other import data, check_token
 from error import InputError, AccessError
+import random
+import string
+import hashlib
+import jwt
 
 def auth_login(email, password):
     
+    password = hashlib.sha256(password.encode()).hexdigest()
+
     flag = 0
     for user in data['users']:
         if user['email'] == email:
@@ -18,7 +24,8 @@ def auth_login(email, password):
     if password != found_user['password']:
         raise InputError('Password entered is not correct')
     
-    token = email 
+    token = jwt.encode({'u_id': found_user['u_id']}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')
+
     user['token'] = token
     return {
         'u_id': found_user['u_id'], 'token': token,
@@ -45,7 +52,6 @@ def auth_register(email, password, name_first, name_last):
     # Password needs to be at least 6 characters long
     if len(password) < 6:
         raise InputError('Password entered is less than 6 characters long')
-
 
     email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
     if not re.search(email_match, email): # If it returns FALSE
@@ -75,18 +81,46 @@ def auth_register(email, password, name_first, name_last):
 
     u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
 
+    initial_handle = (name_first + name_last).lower()
+    if len(initial_handle) >= 20:
+        initial_handle = initial_handle[:20]
+
+    middle_handle = initial_handle
+    
+    for user in data['users']:
+        if user['handle_str'] == initial_handle:
+            middle_handle = initial_handle
+            num_suffix = 1
+            for user in data['users']:
+                if user['handle_str'] == middle_handle:
+                    middle_handle = initial_handle + str(num_suffix)
+                    num_suffix = num_suffix + 1
+            
+    handle_str = middle_handle  
+
+    if len(handle_str) > 20:
+        handle_str = ''.join(random.choice(string.ascii_lowercase) for _ in range(20))   
+
+    password = hashlib.sha256(password.encode()).hexdigest()
+    token = jwt.encode({'u_id': u_id}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')    
+
+    permission_id = 2
+    if u_id == 0:
+        permission_id = 1
+      
+
     data['users'].append({
         'u_id': u_id,
+        'permission_id': permission_id,
         'email': email, 
         'name_first':name_first, 
         'name_last': name_last, 
         'password': password, 
-        'handle': name_first+name_last, 
-        'token': email,
+        'handle_str': handle_str, 
+        'token': token,
     })
 
     return {
         'u_id': u_id,
-        'token': email,
+        'token': token,
     }
-

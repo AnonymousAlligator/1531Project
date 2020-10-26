@@ -87,8 +87,13 @@ user_profile_sethandle:
 
 
 ######################################################
-search:
+Other Functions
 
+user_all: 
+
+-the user list returned is in order of u_id
+
+search:
 - Search string isn't case sensitive (will search for 'hello' as well if 'Hello' is the search string).
 
 - If no input is received, no search results are returned (can't run the search on empty space)
@@ -97,3 +102,6 @@ search:
 
 - Deleted messages will not be returned in the search results.
 
+- Messages returns with latest message at the front of the list
+
+- Members that are not apart of channel will not be able to search for messages

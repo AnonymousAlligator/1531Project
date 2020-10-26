@@ -11,14 +11,17 @@ def test_auth_register1():
     # Register new user
     valid_user = auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user['u_id'] == 0
-    assert valid_user['token'] == "registered@valid.com"
 
     valid_user2 = auth_register("registered2@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user2['u_id'] == 1
-    assert valid_user2['token'] == "registered2@valid.com"
     
 
 def test_valid_but_already_registered():
+
+    clear()
+
+    auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
+    auth_register("registered2@valid.com", "potato321", "Elena", "Fisher")
 
     # When the email has a valid format but is already registered
     with pytest.raises(InputError):
@@ -33,6 +36,28 @@ def test_register_after_clear():
     # When registered with same email after data is cleared
     valid_user = auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
     assert valid_user['u_id'] == 0
+
+def test_register_handle_length():
+
+    clear()
+    auth_register("registered@valid.com", "potato321", "Elena", "Fisher")
+    auth_register("registered2@valid.com", "botato111", "Elena", "Fisher")
+    handle_length_0 = len(data['users'][0]['handle_str'])
+    handle_length_1 = len(data['users'][1]['handle_str'])
+
+    assert handle_length_0 == 11
+    assert data['users'][0]['handle_str'] == "elenafisher"
+    
+    assert handle_length_1 == 12
+    assert data['users'][1]['handle_str'] == "elenafisher1"
+
+    auth_register("registered3@valid.com", "botato111", "Elena"*3, "fivesss")
+    
+    handle_length_2 = len(data['users'][2]['handle_str'])
+    
+    assert handle_length_2 == 20
+    assert data['users'][2]['handle_str'] == "elenaelenaelenafives"
+
 
 def test_invalid_format_1():
     
