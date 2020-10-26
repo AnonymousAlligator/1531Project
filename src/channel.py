@@ -171,24 +171,29 @@ def channel_leave(token, channel_id):
     if not is_member:
         raise error.AccessError('You are not a member of the channel you are trying to leave')
 
-    # Check if the user is an owner
+    # Check if the user is the only owner but other members exist, input error if so
+    is_owner = False
     for owner in target_channel['owner_members']:
         if owner['u_id'] == caller['u_id']:
-            if len(target_channel['owner_members']) == 1 and len(target_channel['all_members']) == 1:
-                target_channel['owner_members'].remove(owner)
-            elif len(target_channel['owner_members']) == 1:
+            is_owner = True
+            if len(target_channel['owner_members']) == 1 and len(target_channel['all_members']) != 1:
                 raise error.InputError('Please make another member an owner before leaving')
 
-    # Navigate to the user entry and remove it
+    # If the user is an owner, remove them from the owner list
+    if is_owner:
+        for owner in target_channel['owner_members']:
+            if owner['u_id'] == caller['u_id']:
+                target_channel['owner_members'].remove(owner)
+    # Navigate to the user entry in all members and remove them
     for user in target_channel['all_members']:
         if user['u_id'] == caller['u_id']:
             target_channel['all_members'].remove(user)
-            # If there is now no one in the channel, delete the channel
-            if len(target_channel['all_members']) == 0:
-                for channel in range(len(data['channels'])):
-                    if data['channels'][channel]['id'] == channel_id:
-                        del data['channels'][channel]
-        return {}
+    # If there is now no one in the channel, delete the channel
+    if len(target_channel['all_members']) == 0:
+        for i, channel in enumerate(data['channels']):
+            if channel['id'] == channel_id:
+                del data['channels'][i]
+    return {}
 
 def channel_join(token, channel_id):
     # Check that the token is valid
