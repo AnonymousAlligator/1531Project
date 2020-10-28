@@ -90,12 +90,12 @@ def message_remove(token, message_id):
 
     # If permission is found then remove the message, else access error
     if is_allowed:
-        for message in range(len(target_channel['messages'])):
-            if target_channel['messages'][message]['message_id'] == target_message['message_id']:
-                del target_channel['messages'][message]
-        for message in range(len(data['messages'])):
-            if message_id == data['messages'][message]['message_id']:
-                del data['messages'][message]
+        for i, message in enumerate(target_channel['messages']):
+            if message['message_id'] == target_message['message_id']:
+                del target_channel['messages'][i]
+        for i, message in enumerate(data['messages']):
+            if message_id == message['message_id']:
+                del data['messages'][i]
         return {}
     raise error.AccessError('You are not allowed to remove the message')
 
