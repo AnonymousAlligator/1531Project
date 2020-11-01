@@ -141,7 +141,16 @@ def http_user_profile_setname():
     data = request.json
     return dumps(user.user_profile_setname(data['token'], data['name_first'], data['name_last']))
 
+@APP.route("/user/profile/uploadphoto", methods=['POST'])
+def http_user_profile_uploadphoto():
+    data = request.json
+    return dumps(user.user_profile_uploadphoto(data['token'], data['img_url'], data['x_start'], data['y_start'], data['x_end'], data['y_end']))
+
 @APP.route("/users/all", methods=['GET'])
+def http_users_all():
+    token = request.args.get('token')
+    return dumps(other.users_all(token))
+
 def http_users_all():
     token = request.args.get('token')
     return dumps(other.users_all(token))
