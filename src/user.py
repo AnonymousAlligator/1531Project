@@ -1,6 +1,10 @@
 from other import data, check_token, find_with_uid
 import re 
 import error
+from PIL import Image 
+
+import requests
+from io import BytesIO
 
 def user_profile(token, u_id):
 
@@ -83,3 +87,31 @@ def user_profile_sethandle(token, handle_str):
     caller['handle_str'] = handle_str
 
     return {}
+
+
+def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
+    #Check that the token is valid
+    caller = check_token(token)
+
+    response = requests.get(img_url)
+    #Opens image file as an in-memory object
+    #can also use to download file directly...urllib.request.urlretrieve(img_url, "profile_pic.jpeg"),     #img = Image.open("img_url", "r")
+    img = Image.open(BytesIO(response.content))
+    
+    #Identifies size of image and calculates the size of the crop image
+    width, height = img.size
+    c_width = y_end - y_start
+    c_height = x_end - x_start
+
+    #Ensures the size of cropped image is within the original size.
+    if ((c_width > width) or (c_height > height)):
+        raise error.InputError('The image crop is too large!') 
+
+    #Checks that the image is in jpeg format
+    if img.format.lower() == 'jpeg':
+        cropped = img.crop((x_start, y_start, x_end, y_end)) 
+        caller["profile_photo"] = cropped
+        return {}
+    else:
+        raise error.InputError('Image url is not a JPG') 
+
