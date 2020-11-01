@@ -1,6 +1,6 @@
 import re 
 from other import data, check_token
-from error import InputError, AccessError
+from error import InputError
 import random
 import string
 import hashlib
@@ -118,6 +118,7 @@ def auth_register(email, password, name_first, name_last):
         'password': password, 
         'handle_str': handle_str, 
         'token': token,
+        'profile_img_url': None
     })
 
     return {

@@ -110,8 +110,7 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Checks that the image is in jpeg format
     if img.format.lower() == 'jpeg':
         cropped = img.crop((x_start, y_start, x_end, y_end)) 
-        caller["profile_photo"] = cropped
+        caller["profile_img_url"] = cropped
         return {}
     else:
         raise error.InputError('Image url is not a JPG') 
-
