@@ -35,14 +35,15 @@ def standup_start(token, channel_id, length):
     if target_channel == {}:
         raise error.InputError('Channel does not exist')
     
-    #Finds current time
+    #Finds current time and calculates when standup finishes
     start_time = round(time.time())
     end_time = start_time + length
     
+    #Sets values on target_channel to indicate standup occuring
     target_channel['standup']['is_standup'] = True 
-    #calculates when it finishes
     target_channel['standup']['time_finish'] = end_time
     
+    #Begins thread that changes values in target channel to indicate standup finished when timer is up
     t = threading.Timer(length, end_standup(target_channel))
     t.start()
 
