@@ -37,18 +37,20 @@ def standup_start(token, channel_id, length):
     
     #Finds current time
     start_time = round(time.time())
-
+    end_time = start_time + length
+    
     target_channel['standup']['is_standup'] = True 
     #calculates when it finishes
-    target_channel['standup']['time_finish'] = start_time + length
+    target_channel['standup']['time_finish'] = end_time
     
-    #Calls standup_send???
+    t = threading.Timer(length, end_standup(target_channel))
+    t.start()
+
     return {'time_finish': end_time}
 
 def standup_send(token, channel_id, message):
-    
+    pass
 
-    t = threading.Timer(length, end_standup(target_channel))
-    t.start()
+
 
 
