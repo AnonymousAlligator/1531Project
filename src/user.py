@@ -2,9 +2,9 @@ from other import data, check_token, find_with_uid
 import re 
 import error
 from PIL import Image 
-
+import urllib
 import requests
-from io import BytesIO
+
 
 def user_profile(token, u_id):
 
@@ -16,6 +16,7 @@ def user_profile(token, u_id):
         'name_first':user['name_first'],
         'name_last': user['name_last'],
         'handle_str': user['handle_str'],
+        'profile_img_url': user['profile_img_url']
         }
     return {'user': user_info}
 
@@ -92,11 +93,9 @@ def user_profile_sethandle(token, handle_str):
 def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Check that the token is valid
     caller = check_token(token)
-
-    response = requests.get(img_url)
-    #Opens image file as an in-memory object
-    #can also use to download file directly...urllib.request.urlretrieve(img_url, "profile_pic.jpeg"),     #img = Image.open("img_url", "r")
-    img = Image.open(BytesIO(response.content))
+    urllib.request.urlretrieve(img_url, "static/profile_pic.jpeg")
+    img = Image.open("static/profile_pic.jpeg")
+    #img = Image.open(BytesIO(response.content))
     
     #Identifies size of image and calculates the size of the crop image
     width, height = img.size
@@ -110,6 +109,7 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Checks that the image is in jpeg format
     if img.format.lower() == 'jpeg':
         cropped = img.crop((x_start, y_start, x_end, y_end)) 
+        cropped.save("static/profile_pic.jpeg")
         caller["profile_img_url"] = cropped
         return {}
     else:

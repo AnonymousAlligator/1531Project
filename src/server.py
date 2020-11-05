@@ -1,6 +1,6 @@
 import sys
 from json import dumps
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from error import InputError
 import user
@@ -21,7 +21,7 @@ def defaultHandler(err):
     response.content_type = 'application/json'
     return response
 
-APP = Flask(__name__)
+APP = Flask(__name__, static_folder='/static/')
 CORS(APP)
 
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
@@ -141,16 +141,12 @@ def http_user_profile_setname():
     data = request.json
     return dumps(user.user_profile_setname(data['token'], data['name_first'], data['name_last']))
 
-@APP.route("/user/profile/uploadphoto", methods=['POST'])
-def http_user_profile_uploadphoto():
+@APP.route('/user/profile/uploadphoto/static<path:path>', methods=['POST'])
+def http_user_profile_uploadphoto(path):
     data = request.json
-    return dumps(user.user_profile_uploadphoto(data['token'], data['img_url'], int(data['x_start']), int(data['y_start']), int(data['x_end']), int(data['y_end'])))
+    return send_from_directory('', path)
 
 @APP.route("/users/all", methods=['GET'])
-def http_users_all():
-    token = request.args.get('token')
-    return dumps(other.users_all(token))
-
 def http_users_all():
     token = request.args.get('token')
     return dumps(other.users_all(token))

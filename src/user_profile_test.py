@@ -23,7 +23,8 @@ def test_user_profile():
             'name_first': 'Hayden', 
             'name_last': 'Jacobs', 
             'handle_str': 'haydenjacobs',
-            },
+            'profile_img_url': None,
+            }
     }
 
 # check for invalid token with a valid u_id

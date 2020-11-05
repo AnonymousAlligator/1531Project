@@ -20,6 +20,7 @@ def test_users_all_1_valid_token():
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
                 "handle_str": "haydenjacobs",
+                "profile_img_url": None,
             },
         ]
     })
@@ -38,6 +39,7 @@ def test_users_all_2_user1_valid_token():
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
                 "handle_str": "haydenjacobs",
+                "profile_img_url": None,
             },
             {
                 "u_id" : 1,
@@ -45,6 +47,7 @@ def test_users_all_2_user1_valid_token():
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
                 "handle_str": "jaydenhaycobs",
+                "profile_img_url": None,
             },
         ]
     })
@@ -64,6 +67,7 @@ def test_users_all_user2_valid_token():
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
                 "handle_str": "haydenjacobs",
+                "profile_img_url": None,
             },            
             {
                 "u_id" : 1,
@@ -71,6 +75,7 @@ def test_users_all_user2_valid_token():
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
                 "handle_str": "jaydenhaycobs",
+                "profile_img_url": None,
             },
 
         ]
@@ -90,6 +95,7 @@ def test_users_all_valid_order():
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
                 "handle_str": "jaydenhaycobs",
+                "profile_img_url": None,
             },
             {
                 "u_id" : 0,
@@ -97,6 +103,7 @@ def test_users_all_valid_order():
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
                 "handle_str": "haydenjacobs",
+                "profile_img_url": None,
             },
         ]
     })
