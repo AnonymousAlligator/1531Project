@@ -111,6 +111,11 @@ def http_message_send():
     data = request.json
     return dumps(message.message_send(data['token'], int(data['channel_id']), data['message']))
 
+@APP.route("/message/sendlater", methods=['POST'])
+def http_message_sendlater():
+    data = request.json
+    return dumps(message.message_sendlater(data['token'], int(data['channel_id']), data['message'], int(data['time_sent'])))
+
 @APP.route("/message/remove", methods=['DELETE'])
 def http_message_remove():
     data = request.json
