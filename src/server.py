@@ -9,6 +9,7 @@ import auth
 import message
 import channel
 import channels
+import standup
 
 def defaultHandler(err):
     response = err.get_response()
@@ -156,6 +157,12 @@ def http_search():
     token = request.args.get('token')
     query_str = request.args.get('query_str')
     return dumps(other.search(token, query_str))
+
+@APP.route("/standup/active", methods=['GET'])
+def http_standup_active():
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    return dumps(standup.standup_active(token, int(channel_id)))
 
 @APP.route("/clear", methods=['DELETE'])
 def http_clear():
