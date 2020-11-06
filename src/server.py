@@ -162,6 +162,11 @@ def http_search():
     token = request.args.get('token')
     query_str = request.args.get('query_str')
     return dumps(other.search(token, query_str))
+    
+@APP.route("/standup/start", methods = ['POST']) 
+def http_standup_start():
+    data = request.json
+    return dumps(standup.standup_start(data['token'], int(data['channel_id']), int(data['length'])))
 
 @APP.route("/standup/active", methods=['GET'])
 def http_standup_active():

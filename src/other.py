@@ -112,3 +112,8 @@ def find_with_uid(u_id):
             return(user)
     # If we are here then the token was invalid
     raise error.InputError('The user is not valid')
+
+def end_standup(target_channel):
+    #Call the send messages here
+    target_channel['standup']['is_standup'] = False
+    target_channel['standup']['time_finish'] = None
