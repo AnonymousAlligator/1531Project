@@ -2,7 +2,7 @@ import time
 import threading
 import error
 from other import data, check_token
-from message import message_send
+from message import send_message
 
 def standup_active(token, channel_id):
     # Check that the token is valid
@@ -43,20 +43,18 @@ def standup_start(token, channel_id, length):
     #Sets values on target_channel to indicate standup occuring
     target_channel['standup']['is_standup'] = True
     target_channel['standup']['time_finish'] = end_time
+    target_channel['standup']['standup_messages'] = []
 
-    # Begins thread that changes values in target channel to
-    # indicate standup finished when timer is up
-    thread = threading.Timer(length, end_standup(target_channel, token))
-    thread.start()
+    # make new thread
+    new_thread = target_channel['id']
+    new_thread = threading.Thread(target = end_standup, args = (target_channel, token, length))
+    new_thread.start()
 
     return {'time_finish': end_time}
 
 def standup_send(token, channel_id, message):
 
-    # get current utc time
-    # TODO: check if we need utc time
-    sent_time = time.time()
-
+    # check for valid token
     caller = check_token(token)
 
     # check valid channel
@@ -85,32 +83,28 @@ def standup_send(token, channel_id, message):
 
     # check for active standup
     standup = standup_active(token, channel_id)
-    if standup['is_active']:
+    if not standup['is_active']:
         raise error.InputError("There is already an active standup in channel")
 
-    # update standup with new message if its still within timeframe
-    if sent_time < standup['time_finish']:
-        # TODO: check if we need to append user's deets
-        target_channel['standup']['standup_messages'].append(message)
-    else:
-        raise error.AccessError(description="The standup has already ended")
+    # update standup with message and user's details
+    target_channel['standup']['standup_messages'].append(caller['name_first'] + ': ' + message)
 
-def end_standup(target_channel, token):
+def end_standup(target_channel, token, length):
+
+    time.sleep(length)
 
     # update channel with end standup
     target_channel['standup']['is_standup'] = False
     target_channel['standup']['time_finish'] = None
 
-    # send all the messages into channels
-    new_line = '\n'
-    standup_messages = ''
-
     # join all messages into standup_messages
-    for message in target_channel['standup']['standup_messages']:
-        standup_messages = new_line.join(message['messages'])
+    standup_messages = '\n'.join(target_channel['standup']['standup_messages'])
 
-    # send standup_messages as the user who called the standup
-    message.message_send(token, target_channel['channel_id'], standup_messages)
+    # get user
+    caller = check_token(token)
+
+    # send standup_messages from the user who called the standup
+    send_message(caller, standup_messages, target_channel, target_channel['id'])
 
     # clear messages from standup buffer
     for old_message in target_channel['standup']['standup_messages']:
