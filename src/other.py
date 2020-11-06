@@ -17,14 +17,23 @@ data = {
     #message: the message
     #time_created: when the message was created
     ],
+'reset_data': {},    
 }
 
 
 
 def clear():
+    
     for value in data.values():
         del value[:]
     return {}
+
+def clearer():
+
+    data['users'] = []
+    data['channels'] = []
+    data['messages'] = []
+    data['reset_data'] = {}    
 
 #Returns a list of all users and their associated details
 def users_all(token):

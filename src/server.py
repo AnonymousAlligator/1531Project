@@ -52,6 +52,16 @@ def http_auth_register():
     data = request.json
     return dumps(auth.auth_register(data['email'], data['password'], data['name_first'], data['name_last']))
 
+@APP.route('/auth/passwordreset/request', methods=['POST'])
+def intermediate_auth_passwordreset_request():
+    data = request.json
+    return dumps(auth_passwordreset_request(data['email']))
+
+@APP.route('/auth/passwordreset/reset', methods=['POST'])
+def intermediate_auth_passwordreset_reset():
+    data = request.json
+    return dumps(auth_passwordreset_reset(data['email']), data['new_password'])
+
 @APP.route("/channel/invite", methods=['POST'])
 def http_channel_invite():
     data = request.json
