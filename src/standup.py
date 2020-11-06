@@ -53,9 +53,7 @@ def standup_start(token, channel_id, length):
 def standup_send(token, channel_id, message):
 
     # get current utc time
-    # TODO: check if we need utc etc
-    # sent_time = datetime.utcnow().replace(tzinfo=pytz.utc)
-    # sent_time = sent_time.timestamp()
+    # TODO: check if we need utc time
     sent_time = time.time()
 
     caller = check_token(token)
@@ -94,4 +92,4 @@ def standup_send(token, channel_id, message):
         # TODO: check if we need to append user's deets
         target_channel['standup']['standup_messages'].append(message)
     else:
-        raise error.AccessError(description="Standup has finished")
+        raise error.AccessError(description="The standup has already ended")

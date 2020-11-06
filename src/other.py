@@ -128,7 +128,7 @@ def end_standup(target_channel, token):
             standup_messages = joiner.join(message['messages'])
 
     # send standup messages
-    standup = message_send(token, target_channel['channel_id'], standup_messages)
+    message_send(token, target_channel['channel_id'], standup_messages)
 
     # clear messages from standup buffer
     for old_message in target_channel['standup']['standup_messages']:
