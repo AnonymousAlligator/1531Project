@@ -128,3 +128,25 @@ def test_invalid_standup_send(url, initialisation):
 
     payload = r.json()
     assert payload['code'] == 400
+
+# check for error when user not in channel
+def test_invalid_standup_send_channel(url, initialisation):
+    
+    test_user_0, test_user_1, _,channel1_id = initialisation    
+
+    # user0 start 1 active standup
+    requests.post(f'{url}/standup/start', json={
+        'token' : test_user_0['token'],
+        'channel_id' : channel1_id,
+        'length': 1,
+    })
+
+    # user1 tries sends one message into standup in channel1
+    r = requests.post(f'{url}/standup/send', json={
+        'token' : test_user_1['token'],
+        'channel_id' : channel1_id,
+        'message' : 'hi',
+    })
+
+    payload = r.json()
+    assert payload['code'] == 400
