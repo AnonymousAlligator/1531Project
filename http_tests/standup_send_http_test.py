@@ -127,4 +127,4 @@ def test_invalid_standup_send(url, initialisation):
     })
 
     payload = r.json()
-    assert payload == {}
+    assert payload['code'] == 400
