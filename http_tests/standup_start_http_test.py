@@ -45,3 +45,17 @@ def initialisation(url):
     })
     return benjamin, ross, channel0_id, channel1_id
 
+# check standup_start in 1 valid channel with no active standup works
+def test_standup_start_one(url, initialisation):
+  pass
+
+def test_standup_start_two(url, initialisation):
+  pass
+
+# check for error when user tries to start 2 active standups in a channel
+def test_standup_start_invalid_two(url, initialisation):
+  pass
+
+# check for error when user tries to start standup in invalid channel
+def test_standup_start_invalid_channel(url, initialisation):
+  pass
