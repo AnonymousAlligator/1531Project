@@ -64,8 +64,8 @@ def test_standup_send_one(url, initialisation):
         'message' : 'hi',
     })
 
-    # assert 
-    pass
+    payload = r.json()
+    assert payload == {}
 
 
 # check standup_send with multiple active standups(2) work
@@ -89,18 +89,20 @@ def test_standup_send_many(url, initialisation):
     })
 
     # user0 sends one message into both standups
-    r = requests.post(f'{url}/standup/send', json={
+    requests.post(f'{url}/standup/send', json={
         'token' : test_user_0['token'],
         'channel_id' : channel0_id,
         'message' : 'hi channel0',
     })
+    
     r = requests.post(f'{url}/standup/send', json={
         'token' : test_user_0['token'],
         'channel_id' : channel1_id,
         'message' : 'hi channel1',
     })
 
-    pass
+    payload = r.json()
+    assert payload == {}
 
 # check standup_send outside of active standup is invalid
 def test_invalid_standup_send(url, initialisation):
@@ -124,4 +126,5 @@ def test_invalid_standup_send(url, initialisation):
         'message' : 'hi',
     })
 
-    pass
+    payload = r.json()
+    assert payload == {}
