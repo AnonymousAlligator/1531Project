@@ -102,12 +102,12 @@ def end_standup(target_channel, token):
     target_channel['standup']['time_finish'] = None
 
     # send all the messages into channels
-    joiner = '\n'
+    new_line = '\n'
     standup_messages = ''
 
     # join all messages into standup_messages        
     for message in target_channel['standup']['standup_messages']:
-        standup_messages = joiner.join(message['messages'])
+        standup_messages = new_line.join(message['messages'])
 
     # send standup_messages as the user who called the standup
     message.message_send(token, target_channel['channel_id'], standup_messages)
