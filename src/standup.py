@@ -97,7 +97,7 @@ def standup_send(token, channel_id, message):
 
 def end_standup(target_channel, token):
 
-    # update channel with end standup    
+    # update channel with end standup
     target_channel['standup']['is_standup'] = False
     target_channel['standup']['time_finish'] = None
 
@@ -105,7 +105,7 @@ def end_standup(target_channel, token):
     new_line = '\n'
     standup_messages = ''
 
-    # join all messages into standup_messages        
+    # join all messages into standup_messages
     for message in target_channel['standup']['standup_messages']:
         standup_messages = new_line.join(message['messages'])
 
