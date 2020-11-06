@@ -164,7 +164,6 @@ def auth_passwordreset_reset(reset_code, new_password):
 
     new_password = hashlib.sha256(new_password.encode()).hexdigest()    
 
-    found_user = 0
     for user in data['users']:
         if user['u_id'] == u_id:
             user['password'] = new_password
