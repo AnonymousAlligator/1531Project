@@ -163,7 +163,7 @@ def http_search():
     query_str = request.args.get('query_str')
     return dumps(other.search(token, query_str))
 
-@APP.route("/standup/start", methods = ['POST'])
+@APP.route("/standup/start", methods=['POST'])
 def http_standup_start():
     data = request.json
     return dumps(standup.standup_start(data['token'], int(data['channel_id']), int(data['length'])))
@@ -174,7 +174,7 @@ def http_standup_active():
     channel_id = request.args.get('channel_id')
     return dumps(standup.standup_active(token, int(channel_id)))
 
-@APP.route("/standup/send", methods = ['POST'])
+@APP.route("/standup/send", methods=['POST'])
 def http_standup_send():
     data = request.json
     return dumps(standup.standup_send(data['token'], int(data['channel_id']), data['message']))
