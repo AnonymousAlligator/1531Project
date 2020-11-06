@@ -47,15 +47,80 @@ def initialisation(url):
 
 # check standup_start in 1 valid channel with no active standup works
 def test_standup_start_one(url, initialisation):
-  pass
+  
+    test_user_0, _, channel0_id,_ = initialisation    
+
+    # user0 starts 1 active standup in channel0
+    requests.post(f'{url}/standup/start', json={
+        'token' : test_user_0['token'],
+        'channel_id' : channel0_id,
+        'length': 3,
+    })
+
+    # user0 start 1 active standup in channel1
+    r = requests.post(f'{url}/standup/start', json={
+        'token' : test_user_0['token'],
+        'channel_id' : channel0_id,
+        'length': 3,
+    })
+
+    payload = r.json()
+    assert payload == {}
 
 def test_standup_start_two(url, initialisation):
-  pass
+    
+    test_user_0, test_user_1, channel0_id, channel1_id = initialisation    
+
+    # user1 starts 1 active standup in channel0
+    requests.post(f'{url}/standup/start', json={
+        'token' : test_user_1['token'],
+        'channel_id' : channel0_id,
+        'length': 3,
+    })
+
+    # user0 start 1 active standup in channel1
+    r = requests.post(f'{url}/standup/start', json={
+        'token' : test_user_0['token'],
+        'channel_id' : channel1_id,
+        'length': 3,
+    })
+
+    payload = r.json()
+    assert payload == {}
 
 # check for error when user tries to start 2 active standups in a channel
 def test_standup_start_invalid_two(url, initialisation):
-  pass
+    
+    test_user_0, test_user_1, channel0_id,_ = initialisation    
+
+    # user0 starts 1 active standup in channel0
+    requests.post(f'{url}/standup/start', json={
+        'token' : test_user_0['token'],
+        'channel_id' : channel0_id,
+        'length': 3,
+    })
+
+    # user1 also tries to start standup in channel0
+    r = requests.post(f'{url}/standup/start', json={
+        'token' : test_user_1['token'],
+        'channel_id' : channel0_id,
+        'length': 3,
+    })
+
+    payload = r.json()
+    assert payload['code'] == 400
 
 # check for error when user tries to start standup in invalid channel
 def test_standup_start_invalid_channel(url, initialisation):
-  pass
+  
+    test_user_0,_,_,_ = initialisation    
+
+    # user0 starts 1 active standup in channel0
+    r = requests.post(f'{url}/standup/start', json={
+        'token' : test_user_0['token'],
+        'channel_id' :10,
+        'length': 3,
+    })
+
+    payload = r.json()
+    assert payload['code'] == 400
