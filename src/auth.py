@@ -146,9 +146,7 @@ def auth_passwordreset_request(email):
     data['reset_data'][reset_code] = int(user['u_id'])
     
     mail = Mail(APP)
-    send_message = Message("Code Reset Request",
-                  sender="20t3tue17grape1@gmail.com",
-                  recipients=[email])
+    send_message = Message("Code Reset Request", sender="20t3tue17grape1@gmail.com", recipients=[email])
     send_message.body = "Your reset code is:" + reset_code
     mail.send(send_message)
     
@@ -162,21 +160,16 @@ def auth_passwordreset_reset(reset_code, new_password):
         raise InputError('Reset code not valid')
 
     if len(new_password) < 6:
-        raise ValueError('New password is less than 6 characters')
+        raise InputError('New password is less than 6 characters')
 
-    new_password = hashlib.sha256(password.encode()).hexdigest()    
+    new_password = hashlib.sha256(new_password.encode()).hexdigest()    
 
     found_user = 0
     for user in data['users']:
-        if user['u_id'] == str("u_id"):
-            found_user = user
-
-    for item in data['users']:
-        if item == found_user:
-            item['password'] = new_password
+        if user['u_id'] == u_id:
+            user['password'] = new_password
 
 
-    return {}            
-
+    return {} 
 
     
