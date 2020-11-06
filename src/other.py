@@ -1,4 +1,5 @@
 import error
+from message import message_send
 
 data = {
 'users': [],
@@ -9,7 +10,7 @@ data = {
     #owner_members: [{u_id, name_first, name_last},]
     #all_members: [{u_id, name_first, name_last},]
     #messages:[{message_id, u_id, message, time_created},]
-    #standup: {is_standup, time_finish}
+    #standup: {is_standup, time_finish, [standup_messages]}
     ],
 'messages': [
     #message_id: the message id
@@ -113,7 +114,22 @@ def find_with_uid(u_id):
     # If we are here then the token was invalid
     raise error.InputError('The user is not valid')
 
-def end_standup(target_channel):
-    #Call the send messages here
+def end_standup(target_channel, token):
+
+    # update channel with end standup    
     target_channel['standup']['is_standup'] = False
     target_channel['standup']['time_finish'] = None
+
+    # send all the messages into channels
+    joiner = '\n'
+    standup_messages = ''
+
+    for message in target_channel['standup']['standup_messages']:
+            standup_messages = joiner.join(message['messages'])
+
+    # send standup messages
+    standup = message_send(token, target_channel['channel_id'], standup_messages)
+
+    # clear messages from standup buffer
+    for old_message in target_channel['standup']['standup_messages']:
+            target_channel['standup']['standup_messages'].remove(old_message)
