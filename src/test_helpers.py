@@ -18,6 +18,3 @@ def create_three_test_users():
     test_user_3 = auth_register("testemail2@email.com", "valid_pw1", "Nick", "Smith")
 
     return test_user_0, test_user_1, test_user_3
-
-
-# TODO: Potentially add channel helpers

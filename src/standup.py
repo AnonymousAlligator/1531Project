@@ -1,7 +1,8 @@
 import time
 import threading
 import error
-from other import data, check_token, end_standup
+from other import data, check_token
+from message import message_send
 
 def standup_active(token, channel_id):
     # Check that the token is valid
@@ -93,3 +94,24 @@ def standup_send(token, channel_id, message):
         target_channel['standup']['standup_messages'].append(message)
     else:
         raise error.AccessError(description="The standup has already ended")
+
+def end_standup(target_channel, token):
+
+    # update channel with end standup    
+    target_channel['standup']['is_standup'] = False
+    target_channel['standup']['time_finish'] = None
+
+    # send all the messages into channels
+    joiner = '\n'
+    standup_messages = ''
+
+    # join all messages into standup_messages        
+    for message in target_channel['standup']['standup_messages']:
+        standup_messages = joiner.join(message['messages'])
+
+    # send standup_messages as the user who called the standup
+    message.message_send(token, target_channel['channel_id'], standup_messages)
+
+    # clear messages from standup buffer
+    for old_message in target_channel['standup']['standup_messages']:
+        target_channel['standup']['standup_messages'].remove(old_message)
