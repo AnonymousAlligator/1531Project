@@ -1,7 +1,7 @@
-from other import data, check_token, end_standup
-import error
-import threading
 import time
+import threading
+import error
+from other import data, check_token, end_standup
 
 def standup_active(token, channel_id):
     # Check that the token is valid
@@ -34,31 +34,29 @@ def standup_start(token, channel_id, length):
 
     if target_channel == {}:
         raise error.InputError('Channel does not exist')
-    
+
     #Finds current time and calculates when standup finishes
     start_time = round(time.time())
     end_time = start_time + length
-    
+
     #Sets values on target_channel to indicate standup occuring
-    target_channel['standup']['is_standup'] = True 
+    target_channel['standup']['is_standup'] = True
     target_channel['standup']['time_finish'] = end_time
-    
-    #Begins thread that changes values in target channel to indicate standup finished when timer is up
-    t = threading.Timer(length, end_standup(target_channel, token))
-    t.start()
+
+    # Begins thread that changes values in target channel to
+    # indicate standup finished when timer is up
+    thread = threading.Timer(length, end_standup(target_channel, token))
+    thread.start()
 
     return {'time_finish': end_time}
 
 def standup_send(token, channel_id, message):
-    
+
     # get current utc time
     # TODO: check if we need utc etc
     # sent_time = datetime.utcnow().replace(tzinfo=pytz.utc)
     # sent_time = sent_time.timestamp()
     sent_time = time.time()
-
-    if len(message) > 1000:
-        raise ValueError(description="Invalid message. Please shorten message to less than 1000 characters.")
 
     caller = check_token(token)
 
@@ -67,7 +65,7 @@ def standup_send(token, channel_id, message):
     for channel in data['channels']:
         if channel_id == channel['id']:
             target_channel = channel
-    
+
     # InputError if invalid channel
     if target_channel == {}:
         raise error.InputError('Channel does not exist')
@@ -77,27 +75,23 @@ def standup_send(token, channel_id, message):
     for member in target_channel['all_members']:
         if member['u_id'] == caller['u_id']:
             is_member = True
-    
+
     # AccessError if user is not in channel
     if not is_member:
         raise error.AccessError('You are not a member of this channel.')
-    
+
     # check the message length for issues
     if len(message) > 1000 or len(message) < 1 or len(message.strip()) < 1:
-        raise error.InputError('Please limit your message to under 1000 characters.')
+        raise error.InputError('Invalid message. Please shorten to less than 1000 characters.')
 
     # check for active standup
     standup = standup_active(token, channel_id)
     if standup['is_active']:
-      	raise error.InputError("There is already an active standup in channel")
+        raise error.InputError("There is already an active standup in channel")
 
     # update standup with new message if its still within timeframe
     if sent_time < standup['time_finish']:
         # TODO: check if we need to append user's deets
-      	target_channel['standup']['standup_messages'].append(message)
+        target_channel['standup']['standup_messages'].append(message)
     else:
-      	raise error.AccessError(description="Standup has finished")
-
-
-
-
+        raise error.AccessError(description="Standup has finished")
