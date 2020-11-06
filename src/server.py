@@ -24,6 +24,15 @@ def defaultHandler(err):
 APP = Flask(__name__)
 CORS(APP)
 
+APP.config.update(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME='20t3tue17grape1@gmail.com',
+    MAIL_PASSWORD='termalmostover2020'
+)
+
+
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
@@ -55,12 +64,12 @@ def http_auth_register():
 @APP.route('/auth/passwordreset/request', methods=['POST'])
 def intermediate_auth_passwordreset_request():
     data = request.json
-    return dumps(auth_passwordreset_request(data['email']))
+    return dumps(auth.auth_passwordreset_request(data['email']))
 
 @APP.route('/auth/passwordreset/reset', methods=['POST'])
 def intermediate_auth_passwordreset_reset():
     data = request.json
-    return dumps(auth_passwordreset_reset(data['email']), data['new_password'])
+    return dumps(auth.auth_passwordreset_reset(data['reset_code'], data['new_password']))
 
 @APP.route("/channel/invite", methods=['POST'])
 def http_channel_invite():
