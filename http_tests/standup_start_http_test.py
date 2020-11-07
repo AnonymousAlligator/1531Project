@@ -3,6 +3,7 @@ from time import sleep
 import pytest
 import requests
 
+@pytest.fixture
 def initialisation(url):
     # Clear data space
     requests.delete(f'{url}/clear')
