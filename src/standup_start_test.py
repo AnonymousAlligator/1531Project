@@ -34,6 +34,9 @@ def test_standup_start_existing_standup():
 
     # test_user0 creates 1 public channel
     channel0 = channels_create(test_user0['token'], "Public Channel", True)
+    
+    # test_user1 joins channel0
+    channel_join(test_user1['token'], channel0['channel_id'])
 
     # test_user0 starts a standup
     standup_start(test_user0['token'], channel0['channel_id'], 2)
