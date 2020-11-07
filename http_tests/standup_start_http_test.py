@@ -51,13 +51,6 @@ def test_standup_start_one(url, initialisation):
     test_user_0, _, channel0_id,_ = initialisation    
 
     # user0 starts 1 active standup in channel0
-    requests.post(f'{url}/standup/start', json={
-        'token' : test_user_0['token'],
-        'channel_id' : channel0_id,
-        'length': 3,
-    })
-
-    # user0 start 1 active standup in channel1
     r = requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
         'channel_id' : channel0_id,
@@ -67,6 +60,7 @@ def test_standup_start_one(url, initialisation):
     payload = r.json()
     assert payload == {}
 
+# check standup_start works in 2 valid channels with no active standup works
 def test_standup_start_two(url, initialisation):
     
     test_user_0, test_user_1, channel0_id, channel1_id = initialisation    
@@ -88,7 +82,7 @@ def test_standup_start_two(url, initialisation):
     payload = r.json()
     assert payload == {}
 
-# check for error when user tries to start 2 active standups in a channel
+# check for error when user tries to start 2 active standups in the same channel
 def test_standup_start_invalid_two(url, initialisation):
     
     test_user_0, test_user_1, channel0_id,_ = initialisation    
