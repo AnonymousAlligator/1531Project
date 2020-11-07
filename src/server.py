@@ -126,6 +126,11 @@ def http_message_edit():
     data = request.json
     return dumps(message.message_edit(data['token'], int(data['message_id']), data['message']))
 
+@APP.route("/message/pin", methods=['POST'])
+def http_message_pin():
+    data = request.json
+    return dumps(message.message_pin(data['token'], int(data['message_id'])))
+
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():
     token = request.args.get('token')
