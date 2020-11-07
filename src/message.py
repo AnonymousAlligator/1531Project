@@ -217,5 +217,56 @@ def send_message(caller, message, target_channel, channel_id):
     }
 
 
-def message_pin(caller, message, target_channel, channel_id):
+def message_pin(token, message_id):
+
+    # check for valid user
+    caller = check_token(token)
+
+    # check for valid message_id        
+    target_message = {}
+    for message in data['messages']:
+        if message_id == message['message_id']:
+            target_message = message
+    
+    # InputError if invalid message_id
+    if target_message == {}:
+        raise error.InputError('Invalid message_id. This message does not exist.')
+
+    # get message channel
+    target_channel = {}
+    channel_index = 0
+    for channel in data['channels']:
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
+            break
+        channel_index += 1
+
+    # check user is channel member
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+
+    if not is_member:
+        raise error.AccessError('You are not part of this channel.')
+
+    # check user is owner
+    is_allowed = False
+    
+    # channel owner check
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == caller['u_id']:
+            is_allowed = True
+
+    # flockr owner check
+    if not is_allowed:
+        if caller['permission_id'] == 1:
+            is_allowed = True
+
+    if not is_allowed:
+        raise error.AccessError('You do not have permission to pin message')
+
+    # check message not already pinned
+    
+
     pass
