@@ -55,8 +55,9 @@ def test_standup_send_invalid_channel():
     # test_user0 starts a standup
     standup_start(test_user0['token'], channel0['channel_id'], 2)
 
-    #test_user0 sends message into standup
-    standup_send(test_user0['token'], channel0['channel_id'] + 1, 'hi')
+    #test_user0 sends standup message into invalid channel
+    with pytest.raises(error.InputError):
+        standup_send(test_user0['token'], channel0['channel_id'] + 1, 'hi')
 
 # check for input error when inactive standup in channel
 def test_standup_send_invalid_active():
@@ -72,7 +73,7 @@ def test_standup_send_invalid_active():
     sleep(1)
 
     #test_user0 sends message into inactive standup
-    with pytest.raises(error.AccessError):
+    with pytest.raises(error.InputError):
         standup_send(test_user0['token'], channel0['channel_id'], 'hi')
 
 # check for access error when user is not channel member
