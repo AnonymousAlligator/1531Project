@@ -17,7 +17,7 @@ def standup_active(token, channel_id):
     if target_channel == {}:
         #Input Error if the channel doesn't exist
         raise error.InputError('Channel does not exist')
-    
+
     # Check to see if caller is part of that channel
     is_member = False
     for member in target_channel['all_members']:
@@ -105,7 +105,7 @@ def end_standup(target_channel, token, length):
     target_channel['standup']['is_standup'] = False
     target_channel['standup']['time_finish'] = None
 
-    # join all messages into standup_messages
+    # join all messages into standup_messages separated by new line
     standup_messages = '\n'.join(target_channel['standup']['standup_messages'])
 
     # get user
