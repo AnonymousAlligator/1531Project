@@ -92,8 +92,9 @@ def user_profile_sethandle(token, handle_str):
 def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Check that the token is valid
     caller = check_token(token)
-    urllib.request.urlretrieve(img_url, "/static/profile_pic.jpeg")
-    img = Image.open("static/profile_pic.jpeg")
+    file_path = f'src/static/{token}.jpeg' 
+    urllib.request.urlretrieve(img_url, file_path)
+    img = Image.open(file_path)
     #img = Image.open(BytesIO(response.content))
     
     #Identifies size of image and calculates the size of the crop image
@@ -108,8 +109,9 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Checks that the image is in jpeg format
     if img.format.lower() == 'jpeg':
         cropped = img.crop((x_start, y_start, x_end, y_end)) 
-        cropped.save("/static/profile_pic.jpeg")
-        caller["profile_img_url"] = request.host_url()+"/static/profile_pic.jpeg"
+        img.close()
+        cropped.save(file_path)
+        caller["profile_img_url"] = request.host_url + f"static/{token}.jpeg"
         return {}
     else:
         raise error.InputError('Image url is not a JPG') 

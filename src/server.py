@@ -21,7 +21,7 @@ def defaultHandler(err):
     response.content_type = 'application/json'
     return response
 
-APP = Flask(__name__, static_folder = '/static/')
+APP = Flask(__name__, static_folder = 'static')
 CORS(APP)
 
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
@@ -145,7 +145,7 @@ def http_user_profile_setname():
 def http_user_profile_uploadphoto():
     data = request.json
     user.user_profile_uploadphoto(data['token'], data['img_url'], int(data['x_start']), int(data['y_start']), int(data['x_end']), int(data['y_end']))
-    return send_from_directory('', 'profile_pic.jpeg')
+    return send_from_directory(APP.static_folder, f'{data["token"]}.jpeg')
 
 @APP.route("/users/all", methods=['GET'])
 def http_users_all():
