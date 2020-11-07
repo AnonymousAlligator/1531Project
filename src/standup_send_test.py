@@ -70,7 +70,7 @@ def test_standup_send_invalid_active():
     # test_user0 starts a standup
     standup_start(test_user0['token'], channel0['channel_id'], 1)
 
-    sleep(1)
+    sleep(2)
 
     #test_user0 sends message into inactive standup
     with pytest.raises(error.InputError):
