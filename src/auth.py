@@ -147,7 +147,7 @@ def auth_passwordreset_request(email):
     
     mail = Mail(APP)
     send_message = Message("Code Reset Request", sender="20t3tue17grape1@gmail.com", recipients=[email])
-    send_message.body = "Your reset code is:" + reset_code
+    send_message.body = "Your reset code is:  " + reset_code
     mail.send(send_message)
     
     return {}

@@ -24,16 +24,11 @@ data = {
 
 def clear():
     
-    for value in data.values():
-        del value[:]
-    return {}
-
-def clearer():
-
     data['users'] = []
     data['channels'] = []
     data['messages'] = []
-    data['reset_data'] = {}    
+    data['reset_data'] = {}
+       
 
 #Returns a list of all users and their associated details
 def users_all(token):
