@@ -51,19 +51,12 @@ def standup_start(token, channel_id, length):
     #Sets values on target_channel to indicate standup occuring
     target_channel['standup']['is_standup'] = True
     target_channel['standup']['time_finish'] = end_time
-<<<<<<< src/standup.py
     target_channel['standup']['standup_messages'] = []
 
     # make new thread
     new_thread = target_channel['id']
     new_thread = threading.Thread(target = end_standup, args = (target_channel, token, length))
     new_thread.start()
-=======
-    
-    #Begins thread that changes values in target channel to indicate standup finished when timer is up
-    t = threading.Timer(length, end_standup, kwargs={'target_channel':target_channel})
-    t.start()
->>>>>>> src/standup.py
 
     return {'time_finish': end_time}
 
