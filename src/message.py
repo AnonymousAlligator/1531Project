@@ -39,7 +39,8 @@ def message_send(token, channel_id, message):
     channel_message = {'message_id': message_id,
                     'u_id': caller['u_id'],
                     'message': message,
-                    'time_created': time_created}
+                    'time_created': time_created,
+                    'reacts' : [],}
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -47,7 +48,8 @@ def message_send(token, channel_id, message):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+                    'reacts' : [],}
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
@@ -192,6 +194,88 @@ def message_sendlater(token, channel_id, message, time_sent):
     delay = time_sent - current_time
     threading.Timer(delay, send_message, kwargs={'caller':caller, 'message':message, 'target_channel':target_channel, 'channel_id':channel_id}).start()
 
+def message_react(token, message_id, react_id):
+    # Make sure react_id is valid
+    thumbs_up = 1
+    if react_id != thumbs_up:
+        raise error.InputError('Invalid react_id')
+
+    user = check_token(token)
+
+    # Find the message in the message field of data
+    target_message = {}
+    for message_value in data['messages']:
+        if message_id == message_value['message_id']:
+            target_message = message_value
+    # If no target is returned then the message no longer exits, InputError
+    if target_message == {}:
+        raise error.InputError('Message does not exist')
+    # Find the channel the message is in
+    target_channel = {}
+    channel_index = 0
+    for channel in data['channels']:
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
+            break
+        channel_index += 1
+    # Find message to add react for person
+    for messages in data['messages']:
+        # Find message
+        if message_id == messages['message_id']:
+            # Check if react already exists
+            for reacts in messages['reacts']:
+                if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
+                    # If react is found check if user has reacted before if True raise error
+                    if reacts['is_this_user_reacted'] == True:
+                        raise error.AccessError('Message already contains active react')
+                    # If react is not active make react active
+                    reacts['is_this_user_reacted'] = True
+                    return {}
+            # Add react dictionary for react type if react is not found
+            messages['reacts'].append({'react_id' : react_id,
+                                        'u_ids' : user['u_id'],
+                                        'is_this_user_reacted' : True})
+    
+    return {}
+
+def message_unreact(token, message_id, react_id):
+    # Make sure react_id is valid
+    thumbs_up = 1
+    if react_id != thumbs_up:
+        raise error.InputError('Invalid react_id')
+    user = check_token(token)
+
+    # Find the message in the message field of data
+    target_message = {}
+    for message_value in data['messages']:
+        if message_id == message_value['message_id']:
+            target_message = message_value
+    # If no target is returned then the message no longer exits, InputError
+    if target_message == {}:
+        raise error.InputError('Message does not exist')
+    # Find the channel the message is in
+    target_channel = {}
+    channel_index = 0
+    for channel in data['channels']:
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
+            break
+        channel_index += 1
+    # Find message to change react for person
+    for messages in data['messages']:
+        # Find message
+        if message_id == messages['message_id']:
+            # Change react dictionary for react type
+            for reacts in messages['reacts']:
+                if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
+                    # If react is found check if user has reacted before if False raise error
+                    if reacts['is_this_user_reacted'] == False:
+                        raise error.AccessError('Message it not active react')
+                    # If react is not active make react active
+                    reacts['is_this_user_reacted'] = False
+                    return {}
+    raise error.AccessError('React does not exist')
+
 def send_message(caller, message, target_channel, channel_id):
     # message gets added to the channel's message key
     if len(data['messages']) == 0:
@@ -202,7 +286,8 @@ def send_message(caller, message, target_channel, channel_id):
     channel_message = {'message_id': message_id,
                     'u_id': caller['u_id'],
                     'message': message,
-                    'time_created': time_created}
+                    'time_created': time_created,
+                    'reacts' : [],}
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -210,8 +295,10 @@ def send_message(caller, message, target_channel, channel_id):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+                    'reacts' : [],}
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
     }
+

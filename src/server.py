@@ -126,6 +126,16 @@ def http_message_edit():
     data = request.json
     return dumps(message.message_edit(data['token'], int(data['message_id']), data['message']))
 
+@APP.route("/message/react", methods=['POST'])
+def http_message_react():
+    data = request.json
+    return dumps(message.message_react(data['token'], int(data['message_id']), int(data['react_id'])))
+
+@APP.route("/message/unreact", methods=['POST'])
+def http_message_unreact():
+    data = request.json
+    return dumps(message.message_unreact(data['token'], int(data['message_id']), int(data['react_id'])))
+
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():
     token = request.args.get('token')
