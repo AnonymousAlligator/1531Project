@@ -39,7 +39,8 @@ def message_send(token, channel_id, message):
     channel_message = {'message_id': message_id,
                     'u_id': caller['u_id'],
                     'message': message,
-                    'time_created': time_created}
+                    'time_created': time_created,
+                    'is_pinned': False,}
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -47,7 +48,8 @@ def message_send(token, channel_id, message):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+                    'is_pinned': False,}
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
@@ -192,6 +194,66 @@ def message_sendlater(token, channel_id, message, time_sent):
     delay = time_sent - current_time
     threading.Timer(delay, send_message, kwargs={'caller':caller, 'message':message, 'target_channel':target_channel, 'channel_id':channel_id}).start()
 
+def message_pin(token, message_id):
+
+    user = check_token(token)
+
+    # Find the message in the message field of data
+    target_message = {}
+    for message_value in data['messages']:
+        if message_id == message_value['message_id']:
+            target_message = message_value
+    # If no target is returned then the message no longer exits, InputError
+    if target_message == {}:
+        raise error.InputError('Message does not exist')
+    # If message is pinned already, InputError
+    if target_message['is_pinned'] == True:
+        raise error.InputError('Message is already pinned')
+    
+    # Find the channel the message is in
+    target_channel = {}
+    channel_index = 0
+    for channel in data['channels']:
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
+            break
+        channel_index += 1
+    # Check if caller is within the channel
+    in_channel = False
+    for member in target_channel['all_members']:
+        if user['u_id'] == member['u_id']:
+            in_channel = True
+
+    if not in_channel:
+       raise error.AccessError('You are not in this channel') 
+    # Check to see if the caller has the right to pin the message
+    is_allowed = False
+    # 1) Caller u_id == target_message u_id
+    if user['u_id'] == target_message['u_id']:
+        is_allowed = True
+
+    # 2) Caller is channel owner
+    if not is_allowed:
+        for owner in target_channel['owner_members']:
+            if owner['u_id'] == user['u_id']:
+                is_allowed = True
+
+    # 3) Caller is flockr owner
+    if not is_allowed:
+        if user['permission_id'] == 1:
+            is_allowed = True
+
+    if not is_allowed:
+        raise error.AccessError('You do not have permission to pin message')
+
+    channel['messages'][channel_index]['is_pinned'] = True
+
+    for messages in data['messages']:
+        if message_id == messages['message_id']:
+            messages['is_pinned'] = True
+            return {}
+
+
 def send_message(caller, message, target_channel, channel_id):
     # message gets added to the channel's message key
     if len(data['messages']) == 0:
@@ -202,7 +264,8 @@ def send_message(caller, message, target_channel, channel_id):
     channel_message = {'message_id': message_id,
                     'u_id': caller['u_id'],
                     'message': message,
-                    'time_created': time_created}
+                    'time_created': time_created,
+                    'is_pinned': False,}
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -210,7 +273,8 @@ def send_message(caller, message, target_channel, channel_id):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+                    'is_pinned': False,}
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
