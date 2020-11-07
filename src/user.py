@@ -3,8 +3,7 @@ import re
 import error
 from PIL import Image 
 import urllib
-import requests
-
+from flask import request
 
 def user_profile(token, u_id):
 
@@ -93,7 +92,7 @@ def user_profile_sethandle(token, handle_str):
 def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Check that the token is valid
     caller = check_token(token)
-    urllib.request.urlretrieve(img_url, "static/profile_pic.jpeg")
+    urllib.request.urlretrieve(img_url, "/static/profile_pic.jpeg")
     img = Image.open("static/profile_pic.jpeg")
     #img = Image.open(BytesIO(response.content))
     
@@ -109,8 +108,8 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Checks that the image is in jpeg format
     if img.format.lower() == 'jpeg':
         cropped = img.crop((x_start, y_start, x_end, y_end)) 
-        cropped.save("static/profile_pic.jpeg")
-        caller["profile_img_url"] = cropped
+        cropped.save("/static/profile_pic.jpeg")
+        caller["profile_img_url"] = request.host_url()+"/static/profile_pic.jpeg"
         return {}
     else:
         raise error.InputError('Image url is not a JPG') 
