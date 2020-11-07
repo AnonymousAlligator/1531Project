@@ -105,6 +105,7 @@ def standup_send(token, channel_id, message):
 
     # update standup with message and user's details
     target_channel['standup']['standup_messages'].append(caller['name_first'] + ': ' + message)
+    return {}
 
 def end_standup(target_channel, token, length):
 
