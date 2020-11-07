@@ -49,22 +49,21 @@ def initialisation(url):
 # check standup_send with 1 active standup request works
 def test_standup_send_one(url, initialisation):
         
-    test_user_0, test_user_1, channel0_id,_ = initialisation    
+    test_user_0, test_user_1, channel0_id,_ = initialisation
 
     # user0 start 1 active standup
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel0_id,
+        'channel_id' : channel0_id['channel_id'],
         'length': 3,
     })
 
     # user1 sends one message into standup
     r = requests.post(f'{url}/standup/send', json={
         'token' : test_user_1['token'],
-        'channel_id' : channel0_id,
+        'channel_id' : channel0_id['channel_id'],
         'message' : 'hi',
     })
-
     payload = r.json()
     assert payload == {}
 
@@ -78,27 +77,27 @@ def test_standup_send_many(url, initialisation):
     # user1 start 1 active standup in channel0
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_1['token'],
-        'channel_id' : channel0_id,
+        'channel_id' : channel0_id['channel_id'],
         'length': 3,
     })
 
     # user0 start 1 active standup in channel1
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel1_id,
+        'channel_id' : channel1_id['channel_id'],
         'length': 3,
     })
 
     # user0 sends one message into both standups
     requests.post(f'{url}/standup/send', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel0_id,
+        'channel_id' : channel0_id['channel_id'],
         'message' : 'hi channel0',
     })
     
     r = requests.post(f'{url}/standup/send', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel1_id,
+        'channel_id' : channel1_id['channel_id'],
         'message' : 'hi channel1',
     })
 
@@ -113,7 +112,7 @@ def test_invalid_standup_send(url, initialisation):
     # user0 start 1 active standup
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel0_id,
+        'channel_id' : channel0_id['channel_id'],
         'length': 1,
     })
 
@@ -123,7 +122,7 @@ def test_invalid_standup_send(url, initialisation):
     # user1 sends one message into standup
     r = requests.post(f'{url}/standup/send', json={
         'token' : test_user_1['token'],
-        'channel_id' : channel0_id,
+        'channel_id' : channel0_id['channel_id'],
         'message' : 'hi',
     })
 
@@ -138,14 +137,14 @@ def test_invalid_standup_send_channel(url, initialisation):
     # user0 start 1 active standup
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel1_id,
+        'channel_id' : channel1_id['channel_id'],
         'length': 1,
     })
 
     # user1 tries sends one message into standup in channel1
     r = requests.post(f'{url}/standup/send', json={
         'token' : test_user_1['token'],
-        'channel_id' : channel1_id,
+        'channel_id' : channel1_id['channel_id'],
         'message' : 'hi',
     })
 
