@@ -267,6 +267,7 @@ def message_pin(token, message_id):
         raise error.AccessError('You do not have permission to pin message')
 
     # check message not already pinned
-    
+    if target_message['is_pinned']:
+        raise error.AccessError("Message is already pinned.")
 
-    pass
+    target_message['is_pinned'] = True

@@ -17,6 +17,7 @@ data = {
     #u_id: user id of the person who sent the message
     #message: the message
     #time_created: when the message was created
+    #is_pinned: true/false
     ],
 }
 
