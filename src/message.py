@@ -215,3 +215,7 @@ def send_message(caller, message, target_channel, channel_id):
     return {
         'message_id': message_id
     }
+
+
+def message_pin(caller, message, target_channel, channel_id):
+    pass
