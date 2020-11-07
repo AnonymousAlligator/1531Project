@@ -47,7 +47,9 @@ def message_send(token, channel_id, message):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+                    'is_pinned': False,
+                    }
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
@@ -202,7 +204,8 @@ def send_message(caller, message, target_channel, channel_id):
     channel_message = {'message_id': message_id,
                     'u_id': caller['u_id'],
                     'message': message,
-                    'time_created': time_created}
+                    'time_created': time_created,
+                    }
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -210,7 +213,9 @@ def send_message(caller, message, target_channel, channel_id):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+                    'is_pinned': False,
+                    }
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id

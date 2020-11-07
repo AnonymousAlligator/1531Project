@@ -99,7 +99,7 @@ def http_channels_list():
 @APP.route("/channels/listall", methods=['GET'])
 def http_channels_listall():
     token = request.args.get('token')
-    return dumps(channels.channegils_listall(token))
+    return dumps(channels.channels_listall(token))
 
 @APP.route("/channels/create", methods=['POST'])
 def http_channels_create():
