@@ -9,7 +9,7 @@ data = {
     #owner_members: [{u_id, name_first, name_last},]
     #all_members: [{u_id, name_first, name_last},]
     #messages:[{message_id, u_id, message, time_created},]
-    #standup: {is_standup, time_finish}
+    #standup: {is_standup, time_finish, [standup_messages]}
     ],
 'messages': [
     #message_id: the message id
@@ -112,8 +112,3 @@ def find_with_uid(u_id):
             return(user)
     # If we are here then the token was invalid
     raise error.InputError('The user is not valid')
-
-def end_standup(target_channel):
-    #Call the send messages here
-    target_channel['standup']['is_standup'] = False
-    target_channel['standup']['time_finish'] = None
