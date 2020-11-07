@@ -9,25 +9,83 @@ import pytest
 from channel import channel_join
 from channels import channels_create
 from test_helpers import create_one_test_user, create_two_test_users
-from message import message_send
+from standup import standup_send, standup_start
 from other import clear
+from time import sleep
 
 # check standup_send successfully sends
-def standup_send_works():
-    pass
+def test_standup_send_works():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel0 = channels_create(test_user0['token'], "Public Channel", True)
+
+    # test_user0 starts a standup
+    standup_start(test_user0['token'], channel0['channel_id'], 2)
+
+    #test_user0 sends message into standup
+    standup_send(test_user0['token'], channel0['channel_id'], 'hi')
+
+
 
 # check for input error when more than 1000 character message
-def standup_send_too_long():
-    pass
+def test_standup_send_too_long():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel0 = channels_create(test_user0['token'], "Public Channel", True)
+
+    # test_user0 starts a standup
+    standup_start(test_user0['token'], channel0['channel_id'], 2)
+
+    #test_user0 tries to send message with 1001 into standup
+    with pytest.raises(error.InputError):
+        standup_send(test_user0['token'], channel0['channel_id'], 'a' * 1001)
 
 # check for input error when invalid channel id
-def standup_send_invalid_channel():
-    pass
+def test_standup_send_invalid_channel():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel0 = channels_create(test_user0['token'], "Public Channel", True)
+
+    # test_user0 starts a standup
+    standup_start(test_user0['token'], channel0['channel_id'], 2)
+
+    #test_user0 sends message into standup
+    standup_send(test_user0['token'], channel0['channel_id'] + 1, 'hi')
 
 # check for input error when inactive standup in channel
-def standup_send_invalid_active():
-    pass
+def test_standup_send_invalid_active():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel0 = channels_create(test_user0['token'], "Public Channel", True)
+
+    # test_user0 starts a standup
+    standup_start(test_user0['token'], channel0['channel_id'], 1)
+
+    sleep(1)
+
+    #test_user0 sends message into inactive standup
+    with pytest.raises(error.AccessError):
+        standup_send(test_user0['token'], channel0['channel_id'], 'hi')
 
 # check for access error when user is not channel member
-def standup_send_invalid_user():
-    pass
+def test_standup_send_invalid_user():
+    clear()
+    test_user0, test_user1 = create_two_test_users()
+
+    # test_user0 creates 1 public channel
+    channel0 = channels_create(test_user0['token'], "Public Channel", True)
+
+    # test_user0 starts a standup
+    standup_start(test_user0['token'], channel0['channel_id'], 2)
+
+    #test_user1 tries to send message into standup in channel he is not part of
+    with pytest.raises(error.AccessError):
+        standup_send(test_user1['token'], channel0['channel_id'], 'hi')
