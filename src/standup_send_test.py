@@ -76,6 +76,21 @@ def test_standup_send_invalid_active():
     with pytest.raises(error.InputError):
         standup_send(test_user0['token'], channel0['channel_id'], 'hi')
 
+# check for invalid action trying to start standup during active standup
+def test_standup_send_invalid_standup_start():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel0 = channels_create(test_user0['token'], "Public Channel", True)
+
+    # test_user0 starts a standup
+    standup_start(test_user0['token'], channel0['channel_id'], 2)
+
+    #test_user0 tries to start standup during active standup
+    with pytest.raises(error.InputError):
+        standup_send(test_user0['token'], channel0['channel_id'], '/standup 1')
+
 # check for access error when user is not channel member
 def test_standup_send_invalid_user():
     clear()
