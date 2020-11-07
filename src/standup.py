@@ -39,10 +39,15 @@ def standup_start(token, channel_id, length):
     for channel in data['channels']:
         if channel_id == channel['id']:
             target_channel = channel
+    
     # Input Error if the channel doesn't exist
-
     if target_channel == {}:
         raise error.InputError('Channel does not exist')
+
+    # check for active standup
+    standup = standup_active(token, channel_id)
+    if standup['is_active'] is True:
+        raise error.InputError("There is already an active standup in channel")
 
     #Finds current time and calculates when standup finishes
     start_time = round(time.time())
@@ -91,11 +96,16 @@ def standup_send(token, channel_id, message):
 
     # check for active standup
     standup = standup_active(token, channel_id)
-    if not standup['is_active']:
+    if standup['is_active'] is False:
+        raise error.InputError("There is already an active standup in channel")
+    
+    # throw error if message is user trying to start standup
+    if message.startswith('/standup'):
         raise error.InputError("There is already an active standup in channel")
 
     # update standup with message and user's details
     target_channel['standup']['standup_messages'].append(caller['name_first'] + ': ' + message)
+    return {}
 
 def end_standup(target_channel, token, length):
 
