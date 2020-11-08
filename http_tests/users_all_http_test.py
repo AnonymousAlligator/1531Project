@@ -23,7 +23,7 @@ def initialisation(url):
         'password' : 'password',
         'name_first' : 'Ross',
         'name_last' : 'Short',
-        'profile_img_url' : None
+        'profile_img_url' : ''
     })
     ross = user1.json()
 
@@ -46,7 +46,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
                 "name_first": "Benjamin",
                 "name_last": "Long",
                 "handle_str": "benjaminlong",
-                'profile_img_url' : None
+                'profile_img_url' : ''
             },
             {
                 "u_id" : 1,
@@ -54,7 +54,7 @@ def test_http_users_all_2_user1_valid_token(url, initialisation):
                 'name_first' : 'Ross',
                 'name_last' : 'Short',
                 'handle_str' : 'rossshort',
-                'profile_img_url' : None
+                'profile_img_url' : ''
             },
         ]
     
@@ -75,7 +75,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
                 "name_first": "Benjamin",
                 "name_last": "Long",
                 "handle_str": "benjaminlong",
-                'profile_img_url' : None
+                'profile_img_url' : ''
             },
             {
                 "u_id" : 1,
@@ -83,7 +83,7 @@ def test_http_users_all_user2_valid_token(url, initialisation):
                 'name_first' : 'Ross',
                 'name_last' : 'Short',
                 'handle_str' : 'rossshort',
-                'profile_img_url' : None
+                'profile_img_url' : ''
             },
         ]
 
@@ -104,7 +104,7 @@ def test_http_users_all_valid_order(url, initialisation):
                 "name_first": "Jayden",
                 "name_last": "Haycobs",
                 "handle_str": "jaydenhaycobs",
-                'profile_img_url' : None
+                'profile_img_url' : ''
             },
             {
                 "u_id" : 0,
@@ -112,6 +112,6 @@ def test_http_users_all_valid_order(url, initialisation):
                 "name_first": "Hayden",
                 "name_last": "Jacobs",
                 "handle_str": "haydenjacobs",
-                'profile_img_url' : None
+                'profile_img_url' : ''
             },
         ]    

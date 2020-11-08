@@ -75,19 +75,19 @@ def test_http_channel_details_public(url, initialisation):
     assert details['owner_members'] == [{'u_id': 0,
                                         'name_first':"Benjamin",
                                         'name_last': "Long",
-                                        'profile_img_url' : None,}]
+                                        'profile_img_url' : '',}]
     assert details['all_members'] == [{'u_id': 0,
                                         'name_first':"Benjamin",
                                         'name_last': "Long",
-                                        'profile_img_url' : None,},
+                                        'profile_img_url' : '',},
                                     {'u_id': 1,
                                         'name_first':"Ross",
                                         'name_last': "Short",
-                                        'profile_img_url' : None,},
+                                        'profile_img_url' : '',},
                                     {'u_id': 2,
                                         'name_first':"Alex",
                                         'name_last': "Smith",
-                                        'profile_img_url' : None,}]
+                                        'profile_img_url' : '',}]
 
 def test_http_channel_details_private(url, initialisation):
     _,ross,_,_,channel1_id = initialisation
@@ -101,15 +101,15 @@ def test_http_channel_details_private(url, initialisation):
     assert details['owner_members'] == [{'u_id': 1,
                                         'name_first':"Ross",
                                         'name_last': "Short",
-                                        'profile_img_url' : None,},]
+                                        'profile_img_url' : '',},]
     assert details['all_members'] == [{'u_id': 1,
                                         'name_first':"Ross",
                                         'name_last': "Short",
-                                        'profile_img_url' : None,},
+                                        'profile_img_url' : '',},
                                     {'u_id': 2,
                                         'name_first':"Alex",
                                         'name_last': "Smith",
-                                        'profile_img_url' : None,}]
+                                        'profile_img_url' : '',}]
 
 def test_http_channel_details_invalid_channel(url, initialisation):
     #The channel doesn't exist
