@@ -1,7 +1,8 @@
 from url_fixture import url
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, render_template
 import pytest
 import requests
+import json
 
 @pytest.fixture
 def initialisation(url):
@@ -25,13 +26,12 @@ def test_user_profile_photo_success(url, initialisation):
         'img_url' : 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg',
         'x_start' : '600',
         'y_start' : '100',
-        'x_end' :'1000',
+        'x_end' : '1000',
         'y_end' : '400',
     })
-    #payload = send_from_directory('static', f'{user0["token"]}.jpeg')
-    payload = r.json()
-    assert payload == {}
-    
+
+    payload = r.status_code
+    assert payload == 200
 
 
 def test_user_profile_photo_width_too_large(url, initialisation):
@@ -44,5 +44,110 @@ def test_user_profile_photo_width_too_large(url, initialisation):
         'x_end' :'1220',
         'y_end' : '717',
     })
-    payload = r.json()
-    assert payload['code'] == 400
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_length_too_large(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg',
+        'x_start' : '0',
+        'y_start' : '0',
+        'x_end' :'1215',
+        'y_end' : '720',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_not_jpeg(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '0',
+        'y_start' : '0',
+        'x_end' :'200',
+        'y_end' : '200',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_zero_width(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '0',
+        'y_start' : '0',
+        'x_end' :'0',
+        'y_end' : '200',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_zero_height(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '0',
+        'y_start' : '0',
+        'x_end' :'200',
+        'y_end' : '0',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_negative_xstart(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '-200',
+        'y_start' : '0',
+        'x_end' :'200',
+        'y_end' : '100',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_negative_ystart(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '0',
+        'y_start' : '-50',
+        'x_end' :'200',
+        'y_end' : '100',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_negative_yend(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '0',
+        'y_start' : '0',
+        'x_end' :'200',
+        'y_end' : '-40',
+    })
+    payload = r.status_code
+    assert payload == 400
+
+def test_user_profile_photo_negative_xend(url, initialisation):
+    user0 = initialisation
+    r = requests.post(f'{url}/user/profile/uploadphoto', json={
+        'token' : user0['token'],
+        'img_url' : 'https://static.wikia.nocookie.net/leagueoflegends/images/d/d6/Teemo_Render.png/revision/latest?cb=20190112183654',
+        'x_start' : '0',
+        'y_start' : '0',
+        'x_end' :'-80',
+        'y_end' : '100',
+    })
+    payload = r.status_code
+    assert payload == 400
+

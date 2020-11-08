@@ -92,26 +92,43 @@ def user_profile_sethandle(token, handle_str):
 def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Check that the token is valid
     caller = check_token(token)
-    file_path = f'src/static/{token}.jpeg' 
+    file_path = f'src/static/{caller["u_id"]}.jpeg' 
     urllib.request.urlretrieve(img_url, file_path)
     img = Image.open(file_path)
     #img = Image.open(BytesIO(response.content))
     
     #Identifies size of image and calculates the size of the crop image
     width, height = img.size
+    heightv = [y_start, y_end]
+    widthv = [x_start, x_end]
+
+    #Ensures all values are within the bound of the original image
+    for y_value in heightv:
+        if y_value < 0:
+            raise error.InputError('Please enter non-negative values') 
+        if y_value > height:
+            raise error.InputError('Please enter smaller values') 
+
+    for x_value in widthv:
+        if x_value < 0:
+            raise error.InputError('Please enter non-negative values') 
+        if x_value > width:
+            raise error.InputError('Please enter smaller values') 
+    
+    #Ensures requested width or height is not negative or zero
     c_width = y_end - y_start
     c_height = x_end - x_start
 
-    #Ensures the size of cropped image is within the original size.
-    if ((c_width > width) or (c_height > height)):
-        raise error.InputError('The image crop is too large!') 
+    if (c_width <= 0) or (c_height <= 0):
+        raise error.InputError('Please enter a proper length') 
+
 
     #Checks that the image is in jpeg format
     if img.format.lower() == 'jpeg':
         cropped = img.crop((x_start, y_start, x_end, y_end)) 
         img.close()
         cropped.save(file_path)
-        caller["profile_img_url"] = request.host_url + f"static/{token}.jpeg"
+        caller["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
         return {}
     else:
         raise error.InputError('Image url is not a JPG') 
