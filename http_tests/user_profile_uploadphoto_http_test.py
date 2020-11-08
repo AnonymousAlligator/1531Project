@@ -45,7 +45,7 @@ def test_user_profile_photo_width_too_large(url, initialisation):
         'y_end' : '717',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_length_too_large(url, initialisation):
     user0 = initialisation
@@ -58,7 +58,7 @@ def test_user_profile_photo_length_too_large(url, initialisation):
         'y_end' : '720',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_not_jpeg(url, initialisation):
     user0 = initialisation
@@ -71,7 +71,7 @@ def test_user_profile_photo_not_jpeg(url, initialisation):
         'y_end' : '200',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_zero_width(url, initialisation):
     user0 = initialisation
@@ -84,7 +84,7 @@ def test_user_profile_photo_zero_width(url, initialisation):
         'y_end' : '200',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_zero_height(url, initialisation):
     user0 = initialisation
@@ -97,7 +97,7 @@ def test_user_profile_photo_zero_height(url, initialisation):
         'y_end' : '0',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_negative_xstart(url, initialisation):
     user0 = initialisation
@@ -110,7 +110,7 @@ def test_user_profile_photo_negative_xstart(url, initialisation):
         'y_end' : '100',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_negative_ystart(url, initialisation):
     user0 = initialisation
@@ -123,7 +123,7 @@ def test_user_profile_photo_negative_ystart(url, initialisation):
         'y_end' : '100',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_negative_yend(url, initialisation):
     user0 = initialisation
@@ -136,7 +136,7 @@ def test_user_profile_photo_negative_yend(url, initialisation):
         'y_end' : '-40',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 
 def test_user_profile_photo_negative_xend(url, initialisation):
     user0 = initialisation
@@ -149,5 +149,5 @@ def test_user_profile_photo_negative_xend(url, initialisation):
         'y_end' : '100',
     })
     payload = r.status_code
-    assert payload == 400
+    assert payload == 500
 

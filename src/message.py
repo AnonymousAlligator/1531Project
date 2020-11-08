@@ -46,7 +46,8 @@ def message_send(token, channel_id, message):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'channel_id' : channel_id,}
+                    'channel_id' : channel_id,
+}
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id

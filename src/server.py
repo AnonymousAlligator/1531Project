@@ -145,7 +145,8 @@ def http_user_profile_setname():
 def http_user_profile_uploadphoto():
     data = request.json
     user.user_profile_uploadphoto(data['token'], data['img_url'], int(data['x_start']), int(data['y_start']), int(data['x_end']), int(data['y_end']))
-    return send_from_directory(APP.static_folder, f'{data["token"]}.jpeg')
+    caller = other.check_token(data['token'])
+    return send_from_directory(APP.static_folder, f'{caller["u_id"]}.jpeg')
 
 @APP.route("/users/all", methods=['GET'])
 def http_users_all():

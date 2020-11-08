@@ -86,15 +86,15 @@ def channel_details(token, channel_id):
     for owner in target_channel['owner_members']:
         channel_owners.append({'u_id': owner['u_id'],
                                 'name_first': owner['name_first'],
-                                'name_last': owner['name_last'],
-                                'profile_img_url': owner['profile_img_url']})
+                                'name_last': owner['name_last'], 
+                                'profile_img_url' : owner['profile_img_url']})
     # Append member details
     channel_members = []
     for member in target_channel['all_members']:
         channel_members.append({'u_id': member['u_id'],
                                 'name_first': member['name_first'],
                                 'name_last': member['name_last'],
-                                'profile_img_url': member['profile_img_url']})
+                                'profile_img_url' : owner['profile_img_url']})
     
     return {'name': channel_name,
             'owner_members': channel_owners,
