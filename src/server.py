@@ -154,6 +154,15 @@ def http_message_react():
 def http_message_unreact():
     data = request.json
     return dumps(message.message_unreact(data['token'], int(data['message_id']), int(data['react_id'])))
+@APP.route("/message/pin", methods=['POST'])
+def http_message_pin():
+    data = request.json
+    return dumps(message.message_pin(data['token'], int(data['message_id'])))
+
+@APP.route("/message/unpin", methods=['POST'])
+def http_message_unpin():
+    data = request.json
+    return dumps(message.message_unpin(data['token'], int(data['message_id'])))
 
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():

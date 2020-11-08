@@ -2,6 +2,7 @@ from url_fixture import url
 from time import sleep
 import pytest
 import requests
+import datetime
 
 @pytest.fixture
 def initialisation(url):
@@ -46,35 +47,28 @@ def initialisation(url):
     })
     return benjamin, ross, channel0_id, channel1_id
 
-# check standup_send with 1 active standup request works
-def test_standup_send_one(url, initialisation):
-        
-    test_user_0, test_user_1, channel0_id,_ = initialisation
+# check standup_start in 1 valid channel with no active standup works
+def test_standup_start_one(url, initialisation):
+  
+    test_user_0, _, channel0_id,_ = initialisation    
 
-    # user0 start 1 active standup
-    requests.post(f'{url}/standup/start', json={
+    # user0 starts 1 active standup in channel0
+    end_time = round((datetime.datetime.now()).timestamp()) + 3
+    r = requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
         'channel_id' : channel0_id['channel_id'],
         'length': 3,
     })
 
-    # user1 sends one message into standup
-    r = requests.post(f'{url}/standup/send', json={
-        'token' : test_user_1['token'],
-        'channel_id' : channel0_id['channel_id'],
-        'message' : 'hi',
-    })
     payload = r.json()
-    assert payload == {}
+    assert payload['time_finish'] == end_time
 
-
-# check standup_send with multiple active standups(2) work
-def test_standup_send_many(url, initialisation):
-
+# check standup_start works in 2 valid channels with no active standup works
+def test_standup_start_two(url, initialisation):
+    
     test_user_0, test_user_1, channel0_id, channel1_id = initialisation    
 
-    # start 2 active standups  
-    # user1 start 1 active standup in channel0
+    # user1 starts 1 active standup in channel0
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_1['token'],
         'channel_id' : channel0_id['channel_id'],
@@ -82,70 +76,48 @@ def test_standup_send_many(url, initialisation):
     })
 
     # user0 start 1 active standup in channel1
-    requests.post(f'{url}/standup/start', json={
+    end_time = round((datetime.datetime.now()).timestamp()) + 3
+    r = requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
         'channel_id' : channel1_id['channel_id'],
         'length': 3,
     })
 
-    # user0 sends one message into both standups
-    requests.post(f'{url}/standup/send', json={
-        'token' : test_user_0['token'],
-        'channel_id' : channel0_id['channel_id'],
-        'message' : 'hi channel0',
-    })
-    
-    r = requests.post(f'{url}/standup/send', json={
-        'token' : test_user_0['token'],
-        'channel_id' : channel1_id['channel_id'],
-        'message' : 'hi channel1',
-    })
-
     payload = r.json()
-    assert payload == {}
+    assert payload['time_finish'] == end_time
 
-# check standup_send outside of active standup is invalid
-def test_invalid_standup_send(url, initialisation):
+# check for error when user tries to start 2 active standups in the same channel
+def test_standup_start_invalid_two(url, initialisation):
     
     test_user_0, test_user_1, channel0_id,_ = initialisation    
 
-    # user0 start 1 active standup
+    # user0 starts 1 active standup in channel0
     requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
         'channel_id' : channel0_id['channel_id'],
-        'length': 1,
+        'length': 3,
     })
 
-    # ensure standup is over
-    sleep(1)
-
-    # user1 sends one message into standup
-    r = requests.post(f'{url}/standup/send', json={
+    # user1 also tries to start standup in channel0
+    r = requests.post(f'{url}/standup/start', json={
         'token' : test_user_1['token'],
         'channel_id' : channel0_id['channel_id'],
-        'message' : 'hi',
+        'length': 3,
     })
 
     payload = r.json()
     assert payload['code'] == 400
 
-# check for error when user not in channel
-def test_invalid_standup_send_channel(url, initialisation):
-    
-    test_user_0, test_user_1, _,channel1_id = initialisation    
+# check for error when user tries to start standup in invalid channel
+def test_standup_start_invalid_channel(url, initialisation):
+  
+    test_user_0,_,_,_ = initialisation    
 
-    # user0 start 1 active standup
-    requests.post(f'{url}/standup/start', json={
+    # user0 starts 1 active standup in channel0
+    r = requests.post(f'{url}/standup/start', json={
         'token' : test_user_0['token'],
-        'channel_id' : channel1_id['channel_id'],
-        'length': 1,
-    })
-
-    # user1 tries sends one message into standup in channel1
-    r = requests.post(f'{url}/standup/send', json={
-        'token' : test_user_1['token'],
-        'channel_id' : channel1_id['channel_id'],
-        'message' : 'hi',
+        'channel_id' :10,
+        'length': 3,
     })
 
     payload = r.json()
