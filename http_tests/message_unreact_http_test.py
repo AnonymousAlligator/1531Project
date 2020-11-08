@@ -1,8 +1,8 @@
-from url_fixture import url
-import pytest
-import requests
+# from url_fixture import url
+# import pytest
+# import requests
 
-@pytest.fixture
+# @pytest.fixture
 # def initialisation(url):
 #     # Clear data space
 #     requests.delete(f'{url}/clear')
