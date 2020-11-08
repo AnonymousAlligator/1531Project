@@ -65,3 +65,18 @@ def test_message_react_invalid_msg_id():
 
     with pytest.raises(InputError):
         assert message_react(test_user0['token'], 2, 1)
+
+# Check that fails for invalid token
+def test_message_react_invalid_token(): 
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel_id = channels_create(test_user0['token'], "Public Channel", True)
+        
+    # test_user0 sends 1 message to public channel
+    message0 = "inital message"
+    message0_id = message_send(test_user0['token'], channel_id['channel_id'], message0)
+
+    with pytest.raises(AccessError):
+        assert message_react('hello', message0_id['message_id'], 1)
