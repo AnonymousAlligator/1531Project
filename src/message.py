@@ -231,9 +231,7 @@ def message_react(token, message_id, react_id):
             if reacts['is_this_user_reacted'] == True:
                 raise error.AccessError('Message already contains active react')
             # If react is not active make react active
-            #TODO dynamically generate is_this_user_reacted?
             reacts['is_this_user_reacted'] = True
-            return {}
 
     # Add react dictionary in messages for react type if react is not found
     target_message['reacts'].append({'react_id' : react_id,
@@ -297,7 +295,7 @@ def message_unreact(token, message_id, react_id):
                     if reacts['is_this_user_reacted'] == False:
                         #  if False raise AccessError
                         raise error.AccessError('Message it not active react')
-                    # If react is not active make react active
+                    # If react is active make react inactive
                     reacts['is_this_user_reacted'] = False
 
     # Find message to change react for person
@@ -307,7 +305,7 @@ def message_unreact(token, message_id, react_id):
             if reacts['is_this_user_reacted'] == False:
                 #  if False raise AccessError
                 raise error.AccessError('Message it not active react')
-            # If react is not active make react active
+            # If react is active make react inactive
             reacts['is_this_user_reacted'] = False
 
 def message_pin(token, message_id):
