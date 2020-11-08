@@ -40,7 +40,9 @@ def message_send(token, channel_id, message):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'reacts' : [],}
+                    'reacts' : [],
+                    'is_pinned': False,
+                    }
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -49,7 +51,9 @@ def message_send(token, channel_id, message):
                     'message': message,
                     'time_created': time_created,
                     'channel_id' : channel_id,
-                    'reacts' : [],}
+                    'reacts' : [],
+                    'is_pinned': False,
+                    }
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
@@ -192,7 +196,8 @@ def message_sendlater(token, channel_id, message, time_sent):
         raise error.InputError('Trying to send message in the past')
 
     delay = time_sent - current_time
-    threading.Timer(delay, send_message, kwargs={'caller':caller, 'message':message, 'target_channel':target_channel, 'channel_id':channel_id}).start()
+    new_thread = time_sent.toString()
+    new_thread.Timer(delay, send_message, kwargs={'caller':caller, 'message':message, 'target_channel':target_channel, 'channel_id':channel_id}).start()
 
 def message_react(token, message_id, react_id):
     # Make sure react_id is valid
