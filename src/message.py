@@ -246,6 +246,7 @@ def message_react(token, message_id, react_id):
                             'u_ids' : user['u_id'],
                             'is_this_user_reacted' : True,
                             })
+    return {}
 
 def message_unreact(token, message_id, react_id):
 
@@ -307,6 +308,8 @@ def message_unreact(token, message_id, react_id):
                 raise error.AccessError('Message it not active react')
             # If react is active make react inactive
             reacts['is_this_user_reacted'] = False
+
+    return {}
 
 def message_pin(token, message_id):
 
