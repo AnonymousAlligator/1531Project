@@ -200,6 +200,7 @@ def message_react(token, message_id, react_id):
     if react_id != thumbs_up:
         raise error.InputError('Invalid react_id')
 
+    # check for valid user
     user = check_token(token)
 
     # Find the message in the message field of data
@@ -207,9 +208,10 @@ def message_react(token, message_id, react_id):
     for message_value in data['messages']:
         if message_id == message_value['message_id']:
             target_message = message_value
-    # If no target is returned then the message no longer exits, InputError
+    # InputError if message doesnt exist
     if target_message == {}:
         raise error.InputError('Message does not exist')
+    
     # Find the channel the message is in
     target_channel = {}
     channel_index = 0
@@ -218,41 +220,67 @@ def message_react(token, message_id, react_id):
             target_channel = channel
             break
         channel_index += 1
+    # InputError if channel does not exist
+    if target_channel == {}:
+        raise error.InputError('You are trying to access an invalid channel')
+
+    for reacts in target_message['reacts']:
+        # If react is found check if user has reacted before
+        if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
+            # if True raise error
+            if reacts['is_this_user_reacted'] == True:
+                raise error.AccessError('Message already contains active react')
+            # If react is not active make react active
+            #TODO dynamically generate is_this_user_reacted?
+            reacts['is_this_user_reacted'] = True
+            return {}
+    
+    # Add react dictionary for react type if react is not found
+    target_message['reacts'].append({'react_id' : react_id,
+                            'u_ids' : user['u_id'],
+                            'is_this_user_reacted' : True,
+                            })
+    return {}
+
     # Find message to add react for person
-    for messages in data['messages']:
-        # Find message
-        if message_id == messages['message_id']:
-            # Check if react already exists
-            for reacts in messages['reacts']:
-                if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
-                    # If react is found check if user has reacted before if True raise error
-                    if reacts['is_this_user_reacted'] == True:
-                        raise error.AccessError('Message already contains active react')
-                    # If react is not active make react active
-                    reacts['is_this_user_reacted'] = True
-                    return {}
-            # Add react dictionary for react type if react is not found
-            messages['reacts'].append({'react_id' : react_id,
-                                        'u_ids' : user['u_id'],
-                                        'is_this_user_reacted' : True})
+    # for messages in data['messages']:
+    #     # Find message
+    #     if message_id == messages['message_id']:
+    #         # Check if react already exists
+    #         for reacts in messages['reacts']:
+    #             if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
+    #                 # If react is found check if user has reacted before if True raise error
+    #                 if reacts['is_this_user_reacted'] == True:
+    #                     raise error.AccessError('Message already contains active react')
+    #                 # If react is not active make react active
+    #                 reacts['is_this_user_reacted'] = True
+    #                 return {}
+    #         # Add react dictionary for react type if react is not found
+    #         messages['reacts'].append({'react_id' : react_id,
+    #                                     'u_ids' : user['u_id'],
+    #                                     'is_this_user_reacted' : True})
     
     return {}
 
 def message_unreact(token, message_id, react_id):
-    # Make sure react_id is valid
+    
+    # check for valid react_id
     thumbs_up = 1
     if react_id != thumbs_up:
         raise error.InputError('Invalid react_id')
-    user = check_token(token)
+    
+    # check for valid user
+    user = check_token(token)    
 
     # Find the message in the message field of data
     target_message = {}
     for message_value in data['messages']:
         if message_id == message_value['message_id']:
-            target_message = message_value
-    # If no target is returned then the message no longer exits, InputError
+            target_message = message_value            
+    # InputError if message does not exist
     if target_message == {}:
         raise error.InputError('Message does not exist')
+    
     # Find the channel the message is in
     target_channel = {}
     channel_index = 0
@@ -261,20 +289,43 @@ def message_unreact(token, message_id, react_id):
             target_channel = channel
             break
         channel_index += 1
+    # InputError if channel does not exist
+    if target_channel == {}:
+        raise error.InputError('You are trying to access an invalid channel')
+
+    # InputError if user is not part of channel
+    is_member = False
+    for member in target_channel['all_members']:
+        if member['u_id'] == user['u_id']:
+            is_member = True
+    if not is_member:
+        raise error.InputError('You can only react to messages in a channel you have joined.')  
+
     # Find message to change react for person
-    for messages in data['messages']:
-        # Find message
-        if message_id == messages['message_id']:
-            # Change react dictionary for react type
-            for reacts in messages['reacts']:
-                if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
-                    # If react is found check if user has reacted before if False raise error
-                    if reacts['is_this_user_reacted'] == False:
-                        raise error.AccessError('Message it not active react')
-                    # If react is not active make react active
-                    reacts['is_this_user_reacted'] = False
-                    return {}
-    raise error.AccessError('React does not exist')
+    for reacts in target_message['reacts']:
+        if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
+        # if react is found check if user has reacted before
+            if reacts['is_this_user_reacted'] == False:
+                #  if False raise AccessError
+                raise error.AccessError('Message it not active react')
+            # If react is not active make react active
+            reacts['is_this_user_reacted'] = False
+            return {}
+        
+
+    # for messages in data['messages']:
+    #     # Find message
+    #     if message_id == messages['message_id']:
+    #         # Change react dictionary for react type
+    #         for reacts in messages['reacts']:
+    #             if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
+    #                 # If react is found check if user has reacted before if False raise error
+    #                 if reacts['is_this_user_reacted'] == False:
+    #                     raise error.AccessError('Message it not active react')
+    #                 # If react is not active make react active
+    #                 reacts['is_this_user_reacted'] = False
+    #                 return {}
+    #     raise error.AccessError('React does not exist')
 
 def send_message(caller, message, target_channel, channel_id):
     # message gets added to the channel's message key
