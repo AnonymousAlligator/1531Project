@@ -238,4 +238,4 @@ def test_message_react_invalid_message(url, initialisation):
     })
 
     payload = r.json()
-    assert payload == 400
+    assert payload['code'] == 400

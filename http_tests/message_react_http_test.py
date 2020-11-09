@@ -192,7 +192,7 @@ def test_message_react_invalid_message(url, initialisation):
     })
 
     payload = r.json()
-    assert payload == 400
+    assert payload['code'] == 400
 
 # check for error when reacting to message in channel user is not in
 def test_message_react_invalid_channel_member(url, initialisation):
@@ -216,4 +216,4 @@ def test_message_react_invalid_channel_member(url, initialisation):
     })
 
     payload = r.json()
-    assert payload == 400
+    assert payload['code'] == 400
