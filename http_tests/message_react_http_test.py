@@ -42,7 +42,7 @@ def initialisation(url):
     # user1 joins channel1 with user0
     requests.post(f'{url}/channel/join', json={
         'token' : user1['token'],
-        'channel_id' : channel1_id,
+        'channel_id' : channel1_id['channel_id'],
     })
     
     # user1 creates channel
