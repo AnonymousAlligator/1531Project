@@ -210,7 +210,7 @@ def test_message_react_invalid_channel_member(url, initialisation):
 
     # user1 reacts to message in channel0 which they are not part of
     r = requests.post(f'{url}/message/react', json={
-        'token' : user0['token'],
+        'token' : user1['token'],
         'message_id' : message0_id['message_id'],
         'react_id' : 1,
     })
