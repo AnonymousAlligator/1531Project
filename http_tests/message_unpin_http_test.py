@@ -4,7 +4,6 @@ import requests
 
 @pytest.fixture
 def initialisation(url):
-    #clear data
     requests.delete(f'{url}/clear')
 
     #register test users
