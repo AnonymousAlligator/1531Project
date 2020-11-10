@@ -318,21 +318,24 @@ def message_unreact(token, message_id, react_id):
 
 def message_pin(token, message_id):
 
-    user = check_token(token)
+    # check for valid user
+    caller = check_token(token)
 
-    # Find the message in the message field of data
+    # check for valid message_id        
     target_message = {}
-    for message_value in data['messages']:
-        if message_id == message_value['message_id']:
-            target_message = message_value
-    # If no target is returned then the message no longer exits, InputError
+    message_index = 0
+    for message in data['messages']:
+        if message_id == message['message_id']:
+            target_message = message
+            break
+        message_index += 1
+    # InputError if invalid message_id
     if target_message == {}:
-        raise error.InputError('Message does not exist')
-    # If message is pinned already, InputError
-    if target_message['is_pinned'] == True:
+        raise error.InputError('Invalid message_id. This message does not exist.')
+    if target_message['is_pinned']:
         raise error.InputError('Message is already pinned')
-    
-    # Find the channel the message is in
+
+    # get message channel
     target_channel = {}
     channel_index = 0
     for channel in data['channels']:
@@ -340,58 +343,54 @@ def message_pin(token, message_id):
             target_channel = channel
             break
         channel_index += 1
-    # Check if caller is within the channel
-    in_channel = False
+    if target_channel == {}:
+        raise error.InputError('Invalid channel')
+
+    # check user is in the channel
+    is_member = False
     for member in target_channel['all_members']:
-        if user['u_id'] == member['u_id']:
-            in_channel = True
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    if not is_member:
+        raise error.AccessError('You are not part of this channel.')
 
-    if not in_channel:
-       raise error.AccessError('You are not in this channel') 
-    # Check to see if the caller has the right to pin the message
+    # check user is owner
     is_allowed = False
-    # 1) Caller u_id == target_message u_id
-    if user['u_id'] == target_message['u_id']:
-        is_allowed = True
-
-    # 2) Caller is channel owner
-    if not is_allowed:
-        for owner in target_channel['owner_members']:
-            if owner['u_id'] == user['u_id']:
-                is_allowed = True
-
-    # 3) Caller is flockr owner
-    if not is_allowed:
-        if user['permission_id'] == 1:
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == caller['u_id']:
             is_allowed = True
 
     if not is_allowed:
         raise error.AccessError('You do not have permission to pin message')
-
-    channel['messages'][channel_index]['is_pinned'] = True
-
-    for messages in data['messages']:
-        if message_id == messages['message_id']:
-            messages['is_pinned'] = True
+    
+    for message in target_channel['messages']:
+        if message['message_id'] == message_id:
+            message['is_pinned'] = True
+    for message in data['messages']:
+        if message_id == message['message_id']:
+            message['is_pinned'] = True
             return {}
 
 def message_unpin(token, message_id):
 
-    user = check_token(token)
+    # check for valid user
+    caller = check_token(token)
 
-    # Find the message in the message field of data
+    # check for valid message_id
     target_message = {}
-    for message_value in data['messages']:
-        if message_id == message_value['message_id']:
-            target_message = message_value
-    # If no target is returned then the message no longer exits, InputError
+    message_index = 0
+    for message in data['messages']:
+        if message_id == message['message_id']:
+            target_message = message
+            break
+        message_index += 1
+    # InputError if invalid message_id
     if target_message == {}:
-        raise error.InputError('Message does not exist')
-    # If message is pinned already, InputError
-    if target_message['is_pinned'] == False:
-        raise error.InputError('Message is already pinned')
-    
-    # Find the channel the message is in
+        raise error.InputError('Invalid message_id. This message does not exist.')
+    if not target_message['is_pinned']:
+        raise error.InputError('Message is not pinned')
+
+    # get message channel
     target_channel = {}
     channel_index = 0
     for channel in data['channels']:
@@ -399,41 +398,33 @@ def message_unpin(token, message_id):
             target_channel = channel
             break
         channel_index += 1
-    # Check if caller is within the channel
-    in_channel = False
+    if target_channel == {}:
+        raise error.InputError('Invalid channel')
+
+    # check user is in the channel
+    is_member = False
     for member in target_channel['all_members']:
-        if user['u_id'] == member['u_id']:
-            in_channel = True
+        if member['u_id'] == caller['u_id']:
+            is_member = True
+    if not is_member:
+        raise error.AccessError('You are not part of this channel.')
 
-    if not in_channel:
-       raise error.AccessError('You are not in this channel') 
-    # Check to see if the caller has the right to pin the message
+    # check user is owner
     is_allowed = False
-    # 1) Caller u_id == target_message u_id
-    if user['u_id'] == target_message['u_id']:
-        is_allowed = True
-
-    # 2) Caller is channel owner
-    if not is_allowed:
-        for owner in target_channel['owner_members']:
-            if owner['u_id'] == user['u_id']:
-                is_allowed = True
-
-    # 3) Caller is flockr owner
-    if not is_allowed:
-        if user['permission_id'] == 1:
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == caller['u_id']:
             is_allowed = True
 
     if not is_allowed:
         raise error.AccessError('You do not have permission to pin message')
-
-    channel['messages'][channel_index]['is_pinned'] = False
-
-    for messages in data['messages']:
-        if message_id == messages['message_id']:
-            messages['is_pinned'] = False
+    
+    for message in target_channel['messages']:
+        if message['message_id'] == message_id:
+            message['is_pinned'] = False
+    for message in data['messages']:
+        if message_id == message['message_id']:
+            message['is_pinned'] = False
             return {}
-
 
 def send_message(caller, message, target_channel, channel_id):
     # message gets added to the channel's message key
