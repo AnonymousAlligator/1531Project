@@ -59,9 +59,7 @@ def standup_start(token, channel_id, length):
     target_channel['standup']['standup_messages'] = []
 
     # make new thread
-    new_thread = target_channel['id']
-    new_thread = threading.Thread(target = end_standup, args = (target_channel, token, length))
-    new_thread.start()
+    threading.Thread(target = end_standup, args = (target_channel, token, length)).start()
 
     return {'time_finish': end_time}
 

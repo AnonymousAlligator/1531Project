@@ -196,8 +196,7 @@ def message_sendlater(token, channel_id, message, time_sent):
         raise error.InputError('Trying to send message in the past')
 
     delay = time_sent - current_time
-    new_thread = time_sent.toString()
-    new_thread.Timer(delay, send_message, kwargs={'caller':caller, 'message':message, 'target_channel':target_channel, 'channel_id':channel_id}).start()
+    threading.Timer(delay, send_message, kwargs={'caller':caller, 'message':message, 'target_channel':target_channel, 'channel_id':channel_id}).start()
 
 def message_react(token, message_id, react_id):
     # Make sure react_id is valid
