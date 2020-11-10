@@ -133,6 +133,13 @@ def channel_messages(token, channel_id, start):
     # Check to see if start is the least recent message
     elif start == (number_of_messages - 1):
         message = target_channel['messages'][start]
+        
+        if len(message['reacts']) > 0:
+            for reacts in message['reacts']:
+                reacts['is_this_user_reacted'] = False
+                for u_id in reacts['u_ids']:
+                    if u_id == caller['u_id']:
+                        reacts['is_this_user_reacted'] = True
         message_data.append(message)
         return {'messages': message_data, 
                 'start': start, 
@@ -141,6 +148,13 @@ def channel_messages(token, channel_id, start):
     else:
         while (message_number < number_of_messages) and (end <= start + 49):
             message = target_channel['messages'][message_number]
+            
+            if len(message['reacts']) > 0:
+                for reacts in message['reacts']:
+                    reacts['is_this_user_reacted'] = False
+                    for u_id in reacts['u_ids']:
+                        if u_id == caller['u_id']:
+                            reacts['is_this_user_reacted'] = True
             message_data.append(message)
             message_number += 1
             end += 1
