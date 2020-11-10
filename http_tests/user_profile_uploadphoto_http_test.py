@@ -19,21 +19,6 @@ def initialisation(url):
     return ross
 
 
-def test_user_profile_photo_success(url, initialisation):
-    user0 = initialisation
-    r = requests.post(f'{url}/user/profile/uploadphoto', json={
-        'token' : user0['token'],
-        'img_url' : 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg',
-        'x_start' : '600',
-        'y_start' : '100',
-        'x_end' : '1000',
-        'y_end' : '400',
-    })
-
-    payload = r.status_code
-    assert payload == 200
-
-
 def test_user_profile_photo_width_too_large(url, initialisation):
     user0 = initialisation
     r = requests.post(f'{url}/user/profile/uploadphoto', json={
