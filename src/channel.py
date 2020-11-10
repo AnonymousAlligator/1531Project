@@ -46,12 +46,14 @@ def channel_invite(token, channel_id, u_id):
     # Made it through all the checks so now we can add the invitee
     target_channel['all_members'].append({'u_id': invitee['u_id'], 
                                             'name_first': invitee['name_first'], 
-                                            'name_last': invitee['name_last'],})
+                                            'name_last': invitee['name_last'],
+                                            'profile_img_url': invitee['profile_img_url'],})
     # Also if permission_id is 1, then make them an owner
     if invitee['permission_id'] == 1:
         target_channel['owner_members'].append({'u_id': invitee['u_id'],
                                                 'name_first': invitee['name_first'],
-                                                'name_last': invitee['name_last'],})
+                                                'name_last': invitee['name_last'],
+                                                'profile_img_url': invitee['profile_img_url'],})
     return {}
 
 def channel_details(token, channel_id):
@@ -84,13 +86,15 @@ def channel_details(token, channel_id):
     for owner in target_channel['owner_members']:
         channel_owners.append({'u_id': owner['u_id'],
                                 'name_first': owner['name_first'],
-                                'name_last': owner['name_last'],})
+                                'name_last': owner['name_last'], 
+                                'profile_img_url' : owner['profile_img_url']})
     # Append member details
     channel_members = []
     for member in target_channel['all_members']:
         channel_members.append({'u_id': member['u_id'],
                                 'name_first': member['name_first'],
-                                'name_last': member['name_last'],})
+                                'name_last': member['name_last'],
+                                'profile_img_url' : owner['profile_img_url']})
     
     return {'name': channel_name,
             'owner_members': channel_owners,
@@ -213,10 +217,12 @@ def channel_join(token, channel_id):
     if caller['permission_id'] == 1:
         target_channel['all_members'].append({'u_id': caller['u_id'], 
                                                 'name_first': caller['name_first'], 
-                                                'name_last': caller['name_last'],})
+                                                'name_last': caller['name_last'],
+                                                'profile_img_url': caller['profile_img_url']})
         target_channel['owner_members'].append({'u_id': caller['u_id'], 
                                                 'name_first': caller['name_first'], 
-                                                'name_last': caller['name_last'],})
+                                                'name_last': caller['name_last'],
+                                                'profile_img_url': caller['profile_img_url']})
         return {}
 
     # Otherwise, check to see if the channel they are joining is private
@@ -226,7 +232,8 @@ def channel_join(token, channel_id):
         # Channel is public so we add their details into the channel list
         target_channel['all_members'].append({'u_id': caller['u_id'],
                                                 'name_first': caller['name_first'],
-                                                'name_last': caller['name_last'],})
+                                                'name_last': caller['name_last'],
+                                                'profile_img_url': caller['profile_img_url']})
         return {}
 
 def channel_addowner(token, channel_id, u_id):
@@ -278,7 +285,8 @@ def channel_addowner(token, channel_id, u_id):
     # We can now promote the user to owner
     target_channel['owner_members'].append({'u_id' : added_person['u_id'], 
                                             'name_first': added_person['name_first'], 
-                                            'name_last':added_person['name_last'],})
+                                            'name_last':added_person['name_last'],
+                                            'profile_img_url': added_person['profile_img_url']})
     return {}
 
 def channel_removeowner(token, channel_id, u_id):
