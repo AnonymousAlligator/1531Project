@@ -5,6 +5,9 @@ import random
 import string
 import hashlib
 import jwt
+from flask import current_app as APP
+from flask_mail import Mail, Message
+
 
 def auth_login(email, password):
     
@@ -125,3 +128,48 @@ def auth_register(email, password, name_first, name_last):
         'u_id': u_id,
         'token': token,
     }
+
+# Send a code to email, to reset the password
+def auth_passwordreset_request(email):
+
+    reset_code = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
+
+    found_user = 0
+    for user in data['users']:
+        if user['email'] == email:
+            found_user = 1
+
+    # Checks that the email exists
+    if found_user == 0:
+        raise InputError('Email does not exist')
+
+    # Adds the reset code to the database and sends it to the user's email
+    data['reset_data'][reset_code] = int(user['u_id'])
+    
+    mail = Mail(APP)
+    send_message = Message("Code Reset Request", sender="20t3tue17grape1@gmail.com", recipients=[email])
+    send_message.body = "Your reset code is:  " + reset_code
+    mail.send(send_message)
+    
+    return {}
+
+def auth_passwordreset_reset(reset_code, new_password):
+
+    u_id = data['reset_data'].get(reset_code, None)
+
+    if u_id is None:
+        raise InputError('Reset code not valid')
+
+    if len(new_password) < 6:
+        raise InputError('New password is less than 6 characters')
+
+    new_password = hashlib.sha256(new_password.encode()).hexdigest()    
+
+    for user in data['users']:
+        if user['u_id'] == u_id:
+            user['password'] = new_password
+
+
+    return {} 
+
+    
