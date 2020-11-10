@@ -221,7 +221,6 @@ def send_message(caller, message, target_channel, channel_id):
         'message_id': message_id
     }
 
-
 def message_pin(token, message_id):
 
     # check for valid user
