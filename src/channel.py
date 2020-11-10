@@ -94,7 +94,7 @@ def channel_details(token, channel_id):
         channel_members.append({'u_id': member['u_id'],
                                 'name_first': member['name_first'],
                                 'name_last': member['name_last'],
-                                'profile_img_url' : owner['profile_img_url']})
+                                'profile_img_url' : member['profile_img_url']})
     
     return {'name': channel_name,
             'owner_members': channel_owners,

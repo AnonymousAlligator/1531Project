@@ -129,6 +129,15 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
         img.close()
         cropped.save(file_path)
         caller["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
+        for channel in data['channels']:
+            for owner in channel['owner_members']:
+                if caller['u_id'] == owner['u_id']:
+                    owner["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
+                    break
+            for member in channel['all_members']:
+                if caller['u_id'] == member['u_id']:
+                    member["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
+                    break
         return {}
     else:
         raise error.InputError('Image url is not a JPG') 
