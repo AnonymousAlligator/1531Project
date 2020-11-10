@@ -121,12 +121,10 @@ def message_edit(token, message_id, message):
 
     # Find the channel the message is in
     target_channel = {}
-    channel_index = 0
     for channel in data['channels']:
         if target_message['channel_id'] == channel['id']:
             target_channel = channel
             break
-        channel_index += 1
 
     # Check to see if the caller has the right to remove the message
     is_allowed = False
@@ -154,7 +152,9 @@ def message_edit(token, message_id, message):
         message_remove(token, message_id)
         return {}
     else:
-        channel['messages'][channel_index]['message'] = message
+        for message_data in target_channel['messages']:
+            if message_id == message_data['message_id']:
+                message_data['message'] = message
 
     for messages in data['messages']:
         if message_id == messages['message_id']:
@@ -323,12 +323,10 @@ def message_pin(token, message_id):
 
     # check for valid message_id        
     target_message = {}
-    message_index = 0
     for message in data['messages']:
         if message_id == message['message_id']:
             target_message = message
             break
-        message_index += 1
     # InputError if invalid message_id
     if target_message == {}:
         raise error.InputError('Invalid message_id. This message does not exist.')
@@ -337,12 +335,10 @@ def message_pin(token, message_id):
 
     # get message channel
     target_channel = {}
-    channel_index = 0
     for channel in data['channels']:
         if target_message['channel_id'] == channel['id']:
             target_channel = channel
             break
-        channel_index += 1
     if target_channel == {}:
         raise error.InputError('Invalid channel')
 
