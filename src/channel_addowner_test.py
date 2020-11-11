@@ -49,12 +49,12 @@ def test_adder_not_member():
 #Channel exists, token is owner adding someone who is already a owner
 def test_channel_addowner_already_owner():
     clear()
-    user_0, user_1, user_2 = create_three_test_users() 
+    user_0, user_1 = create_two_test_users()
     public_channel = channels_create(user_0['token'], "name", True)
-    channel_join(user_2['token'], public_channel['channel_id']) 
+    channel_join(user_1['token'], public_channel['channel_id'])
+    channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id'])
     with pytest.raises(error.InputError):
-        assert channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id'])
-        assert channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id'])   
+        channel_addowner(user_0['token'], public_channel['channel_id'], user_1['u_id'])
 
 
 #Channel exists, token is adding themselves.
@@ -77,7 +77,7 @@ def test_channel_addowner_invalid_channel():
 #Channel is private, user is not part of private channel
 def test_channel_addowner_not_invited():
     clear()
-    user_0, user_1 = create_two_test_users() 
+    user_0, user_1 = create_two_test_users()
     private_channel = channels_create(user_0['token'], "name", False)
     with pytest.raises(error.InputError):
-        assert channel_addowner(user_0['token'], private_channel['channel_id'], user_1['u_id']) == {}
+        channel_addowner(user_0['token'], private_channel['channel_id'], user_1['u_id'])
