@@ -139,3 +139,11 @@ def is_owner_check(u_id, target_channel):
         if owner['u_id'] == u_id:
             return True
     return False
+
+def find_message_in_messages(message_id):
+    # Find the message in the message field of data
+    for message in data['messages']:
+        if message_id == message['message_id']:
+            return message
+    # If no target is returned then the message doesnt exist
+    raise error.InputError('Message does not exist')
