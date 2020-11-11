@@ -107,13 +107,35 @@ def check_token(token):
         if user['token'] == token: # get() returns a value for the given key (token)
             return user
 
-    # If the token doesn't exist/user isn't logged in
+    # If the token doesn't exist user isn't logged in
     raise error.AccessError("Token is not valid")
 
-#Finds user by u_ID, if the user does not exist then input error is given.
 def find_with_uid(u_id):
+    #Finds user by u_ID, if the user does not exist then input error is given.
     for user in data['users']:
         if u_id == user['u_id']:
-            return(user)
+            return user
     # If we are here then the token was invalid
     raise error.InputError('The user is not valid')
+
+def find_channel(channel_id):
+    #Finds the channel given channel_id, inputError if not found
+    for channel in data['channels']:
+        if channel_id == channel['id']:
+            return channel
+    # Input Error if the channel doesn't exist
+    raise error.InputError('Channel does not exist')
+
+def is_member_check(u_id, target_channel):
+    #Checks if the u_id is a member of the channel, returns a boolean
+    for member in target_channel['all_members']:
+        if member['u_id'] == u_id:
+            return True
+    return False
+
+def is_owner_check(u_id, target_channel):
+    #Checks if the u_id is a member of the channel, returns a boolean
+    for owner in target_channel['owner_members']:
+        if owner['u_id'] == u_id:
+            return True
+    return False
