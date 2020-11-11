@@ -36,7 +36,7 @@ def test_message_react_invalid_reactid():
     with pytest.raises(InputError):
         assert message_react(test_user0['token'], message0_id['message_id'], 5)
 
-# Check that fails for invalid react_id
+# Check that fails for invalid token
 def test_message_react_invalid_token(): 
     clear()
     test_user0 = create_one_test_user()
