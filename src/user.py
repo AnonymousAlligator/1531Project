@@ -39,6 +39,18 @@ def user_profile_setname(token, name_first, name_last):
     caller["name_first"] = fname
     caller["name_last"] = lname
 
+    # update the user's details in the channels they're part of
+    for channel in data['channels']:
+        for member in channel['all_members']:
+            if member['u_id'] == caller['u_id']:
+                member['name_first'] = fname
+                member['name_last'] = lname
+        
+        for member in channel['owner_members']:
+            if member['u_id'] == caller['u_id']:
+                member['name_first'] = fname
+                member['name_last'] = lname
+
     return {}
     
 
