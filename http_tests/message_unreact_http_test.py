@@ -194,6 +194,11 @@ def test_message_react_same(url, initialisation):
     })
     message0_id = message0.json()
 
+    requests.post(f'{url}/channel/join', json={
+        'token' : user1['token'],
+        'channel_id' : channel1_id,
+    })
+    
     # user0 reacts to message0
     requests.post(f'{url}/message/react', json={
         'token' : user0['token'],
@@ -208,19 +213,21 @@ def test_message_react_same(url, initialisation):
         'react_id' : 1,
     })
 
-    # user0 ureacts to message0
-    requests.post(f'{url}/message/unreact', json={
-        'token' : user0['token'],
-        'message_id' : message0_id['message_id'],
-        'react_id' : 1,
-    })
+    
 
-    # user1 ureacts to message0
-    r = requests.post(f'{url}/message/unreact', json={
-        'token' : user1['token'],
-        'message_id' : message0_id['message_id'],
-        'react_id' : 1,
-    })
+    # # user0 unreacts to message0
+    # requests.post(f'{url}/message/unreact', json={
+    #     'token' : user0['token'],
+    #     'message_id' : message0_id['message_id'],
+    #     'react_id' : 1,
+    # })
+
+    # # user1 unreacts to message0
+    # r = requests.post(f'{url}/message/unreact', json={
+    #     'token' : user1['token'],
+    #     'message_id' : message0_id['message_id'],
+    #     'react_id' : 1,
+    # })
 
     payload = r.json()
     assert payload == {}

@@ -225,31 +225,38 @@ def message_react(token, message_id, react_id):
             target_channel = channel
             break
         channel_index += 1
+    # Make sure the user is in the channel
+    channel_check = 0
+    for members in target_channel['all_members']:
+        if user['u_id'] == members['u_id']:
+            channel_check += 1
+
     # InputError if channel does not exist
     if target_channel == {}:
         raise error.InputError('You are trying to access an invalid channel')
-    break_flag = 0
+
+    append_flag = 0
     # Add react to u_id in messages for react type if react is not found
     for reacts in target_message['reacts']:
         if react_id == reacts['react_id']:
             reacts['u_ids'].append(user['u_id'])
-            break_flag += 1
-        if break_flag == 1:
+            append_flag += 1
+        if append_flag == 1:
             break
         else:
             target_message['reacts'].append({'react_id' : react_id,
                             'u_ids' : [user['u_id'],],
                             'is_this_user_reacted' : False,
                             })
-    break_flag = 0
+    append_flag = 0
     # update channel['messages'] with react data as well
     for channel_message in target_channel['messages']:
         if channel_message['message_id'] == target_message['message_id']:
             for reacts in channel_message['reacts']:
                 if react_id == reacts['react_id']:
                     reacts['u_ids'].append(user['u_id'])
-                    break_flag += 1
-            if break_flag == 1:
+                    append_flag += 1
+            if append_flag == 1:
                 break
             else:       
                 channel_message['reacts'].append({'react_id' : react_id,
@@ -275,7 +282,7 @@ def message_unreact(token, message_id, react_id):
     # InputError if message doesnt exist
     if target_message == {}:
         raise error.InputError('Message does not exist')
-
+        
     # Find the channel the message is in
     target_channel = {}
     channel_index = 0
