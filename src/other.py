@@ -18,18 +18,15 @@ data = {
     #message: the message
     #time_created: when the message was created
     ],
-'reset_data': {},    
+'reset_data': {},
 }
 
-
-
 def clear():
-    
+
     data['users'] = []
     data['channels'] = []
     data['messages'] = []
     data['reset_data'] = {}
-       
 
 #Returns a list of all users and their associated details
 def users_all(token):
@@ -60,19 +57,13 @@ def admin_userpermission_change(token, u_id, permission_id):
         raise error.AccessError('You are not an owner of the flockr')
 
     #Check if user to be permission changed exists within database
-    called = {}
-    for user in data['users']:
-        if u_id == user['u_id']:
-            called = user
-    # Input Error if the user doesn't exist
-    if called == {}:
-        raise error.InputError('User you are trying to change permissions for does not exist')
+    promotee = find_with_uid(u_id)
 
     #Check if permssion_id is a value permission, then change the permission_id of the user and add them to owner_list for channel
     if permission_id == 1:
-        called['permission_id'] = 1
+        promotee['permission_id'] = 1
     elif permission_id == 2:
-        called['permission_id'] = 2
+        promotee['permission_id'] = 2
     else:
         raise error.InputError('Incorrect value permission entered')
 
@@ -82,11 +73,12 @@ def search(token, query_str):
     query_str.lower()
     messages_list = []
     channel_list = []
+    #Check if token is correct
+    caller = check_token(token)
+
     #if query_str is empty
     if query_str.isspace():
         return {'messages': messages_list}
-    #Check if token is correct
-    caller = check_token(token)
     # Find all channels the caller is in
     for channel in data['channels']:
         for member in channel['all_members']:
