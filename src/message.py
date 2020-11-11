@@ -169,35 +169,55 @@ def message_react(token, message_id, react_id):
     target_message = find_message_in_messages(message_id)
 
     # Find the channel the message is in
-    target_channel = find_channel(target_message['channel_id'])
+    target_channel = {}
+    channel_index = 0
+    for channel in data['channels']:
+        if target_message['channel_id'] == channel['id']:
+            target_channel = channel
+            break
+        channel_index += 1
+    # Make sure the user is in the channel
+    channel_check = 0
+    for members in target_channel['all_members']:
+        if user['u_id'] == members['u_id']:
+            channel_check += 1
 
+    # InputError if channel does not exist
+    if target_channel == {}:
+        raise error.InputError('You are trying to access an invalid channel')
+
+    append_flag = 0
+    # Add react to u_id in messages for react type if react is not found
     for reacts in target_message['reacts']:
-        # If react is found check if user has reacted before
-        if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
-            # raise error if already reacted
-            if reacts['is_this_user_reacted']:
-                raise error.AccessError('Message already contains active react')
-            # If react is not active make react active
-            reacts['is_this_user_reacted'] = True
-
-    # Add react dictionary in messages for react type if react is not found
-    target_message['reacts'].append({'react_id' : react_id,
-                            'u_ids' : user['u_id'],
-                            'is_this_user_reacted' : True,
+        if react_id == reacts['react_id']:
+            reacts['u_ids'].append(user['u_id'])
+            append_flag += 1
+        if append_flag == 1:
+            break
+        else:
+            target_message['reacts'].append({'react_id' : react_id,
+                            'u_ids' : [user['u_id'],],
+                            'is_this_user_reacted' : False,
                             })
-
+    append_flag = 0
     # update channel['messages'] with react data as well
     for channel_message in target_channel['messages']:
         if channel_message['message_id'] == target_message['message_id']:
-            channel_message['reacts'].append({'react_id' : react_id,
-                            'u_ids' : user['u_id'],
-                            'is_this_user_reacted' : True,
+            for reacts in channel_message['reacts']:
+                if react_id == reacts['react_id']:
+                    reacts['u_ids'].append(user['u_id'])
+                    append_flag += 1
+            if append_flag == 1:
+                break
+            else:       
+                channel_message['reacts'].append({'react_id' : react_id,
+                            'u_ids' : [user['u_id'],],
+                            'is_this_user_reacted' : False,
                             })
     return {}
 
 def message_unreact(token, message_id, react_id):
-
-    # check for valid react_id
+    # Make sure react_id is valid
     thumbs_up = 1
     if react_id != thumbs_up:
         raise error.InputError('Invalid react_id')
@@ -206,41 +226,28 @@ def message_unreact(token, message_id, react_id):
     user = check_token(token)
 
     # Find the message in the message field of data
-    target_message = find_message_in_messages(message_id)
-
+    target_message = {}
+    for message_value in data['messages']:
+        if message_id == message_value['message_id']:
+            target_message = message_value
+    # InputError if message doesnt exist
+    if target_message == {}:
+        raise error.InputError('Message does not exist')
+        
     # Find the channel the message is in
     target_channel = find_channel(target_message['channel_id'])
 
-    # InputError if user is not part of channel
-    is_member = False
-    for member in target_channel['all_members']:
-        if member['u_id'] == user['u_id']:
-            is_member = True
-    if not is_member:
-        raise error.InputError('You can only react to messages in a channel you have joined.')
+    # Remove u_id in messages for react type 
+    for reacts in target_message['reacts']:
+        if react_id == reacts['react_id']:
+            reacts['u_ids'].remove(user['u_id'])
 
-    # update react in channel['messages']
+    # update channel['messages'] with react data as well
     for channel_message in target_channel['messages']:
         if channel_message['message_id'] == target_message['message_id']:
-            for reacts in channel_message['reacts']:                
-                if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
-                    # if react is found check if user has reacted before
-                    if not reacts['is_this_user_reacted']:
-                        #  if False raise AccessError
-                        raise error.AccessError('Message it not active react')
-                    # If react is active make react inactive
-                    reacts['is_this_user_reacted'] = False
-
-    # Find message to change react for person
-    for reacts in target_message['reacts']:
-        if reacts['u_ids'] == user['u_id'] and reacts['react_id'] == react_id:
-        # if react is found check if user has reacted before
-            if not reacts['is_this_user_reacted']:
-                #  if False raise AccessError
-                raise error.AccessError('Message it not active react')
-            # If react is active make react inactive
-            reacts['is_this_user_reacted'] = False
-
+            for reacts in channel_message['reacts']:
+                if react_id == reacts['react_id']:
+                    reacts['u_ids'].remove(user['u_id'])
     return {}
 
 def message_pin(token, message_id):
