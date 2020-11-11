@@ -80,10 +80,8 @@ def user_profile_sethandle(token, handle_str):
     handle_str = handle_str.strip()
 
     handle_str_len = len(handle_str.strip())
-    if handle_str_len > 20:
-        raise error.InputError('User handle too long')
-    if handle_str_len < 3:
-        raise error.InputError('User handle is too short')
+    if handle_str_len > 20 or handle_str_len < 3:
+        raise error.InputError('User handle must be between 3 and 20 characters.')
 
     #check that the handle is not already used
     for other_user in data['users']:
