@@ -51,6 +51,8 @@ def user_profile_setname(token, name_first, name_last):
                 member['name_first'] = fname
                 member['name_last'] = lname
 
+    return {}
+
 def user_profile_setemail(token, email):
     
     caller = check_token(token)
@@ -72,6 +74,8 @@ def user_profile_setemail(token, email):
     # update field in user
     caller["email"] = email
 
+    return {}
+
 def user_profile_sethandle(token, handle_str):
     #Check that the token is valid
     caller = check_token(token)
@@ -90,6 +94,8 @@ def user_profile_sethandle(token, handle_str):
 
     # update handle
     caller['handle_str'] = handle_str
+
+    return {}
 
 
 def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
