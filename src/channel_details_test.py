@@ -30,16 +30,20 @@ def test_channel_details_public():
     assert details['name'] == 'Channel0'
     assert details['owner_members'] == [{'u_id': 0,  
                                         'name_first':"Benjamin", 
-                                        'name_last': "Long",}]
+                                        'name_last': "Long",
+                                        'profile_img_url': ''}]
     assert details['all_members'] == [{'u_id': 0, 
                                         'name_first':"Benjamin", 
-                                        'name_last': "Long",},
+                                        'name_last': "Long",
+                                        'profile_img_url': ''},
                                     {'u_id': 1,  
                                         'name_first':"Ross", 
-                                        'name_last': "Short", },
+                                        'name_last': "Short", 
+                                        'profile_img_url': ''},
                                     {'u_id': 2, 
                                         'name_first':"Alex", 
-                                        'name_last': "Smith",}]
+                                        'name_last': "Smith",
+                                        'profile_img_url': ''}]
 
 def test_channel_details_private():
     _, Ross, _, _, channel_id1 = initialisation()
@@ -47,13 +51,16 @@ def test_channel_details_private():
     assert details['name'] == 'Channel1'
     assert details['owner_members'] == [{'u_id': 1,  
                                         'name_first':"Ross", 
-                                        'name_last': "Short", },]
+                                        'name_last': "Short", 
+                                        'profile_img_url': ''},]
     assert details['all_members'] == [{'u_id': 1,  
                                         'name_first':"Ross", 
-                                        'name_last': "Short", },
+                                        'name_last': "Short", 
+                                        'profile_img_url': ''},
                                     {'u_id': 2, 
                                         'name_first':"Alex", 
-                                        'name_last': "Smith",}]
+                                        'name_last': "Smith",
+                                        'profile_img_url': ''}]
 
 def test_channel_details_invalid_channel():
     Benjamin, _, _, _, _ = initialisation()

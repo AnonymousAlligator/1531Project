@@ -1,6 +1,9 @@
 from other import data, check_token, find_with_uid
 import re 
 import error
+from PIL import Image 
+import urllib
+from flask import request
 
 def user_profile(token, u_id):
 
@@ -12,6 +15,7 @@ def user_profile(token, u_id):
         'name_first':user['name_first'],
         'name_last': user['name_last'],
         'handle_str': user['handle_str'],
+        'profile_img_url': user['profile_img_url']
         }
     return {'user': user_info}
 
@@ -83,3 +87,57 @@ def user_profile_sethandle(token, handle_str):
     caller['handle_str'] = handle_str
 
     return {}
+
+
+def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
+    #Check that the token is valid
+    caller = check_token(token)
+    file_path = f'src/static/{caller["u_id"]}.jpeg' 
+    urllib.request.urlretrieve(img_url, file_path)
+    img = Image.open(file_path)
+    #img = Image.open(BytesIO(response.content))
+    
+    #Identifies size of image and calculates the size of the crop image
+    width, height = img.size
+    heightv = [y_start, y_end]
+    widthv = [x_start, x_end]
+
+    #Ensures all values are within the bound of the original image
+    for y_value in heightv:
+        if y_value < 0:
+            raise error.InputError('Please enter non-negative values') 
+        if y_value > height:
+            raise error.InputError('Please enter smaller values') 
+
+    for x_value in widthv:
+        if x_value < 0:
+            raise error.InputError('Please enter non-negative values') 
+        if x_value > width:
+            raise error.InputError('Please enter smaller values') 
+    
+    #Ensures requested width or height is not negative or zero
+    c_width = y_end - y_start
+    c_height = x_end - x_start
+
+    if (c_width <= 0) or (c_height <= 0):
+        raise error.InputError('Please enter a proper length') 
+
+
+    #Checks that the image is in jpeg format
+    if img.format.lower() == 'jpeg':
+        cropped = img.crop((x_start, y_start, x_end, y_end)) 
+        img.close()
+        cropped.save(file_path)
+        caller["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
+        for channel in data['channels']:
+            for owner in channel['owner_members']:
+                if caller['u_id'] == owner['u_id']:
+                    owner["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
+                    break
+            for member in channel['all_members']:
+                if caller['u_id'] == member['u_id']:
+                    member["profile_img_url"] = request.host_url + f'static/{caller["u_id"]}.jpeg'
+                    break
+        return {}
+    else:
+        raise error.InputError('Image url is not a JPG') 
