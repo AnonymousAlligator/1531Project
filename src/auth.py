@@ -1,5 +1,5 @@
 import re 
-from other import data, check_token
+from other import data, check_token, email_check, check_existing_email
 from error import InputError
 import random
 import string
@@ -56,8 +56,8 @@ def auth_register(email, password, name_first, name_last):
     if len(password) < 6:
         raise InputError('Password entered is less than 6 characters long')
 
-    email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
-    if not re.search(email_match, email): # If it returns FALSE
+    # check for valid email
+    if not email_check(email):
         raise InputError('Entered email is not valid')
 
     first_name_length = len(name_first.strip())
@@ -78,11 +78,10 @@ def auth_register(email, password, name_first, name_last):
         raise InputError('Last name is more than 50 characters long')
 
     # Check if email already registered
-    for registered_user in data['users']:
-        if registered_user['email'] == email:
-            raise InputError('Email already taken by another registered user')
+    check_existing_email(email)
 
-    u_id = len(data['users']) # checks the number of people in the users database to establish the u_id
+    # checks the number of people in the users database to establish the u_id
+    u_id = len(data['users']) 
 
     initial_handle = (name_first + name_last).lower()
     if len(initial_handle) >= 20:

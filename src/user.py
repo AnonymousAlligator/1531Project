@@ -1,4 +1,4 @@
-from other import data, check_token, find_with_uid
+from other import data, check_token, find_with_uid, email_check, check_existing_email
 import re 
 import error
 from PIL import Image 
@@ -52,7 +52,6 @@ def user_profile_setname(token, name_first, name_last):
                 member['name_last'] = lname
 
     return {}
-    
 
 def user_profile_setemail(token, email):
     
@@ -62,16 +61,19 @@ def user_profile_setemail(token, email):
     email = email.strip()
 
     # check for valid email
-    email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
-    if not re.search(email_match, email): # If it returns FALSE
+    if not email_check(email):
         raise error.InputError('Entered email is not valid')
 
+    # check user isn't trying to update the same email
+    if email == caller["email"]:
+        raise error.InputError("Entered email is same as current email.")
+    
     # check for existing email
-    for user in data['users']:
-        if user['email'] == email:
-            raise error.InputError("Email already taken by another registered user")
+    check_existing_email(email)
 
+    # update field in user
     caller["email"] = email
+
     return {}
 
 def user_profile_sethandle(token, handle_str):
@@ -82,20 +84,15 @@ def user_profile_sethandle(token, handle_str):
     handle_str = handle_str.strip()
 
     handle_str_len = len(handle_str.strip())
-    if handle_str_len > 20:
-        raise error.InputError('User handle too long')
-    if handle_str_len < 3:
-        raise error.InputError('User handle is too short')
+    if handle_str_len > 20 or handle_str_len < 3:
+        raise error.InputError('User handle must be between 3 and 20 characters.')
 
     #check that the handle is not already used
-    handle_used = False
-    for user in data['users']:
-        if handle_str == user['handle_str']:
-            handle_used = True
-    if handle_used:
-        raise error.InputError('User handle is already used by another user')
+    for other_user in data['users']:
+        if handle_str == other_user['handle_str']:
+            raise error.InputError('User handle is already used by another user')
 
-    #Sets handle
+    # update handle
     caller['handle_str'] = handle_str
 
     return {}

@@ -1,4 +1,5 @@
 import error
+import re
 
 data = {
 'users': [],
@@ -139,3 +140,15 @@ def find_message_in_messages(message_id):
             return message
     # If no target is returned then the message doesnt exist
     raise error.InputError('Message does not exist')
+
+def email_check(email):    
+    # check for valid email using regex
+    email_match = r'^\w+([\.-]?\w+)*@\w([\.-]?\w+)*(\.\w{2,3})+$'
+    return bool(re.search(email_match, email))
+
+def check_existing_email(email):
+    # check for existing email
+    for registered_user in data['users']:
+        if registered_user['email'] == email:
+            raise error.InputError('Email already taken by another registered user')
+    return False
