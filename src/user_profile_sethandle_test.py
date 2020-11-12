@@ -64,6 +64,6 @@ def test_user_profile_sethandle_already_exists():
 def test_user_profile_sethandle_invalid_token():
 
     clear()
-    test_user_0 = create_two_test_users()[0]
+    _ = create_one_test_user()
     with pytest.raises(AccessError):
         user_profile_sethandle('boop', "jaydenhaycobs")
