@@ -1,7 +1,7 @@
 import time
 import threading
 import error
-from other import data, check_token
+from other import data, check_token, find_channel, is_member_check
 from message import send_message
 
 def standup_active(token, channel_id):
@@ -9,40 +9,29 @@ def standup_active(token, channel_id):
     caller = check_token(token)
 
     # Find the channel
-    target_channel = {}
-    for channel in data['channels']:
-        if channel_id == channel['id']:
-            target_channel = channel
-    # Input Error if the channel doesn't exist
-    if target_channel == {}:
-        #Input Error if the channel doesn't exist
-        raise error.InputError('Channel does not exist')
+    target_channel = find_channel(channel_id)
 
     # Check to see if caller is part of that channel
-    is_member = False
-    for member in target_channel['all_members']:
-        if member['u_id'] == caller['u_id']:
-            is_member = True
+    is_member = is_member_check(caller['u_id'], target_channel)
     if not is_member:
         raise error.AccessError('You are not part of the channel')
 
+    # check for active standup
     if target_channel['standup']['is_standup']:
         return {'is_active': True, 'time_finish': target_channel['standup']['time_finish']}
     return{'is_active': False, 'time_finish': None}
 
 def standup_start(token, channel_id, length):
     # Check that the token is valid
-    _ = check_token(token)
+    caller = check_token(token)
 
     # Find the channel
-    target_channel = {}
-    for channel in data['channels']:
-        if channel_id == channel['id']:
-            target_channel = channel
-    
-    # Input Error if the channel doesn't exist
-    if target_channel == {}:
-        raise error.InputError('Channel does not exist')
+    target_channel = find_channel(channel_id)
+
+    # Check to see if caller is part of that channe
+    is_member = is_member_check(caller['u_id'], target_channel)
+    if not is_member:
+        raise error.AccessError('You are not part of the channel')
 
     # check for active standup
     standup = standup_active(token, channel_id)
@@ -69,24 +58,12 @@ def standup_send(token, channel_id, message):
     caller = check_token(token)
 
     # check valid channel
-    target_channel = {}
-    for channel in data['channels']:
-        if channel_id == channel['id']:
-            target_channel = channel
-
-    # InputError if invalid channel
-    if target_channel == {}:
-        raise error.InputError('Channel does not exist')
+    target_channel = find_channel(channel_id)
 
     # check if user is in channel
-    is_member = False
-    for member in target_channel['all_members']:
-        if member['u_id'] == caller['u_id']:
-            is_member = True
-
-    # AccessError if user is not in channel
+    is_member = is_member_check(caller['u_id'], target_channel)
     if not is_member:
-        raise error.AccessError('You are not a member of this channel.')
+        raise error.AccessError('You are not part of the channel')
 
     # check the message length for issues
     if len(message) > 1000 or len(message) < 1 or len(message.strip()) < 1:
