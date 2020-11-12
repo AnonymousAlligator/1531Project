@@ -64,18 +64,11 @@ def auth_register(email, password, name_first, name_last):
     last_name_length = len(name_last.strip())
 
     # First name doesn't contain at least 1 character
-    if first_name_length < 1:
-        raise InputError('First name is less than 1 character long')
+    if first_name_length < 1 or first_name_length > 50:
+        raise InputError('First name must be between 1 and 50 characters.')
 
-    # First name contains more than 50 characters
-    if first_name_length > 50:
-        raise InputError('First name is more than 50 characters long')
-
-    if last_name_length < 1:
-        raise InputError('Last name is less than 1 character long')
-
-    if last_name_length > 50: 
-        raise InputError('Last name is more than 50 characters long')
+    if last_name_length < 1 or last_name_length > 50:
+        raise InputError('Last name must be between 1 and 50 characters.')
 
     # Check if email already registered
     check_existing_email(email)
