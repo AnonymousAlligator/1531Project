@@ -4,6 +4,7 @@ import error
 from PIL import Image 
 import urllib
 from flask import request
+import requests
 
 def user_profile(token, u_id):
 
@@ -102,6 +103,12 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     #Check that the token is valid
     caller = check_token(token)
     file_path = f'src/static/{caller["u_id"]}.jpeg' 
+    
+    r = requests.post('https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Teemo_0.jpg')
+    payload = r.status_code
+    if payload != 200:
+        raise error.InputError('URL is invalid')
+    
     urllib.request.urlretrieve(img_url, file_path)
     img = Image.open(file_path)
     #img = Image.open(BytesIO(response.content))
