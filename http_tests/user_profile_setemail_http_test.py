@@ -39,7 +39,17 @@ def test_http_user_profile_setemail_works(url, initialisation):
     payload = r.json()
 
     assert payload == {}
+
+def test_http_user_remove_trailing(url, initialisation):
     
+    benjamin,_ = initialisation
+    r = requests.put(f'{url}/user/profile/setemail', json={
+        'token' : benjamin['token'],
+        'email': 'benjamin2@email.com    ',
+    })
+    payload = r.json()
+
+    assert payload == {}
 
 # check for invalid email - setting an existing user's email
 def test_http_user_profile_setemail_existing(url, initialisation):
@@ -61,6 +71,17 @@ def test_http_user_profile_setemail_invalid_check(url, initialisation):
     r = requests.put(f'{url}/user/profile/setemail', json={
         'token' : benjamin['token'],
         'email': 'invalid_email.com',
+    })
+    payload = r.json()
+    assert payload['code'] == 400
+
+# check for invalid email address input - no '@' character		
+def test_http_user_profile_setemail_invalid_token(url, initialisation):
+    
+    _,_ = initialisation
+    r = requests.put(f'{url}/user/profile/setemail', json={
+        'token' : 'boop',
+        'email': 'benjamin@email.com',
     })
     payload = r.json()
     assert payload['code'] == 400
