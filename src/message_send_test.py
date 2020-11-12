@@ -90,3 +90,19 @@ def test_message_send_usernotinchannel():
     channel_name1 = channels_create(test_user_0['token'], "Main Channel", True)
     with pytest.raises(error.AccessError):
         assert message_send(test_user_1['token'], channel_name1['channel_id'], message1)
+
+#Attempting to send a invalide channel
+def test_message_sendlater_invalid_ch():
+    clear()
+    test_user_0 = create_one_test_user()
+    channels_create(test_user_0['token'], "Main Channel", True)
+    with pytest.raises(error.InputError):
+        message_send(test_user_0['token'], 3, message1)
+
+#Attempting to send invalid token
+def test_message_sendlater_invalid_token():
+    clear()
+    test_user_0 = create_one_test_user()
+    channel_name1 = channels_create(test_user_0['token'], "Main Channel", True)
+    with pytest.raises(error.AccessError):
+        message_send('boop', channel_name1['channel_id'], message1)
