@@ -40,6 +40,18 @@ def test_http_user_profile_sethandle_works(url, initialisation):
 
     assert payload == {}
 
+# assert handle updates correctly
+def test_http_user_profile_sethandle_strip(url, initialisation):
+
+    benjamin,_ = initialisation
+    r = requests.put(f'{url}/user/profile/sethandle', json={
+        'token' : benjamin['token'],
+        'handle_str': 'blong   ',
+    })
+    payload = r.json()
+
+    assert payload == {}
+
 # check for valid handle string - str = 20 char in length
 def test_http_user_profile_sethandle_20(url, initialisation):    
 
@@ -87,4 +99,16 @@ def test_http_user_profile_sethandle_already_exists(url, initialisation):
         'handle_str': 'rossshort',
     })
     payload = r.json()
+    assert payload['code'] == 400
+
+# token invalid
+def test_http_user_profile_sethandle_invalid_token(url, initialisation):
+
+    _,_ = initialisation
+    r = requests.put(f'{url}/user/profile/sethandle', json={
+        'token' : 'boop',
+        'handle_str': 'blong',
+    })
+    payload = r.json()
+
     assert payload['code'] == 400
