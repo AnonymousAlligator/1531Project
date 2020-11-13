@@ -1,5 +1,5 @@
 from other import data, check_token, find_with_uid, find_channel, is_member_check, is_owner_check
-from remove_owner_helper import remove_helper_func, check_member_of_channel
+from remove_owner_helper import remove_helper_func
 import error
 
 def channel_invite(token, channel_id, u_id):
