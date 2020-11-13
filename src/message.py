@@ -323,7 +323,8 @@ def send_message(caller, message, target_channel, channel_id):
                     'u_id': caller['u_id'],
                     'message': message,
                     'time_created': time_created,
-                    'reacts' : [],}
+                    'reacts' : [],
+                    'is_pinned': False,}
     target_channel['messages'].insert(0, channel_message)
 
     # adding data to messages for easier searching
@@ -332,7 +333,8 @@ def send_message(caller, message, target_channel, channel_id):
                     'message': message,
                     'time_created': time_created,
                     'channel_id' : channel_id,
-                    'reacts' : [],}
+                    'reacts' : [],
+                    'is_pinned': False,}
     data['messages'].insert(0, message_data)
     return {
         'message_id': message_id
