@@ -1,7 +1,7 @@
 from other import data, check_token, find_with_uid, email_check, check_existing_email
 import re 
 import error
-from PIL import Image 
+from PIL import Image, UnidentifiedImageError
 import urllib
 from flask import request
 
@@ -103,7 +103,11 @@ def user_profile_uploadphoto(token, img_url, x_start, y_start, x_end, y_end):
     caller = check_token(token)
     file_path = f'src/static/{caller["u_id"]}.jpeg' 
     urllib.request.urlretrieve(img_url, file_path)
-    img = Image.open(file_path)
+    try:
+        img = Image.open(file_path)
+    except UnidentifiedImageError:
+        raise error.InputError('Please upload an image')
+
     #img = Image.open(BytesIO(response.content))
     
     #Identifies size of image and calculates the size of the crop image
