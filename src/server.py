@@ -1,6 +1,6 @@
 import sys
 from json import dumps
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 from error import InputError
 import user
@@ -9,6 +9,7 @@ import auth
 import message
 import channel
 import channels
+import standup
 
 def defaultHandler(err):
     response = err.get_response()
@@ -21,7 +22,7 @@ def defaultHandler(err):
     response.content_type = 'application/json'
     return response
 
-APP = Flask(__name__)
+APP = Flask(__name__, static_folder = 'static')
 CORS(APP)
 
 APP.config.update(
@@ -46,17 +47,17 @@ def echo():
         'data': data
     })
 
-@APP.route('/auth/login', methods = ['POST']) 
+@APP.route('/auth/login', methods = ['POST'])
 def http_auth_login():
     data = request.json
     return dumps(auth.auth_login(data['email'], data['password']))
 
-@APP.route('/auth/logout', methods = ['POST']) 
+@APP.route('/auth/logout', methods = ['POST'])
 def http_auth_logout():
     data = request.json
     return dumps(auth.auth_logout(data['token']))
 
-@APP.route('/auth/register', methods = ['POST']) 
+@APP.route('/auth/register', methods = ['POST'])
 def http_auth_register():
     data = request.json
     return dumps(auth.auth_register(data['email'], data['password'], data['name_first'], data['name_last']))
@@ -109,17 +110,17 @@ def http_channel_removeowner():
     data = request.json
     return dumps(channel.channel_removeowner(data['token'], int(data['channel_id']), int(data['u_id'])))
 
-@APP.route("/channels/list", methods=['GET'])    
+@APP.route("/channels/list", methods=['GET'])
 def http_channels_list():
     token = request.args.get('token')
     return dumps(channels.channels_list(token))
 
-@APP.route("/channels/listall", methods=['GET'])    
+@APP.route("/channels/listall", methods=['GET'])
 def http_channels_listall():
     token = request.args.get('token')
     return dumps(channels.channels_listall(token))
 
-@APP.route("/channels/create", methods=['POST'])    
+@APP.route("/channels/create", methods=['POST'])
 def http_channels_create():
     data = request.json
     return dumps(channels.channels_create(data['token'], data['name'], data['is_public']))
@@ -128,6 +129,11 @@ def http_channels_create():
 def http_message_send():
     data = request.json
     return dumps(message.message_send(data['token'], int(data['channel_id']), data['message']))
+
+@APP.route("/message/sendlater", methods=['POST'])
+def http_message_sendlater():
+    data = request.json
+    return dumps(message.message_sendlater(data['token'], int(data['channel_id']), data['message'], int(data['time_sent'])))
 
 @APP.route("/message/remove", methods=['DELETE'])
 def http_message_remove():
@@ -139,13 +145,32 @@ def http_message_edit():
     data = request.json
     return dumps(message.message_edit(data['token'], int(data['message_id']), data['message']))
 
+@APP.route("/message/react", methods=['POST'])
+def http_message_react():
+    data = request.json
+    return dumps(message.message_react(data['token'], int(data['message_id']), int(data['react_id'])))
+
+@APP.route("/message/unreact", methods=['POST'])
+def http_message_unreact():
+    data = request.json
+    return dumps(message.message_unreact(data['token'], int(data['message_id']), int(data['react_id'])))
+@APP.route("/message/pin", methods=['POST'])
+def http_message_pin():
+    data = request.json
+    return dumps(message.message_pin(data['token'], int(data['message_id'])))
+
+@APP.route("/message/unpin", methods=['POST'])
+def http_message_unpin():
+    data = request.json
+    return dumps(message.message_unpin(data['token'], int(data['message_id'])))
+
 @APP.route("/user/profile", methods=['GET'])
 def http_user_profile():
     token = request.args.get('token')
     u_id = request.args.get('u_id')
     return dumps(user.user_profile(token, int(u_id)))
 
-@APP.route("/user/profile/sethandle", methods = ['PUT']) 
+@APP.route("/user/profile/sethandle", methods = ['PUT'])
 def http_user_profile_sethandle():
     data = request.json
     return dumps(user.user_profile_sethandle(data['token'], data['handle_str']))
@@ -160,12 +185,19 @@ def http_user_profile_setname():
     data = request.json
     return dumps(user.user_profile_setname(data['token'], data['name_first'], data['name_last']))
 
+@APP.route('/user/profile/uploadphoto', methods=['POST'])
+def http_user_profile_uploadphoto():
+    data = request.json
+    user.user_profile_uploadphoto(data['token'], data['img_url'], int(data['x_start']), int(data['y_start']), int(data['x_end']), int(data['y_end']))
+    caller = other.check_token(data['token'])
+    return send_from_directory(APP.static_folder, f'{caller["u_id"]}.jpeg')
+
 @APP.route("/users/all", methods=['GET'])
 def http_users_all():
     token = request.args.get('token')
     return dumps(other.users_all(token))
 
-@APP.route("/admin/userpermission/change", methods = ['POST']) 
+@APP.route("/admin/userpermission/change", methods = ['POST'])
 def http_admin_userpermission_change():
     data = request.json
     return dumps(other.admin_userpermission_change(data['token'], int(data['u_id']), int(data['permission_id'])))
@@ -176,9 +208,25 @@ def http_search():
     query_str = request.args.get('query_str')
     return dumps(other.search(token, query_str))
 
+@APP.route("/standup/start", methods=['POST'])
+def http_standup_start():
+    data = request.json
+    return dumps(standup.standup_start(data['token'], int(data['channel_id']), int(data['length'])))
+
+@APP.route("/standup/active", methods=['GET'])
+def http_standup_active():
+    token = request.args.get('token')
+    channel_id = request.args.get('channel_id')
+    return dumps(standup.standup_active(token, int(channel_id)))
+
+@APP.route("/standup/send", methods=['POST'])
+def http_standup_send():
+    data = request.json
+    return dumps(standup.standup_send(data['token'], int(data['channel_id']), data['message']))
+
 @APP.route("/clear", methods=['DELETE'])
 def http_clear():
     return dumps(other.clear())
 
 if __name__ == "__main__":
-    APP.run(port=0) # Do not edit this port
+    APP.run(port=0, debug=True) # Do not edit this port

@@ -74,7 +74,7 @@ def test_channel_removeowner_neither_owner():
     public_channel = channels_create(user_0['token'], "name", True)
     channel_join(user_1['token'], public_channel['channel_id']) 
     channel_join(user_2['token'], public_channel['channel_id']) 
-    with pytest.raises(error.AccessError):
+    with pytest.raises(error.InputError):
         assert channel_removeowner(user_1['token'], public_channel['channel_id'], user_2['token']) == {}   
 
 #Owner removing themselves as owner when there is only one owner but other members

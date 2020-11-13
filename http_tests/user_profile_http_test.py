@@ -15,6 +15,7 @@ def initialisation(url):
         'password' : 'password',
         'name_first' : 'Benjamin',
         'name_last' : 'Long',
+        'profile_img_url' : "",
     })
     benjamin = user0.json()
 
@@ -38,6 +39,7 @@ def test_http_user_profile(url, initialisation):
             'name_first': 'Benjamin', 
             'name_last': 'Long', 
             'handle_str': 'benjaminlong',
+            'profile_img_url' : "",
             }
 
 

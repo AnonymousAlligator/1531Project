@@ -2,11 +2,11 @@
 AccessError when message_id was not sent by the user or when the user is not owner of the channel
 '''
 
-from channel import channel_join
+from channel import channel_join, channel_addowner
 from channels import channels_create
 from message import message_send, message_edit, message_remove
 from test_helpers import create_one_test_user, create_two_test_users
-from error import AccessError
+from error import AccessError, InputError
 from other import clear
 import pytest
     
@@ -45,3 +45,84 @@ def test_message_edit_notusermsg():
     with pytest.raises(AccessError):
         message_edit(test_user1['token'], message0_id['message_id'], 'edited message')
     
+def test_message_edit_msgdoesnotexist():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel_id = channels_create(test_user0['token'], "Public Channel", True)
+        
+    # test_user0 sends 1 message to public channel
+    message0 = "inital message"
+    message_send(test_user0['token'], channel_id['channel_id'], message0)
+
+    with pytest.raises(InputError):
+        message_edit(test_user0['token'], 2, 'edited message')
+
+def test_message_edit_emptymsg():
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    channel_id = channels_create(test_user0['token'], "Public Channel", True)
+        
+    # test_user0 sends 1 message to public channel
+    message0 = "inital message"
+    message0_id = message_send(test_user0['token'], channel_id['channel_id'], message0)
+
+    assert message_edit(test_user0['token'], message0_id['message_id'], '   ') == {}
+
+def test_message_edit_channelowner():
+    clear()
+    test_user0, test_user1 = create_two_test_users()
+
+    # test_user0 creates 1 public channel
+    public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
+
+    # test_user1 joins public channel 
+    channel_join(test_user1['token'], public_channel_id['channel_id'])
+
+    # make test_user1 a channel owner
+    channel_addowner(test_user0['token'], public_channel_id['channel_id'], test_user1['u_id'])
+
+    # test_user0 sends 1 message to public channel
+    message0 = "inital message"
+    message0_id = message_send(test_user0['token'], public_channel_id['channel_id'], message0)
+
+    assert message_edit(test_user1['token'], message0_id['message_id'], 'edited message') == {}
+
+def test_message_edit_flockrowner():
+
+    clear()
+    test_user0, test_user1 = create_two_test_users()
+
+    # test_user0 creates 1 public channel
+    public_channel_id = channels_create(test_user1['token'], "Main Channel", True)
+
+    # test_user1 joins public channel 
+    channel_join(test_user0['token'], public_channel_id['channel_id'])
+
+    # test_user1 sends 1 message to public channel
+    message0 = "inital message"
+    message0_id = message_send(test_user1['token'], public_channel_id['channel_id'], message0)
+
+    assert message_edit(test_user0['token'], message0_id['message_id'], 'edited message') == {}
+
+def test_message_edit_invalidtoken():
+
+    clear()
+    test_user0 = create_one_test_user()
+
+    # test_user0 creates 1 public channel
+    public_channel_id = channels_create(test_user0['token'], "Main Channel", True)
+
+    # test_user1 joins public channel 
+    channel_join(test_user0['token'], public_channel_id['channel_id'])
+        
+    # test_user0 sends 1 message
+    message0 = "user0's message"
+    message0_id = message_send(test_user0['token'], public_channel_id['channel_id'], message0)
+    
+    # raise error if user1 tries to edit user0's message
+    with pytest.raises(AccessError):
+        message_edit('hello', message0_id['message_id'], 'edited message')

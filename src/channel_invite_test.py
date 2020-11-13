@@ -37,7 +37,7 @@ def test_channel_invite_invalid_u_id():
     user_0 = create_one_test_user()
     channel = channels_create(user_0['token'], "name", True)
     with pytest.raises(InputError):
-        assert channel_invite(user_0['token'], channel['channel_id'], 17) 
+        assert channel_invite(user_0['token'], channel['channel_id'], 17)
 
 # Inviter does not exist as a user
 def test_channel_invite_invalid_caller():
