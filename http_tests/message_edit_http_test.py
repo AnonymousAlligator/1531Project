@@ -109,13 +109,11 @@ def test_message_edit_msgdoesnotexist(url, initialisation):
     message0 = "benjamin's message"
     message_edited = "final edited message"
 
-    r = requests.post(f'{url}/message/send', json={
+    requests.post(f'{url}/message/send', json={
         'token' : benjamin['token'],
         'channel_id' : channel0_id['channel_id'],
         'message' : message0,
     })
-
-    message = r.json()
 
     r = requests.put(f'{url}/message/edit', json={
         'token' : benjamin['token'],
@@ -128,7 +126,7 @@ def test_message_edit_msgdoesnotexist(url, initialisation):
 
 def test_message_edit_emptymsg(url, initialisation):
 
-    benjamin, ross, channel0_id, _ = initialisation
+    benjamin, _, channel0_id, _ = initialisation
 
     message0 = "initial message"
     message_edited = "    "
