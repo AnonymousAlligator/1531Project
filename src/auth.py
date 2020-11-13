@@ -94,7 +94,10 @@ def auth_register(email, password, name_first, name_last):
     handle_str = middle_handle  
 
     if len(handle_str) > 20:
-        handle_str = ''.join(random.choice(string.ascii_lowercase) for _ in range(20))   
+        handle_str = ''.join(random.choice(string.ascii_lowercase) for _ in range(20)) 
+
+    if len(handle_str) < 3:
+        handle_str = handle_str + str(u_id)      
 
     password = hashlib.sha256(password.encode()).hexdigest()
     token = jwt.encode({'u_id': u_id}, 'jekfwbdkbwkf', algorithm='HS256').decode('utf-8')    
@@ -164,4 +167,3 @@ def auth_passwordreset_reset(reset_code, new_password):
 
     return {} 
 
-    
