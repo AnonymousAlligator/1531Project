@@ -99,20 +99,20 @@ def initialisation(url):
 def test_channel_removeowner_success(url, initialisation):
     Benjamin, Ross, _, _, channel_id0, _, _ = initialisation
     r = requests.post(f'{url}/channel/removeowner', json={
-        'token' : Ross['token'],
+        'token' : Benjamin['token'],
         'channel_id' : channel_id0['channel_id'],
-        'u_id' : Benjamin['u_id'],
+        'u_id' : Ross['u_id'],
     })
     payload = r.json()
     assert payload == {}
 
 #Successfully removed themselves as owner
 def test_channel_removeowner_owner_success(url, initialisation):
-    Benjamin, _, _, _, channel_id0, _, _ = initialisation
+    _, Ross, _, _, channel_id0, _, _ = initialisation
     r = requests.post(f'{url}/channel/removeowner', json={
-        'token' : Benjamin['token'],
+        'token' : Ross['token'],
         'channel_id' : channel_id0['channel_id'],
-        'u_id' : Benjamin['u_id'],
+        'u_id' : Ross['u_id'],
     })
     payload = r.json()
     assert payload == {}
@@ -176,10 +176,23 @@ def test_channel_removeowner_neither_owner(url, initialisation):
 
 #Owner removing themselves as owner when there is only one owner but other members
 def test_channel_removeowner_only_owner(url, initialisation):
-    _, Ross, _, _, _, _, channel_id2,= initialisation
+    Benjamin, Ross, Alex, James, channel_id0, _, _,= initialisation
+
+    requests.post(f'{url}/channel/leave', json={
+        'token' : Alex['token'],
+        'channel_id' : channel_id0['channel_id'],
+    })
+    requests.post(f'{url}/channel/leave', json={
+        'token' : Benjamin['token'],
+        'channel_id' : channel_id0['channel_id'],
+    })
+    requests.post(f'{url}/channel/leave', json={
+        'token' : James['token'],
+        'channel_id' : channel_id0['channel_id'],
+    })
     r = requests.post(f'{url}/channel/removeowner', json={
         'token' : Ross['token'],
-        'channel_id' : channel_id2['channel_id'],
+        'channel_id' : channel_id0['channel_id'],
         'u_id' : Ross['u_id'],
     })
     payload = r.json()
@@ -188,9 +201,9 @@ def test_channel_removeowner_only_owner(url, initialisation):
 
 #Owner removing themselves as owner when there is no other member in the channel and they are the only owner.
 def test_channel_removeowner_only_member(url, initialisation):
-    _, Ross, _, _, _, _, channel_id2,= initialisation
+    Benjamin, Ross, _, _, _, _, channel_id2,= initialisation
     requests.post(f'{url}/channel/leave', json={
-        'token' : 'Benjamin',
+        'token' : Benjamin['token'],
         'channel_id' : channel_id2['channel_id'],
     })
 
