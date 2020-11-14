@@ -253,6 +253,10 @@ def channel_removeowner(token, channel_id, u_id):
     if caller['permission_id'] == 1:
         is_owner = True
 
+    # Check to see if the admin is removing a flockr owner
+    if removed_person['permission_id'] == 1:
+        raise error.AccessError('You cannot remove rights from Flockr Owner')
+
     # Access Error if the caller is not an owner
     if not is_owner:
         raise error.AccessError('You are not an owner of the channel and cannot remove owners')

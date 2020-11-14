@@ -80,20 +80,20 @@ def test_channel_removeowner_neither_owner():
 #Owner removing themselves as owner when there is only one owner but other members
 def test_channel_removeowner_only_owner():
     clear()
-    user_0, user_1 = create_two_test_users() 
-    public_channel = channels_create(user_0['token'], "name", True)
-    channel_join(user_1['token'], public_channel['channel_id'])     
+    _, user_1, user_2 = create_three_test_users() 
+    public_channel = channels_create(user_1['token'], "name", True)
+    channel_join(user_2['token'], public_channel['channel_id'])     
     with pytest.raises(error.InputError):
-        assert channel_removeowner(user_0['token'], public_channel['channel_id'], user_0['u_id']) == {}   
+        assert channel_removeowner(user_1['token'], public_channel['channel_id'], user_1['u_id']) == {}   
 
 
 #Owner removing themselves as owner when there is no other member in the channel and they are the only owner.
 def test_channel_removeowner_only_member():
     clear()
-    user_0 = create_one_test_user() 
-    public_channel = channels_create(user_0['token'], "name", True)   
+    _, user_1 = create_two_test_users() 
+    public_channel = channels_create(user_1['token'], "name", True)   
     with pytest.raises(error.InputError):
-        assert channel_removeowner(user_0['token'], public_channel['channel_id'], user_0['u_id']) == {}  
+        assert channel_removeowner(user_1['token'], public_channel['channel_id'], user_1['u_id']) == {}  
 
 
 #Attempting to remove owner when the person called is NOT part of private channel

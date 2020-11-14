@@ -1,3 +1,4 @@
+########################################
 Auth Functions
 
 auth_register:
@@ -11,6 +12,10 @@ auth_login:
 - When a user registers, they are automatically logged in at the end of registration (since they are given a token).
 
 - When a user is logged in but a login attempt is made once again with same credentials, the system will get an error but the user will remain logged in.
+
+auth-passwordreset-request:
+
+- If the email entered has not been registered before, an exception is returned
 
 ########################################
 Channel Functions
@@ -34,11 +39,12 @@ channel_removeowner:
 
 - If the caller of the function is the only owner, they will receive an error prompting them to add someone else as owner first. 
 
+- Caller cannot remove rights from a Flockr Owner
+
 channels_list:
 - If a user isn't a part of any channels, the channel list is empty.
 
 channels_create:
-
 - Channels ID's are asssigned in the order that channel_create is called. 
 
 - When a channel is created by a user, they are immediately a member and owner of that channel.
@@ -46,8 +52,8 @@ channels_create:
 ######################################
 Messages Functions
 
--The channel_id will always be valid
--The user sending the message is an authorised (logged in) user.
+- The channel_id will always be valid
+- The user sending the message is an authorised (logged in) user.
 
 message_send:
 - Message_id is assigned in the order that messages are sent.
@@ -70,7 +76,6 @@ message_edit:
 User Functions
 
 user_profile_setname:
-
 - Any character string as long as between 3 and 50 will be accepted.
 
 - Special Characters will be allowed in first name and last name fields.
@@ -84,14 +89,14 @@ user_profile_sethandle:
 
 - Handle can accept both uppercase and lowercase characters.
 
-
+user_profile_uploadphoto:
+- All files will be downloaded into the static folder regardless of format but only JPGS will be uploaded.
 
 ######################################################
 Other Functions
 
 user_all: 
-
--the user list returned is in order of u_id
+- The user list returned is in order of u_id
 
 search:
 - Search string isn't case sensitive (will search for 'hello' as well if 'Hello' is the search string).
@@ -105,3 +110,9 @@ search:
 - Messages returns with latest message at the front of the list
 
 - Members that are not apart of channel will not be able to search for messages
+
+######################################################
+Standup Functions
+
+standup_send:
+- If a user tries to send a message which contains "/standup " during an active standup, throw an InputError
